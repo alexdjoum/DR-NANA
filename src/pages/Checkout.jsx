@@ -27,7 +27,10 @@ function Results() {
                         <div className="row">
                             <div className="col-md-6 form-group">
                                 <label>First Name</label>
-                                <input className="form-control" type="text" placeholder="John"/>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    placeholder="John"/>
                             </div>
                             <div className="col-md-6 form-group">
                                 <label>Last Name</label>

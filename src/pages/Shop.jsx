@@ -1,19 +1,39 @@
-import { useState} from "react";
+import {useState} from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {products} from "../dynamic/products";
 //import {priceFilter} from "../dynamic/tags";
 import {SearchedByNameContext} from "../app/storeInput";
+import {useDispatch} from "react-redux";
+import {addToCart} from "../features/cart/cartSlice";
 
 
 function Results() {
     //const searched = useContext(SearchedByNameContext)
     //const searched = useProductStore((state) => state.searchedProductByName)
-    const [price, setPrice ]= useState([])
+    const navigate = useNavigate()
+    const [price, setPrice ]= useState([
+        {
+            min: 100,
+            max: 200
+        },
+        {
+            min: 200,
+            max: 300
+        },
+        {
+            min: 300,
+            max: 400
+        }
+    ])
     const [searched, setSearched]= useState("")
-    const [size, setSize] = useState([])
-    console.log("size ===>>> ", {"size": size})
+    const [size, setSize] = useState(["XL", "L"])
+    const dispatch = useDispatch()
+
+    const handleAddToCart = (product) => {
+        dispatch(addToCart(product))
+    }
     const performFiltering = () => {
         const pricesFiltered = products.filter(product =>
             price.some(p => product.newPrice >= p.min && product.newPrice <= p.max));
@@ -56,6 +76,21 @@ function Results() {
                                         className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                         <input
                                             type="checkbox"
+                                            defaultChecked={price.some(p => (
+                                                (p.min === 0 && p.max === 100)
+                                                && (p.min === 200 && p.max === 200)))}
+                                            /*onChange={e => e.target.checked
+                                                ? setPrice(
+                                                    [...price,
+                                                            {min: 0, max: 100},
+                                                            {min: 100, max: 200},
+                                                            {min: 200, max: 300},
+                                                            {min: 300, max: 400},
+                                                            {min: 400, max: 500}
+                                                          ]
+                                                )
+                                                : setPrice(price.filter(p => !(p.min === 0 && p.max === 100)))
+                                            }*/
                                             className="custom-control-input"
                                         />
                                         <label
@@ -63,10 +98,9 @@ function Results() {
                                             htmlFor="price-all">
                                             All- price
                                         </label>
-                                        <span
-                                            className="badge border font-weight-normal">
-                                1000
-                            </span>
+                                        <span className="badge border font-weight-normal">
+                                            1000
+                                        </span>
                                     </div>
                                     <div
                                         className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
@@ -75,11 +109,9 @@ function Results() {
                                             checked={price.some(p => p.min === 0 && p.max === 100)}
                                             className="custom-control-input"
                                             id="price-1"
-                                            onChange={e =>
-                                                e.target.checked
-                                                    ? setPrice([...price, {min: 0, max: 100}])
-                                                    : setPrice(price.filter(p => !(p.min === 0 && p.max === 100))
-                                                    )
+                                            onChange={e => e.target.checked
+                                                ? setPrice([...price, {min: 0, max: 100}])
+                                                : setPrice(price.filter(p => !(p.min === 0 && p.max === 100)))
                                             }
                                         />
                                         <label className="custom-control-label" htmlFor="price-1">$0 - $100</label>
@@ -125,11 +157,9 @@ function Results() {
                                             type="checkbox"
                                             checked={price.some(({min, max}) => min === 300 && max === 400)}
                                             className="custom-control-input"
-                                            onChange={e =>
-                                                e.target.checked
-                                                    ? setPrice([...price, {min: 300, max: 400}])
-                                                    : setPrice(price.filter(p => !(p.min === 300 && p.max === 400))
-                                                    )
+                                            onChange={e => e.target.checked
+                                                ? setPrice([...price, {min: 300, max: 400}])
+                                                : setPrice(price.filter(p => !(p.min === 300 && p.max === 400)))
                                             }
                                             id="price-4"/>
                                         <label className="custom-control-label" htmlFor="price-4">$300 - $400</label>
@@ -319,19 +349,23 @@ function Results() {
                                     </div>
                                 </div>
                                 {productShop.map(p => (
-                                    <div className="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                    <div key={p.id} className="col-lg-4 col-md-6 col-sm-6 pb-1">
                                         <div className="product-item bg-light mb-4">
                                             <div className="product-img position-relative overflow-hidden">
                                                 <img className="img-fluid w-100" src={p.image} alt=""/>
-                                                <div className="product-action">
-                                                    <Link className="btn btn-outline-dark btn-square" to=""><i
-                                                        className="fa fa-shopping-cart"/></Link>
-                                                    <Link className="btn btn-outline-dark btn-square" to=""><i
+                                                <div className="product-action" onClick={() => navigate(`/detail/${p.id}`)}>
+                                                    <Link
+                                                        className="btn btn-outline-dark btn-square"
+                                                        to=""
+                                                    >
+                                                        <i className="fa fa-shopping-cart" onClick={() => handleAddToCart(p)}/>
+                                                    </Link>
+                                                    {/* <Link className="btn btn-outline-dark btn-square" to=""><i
                                                         className="far fa-heart"/></Link>
                                                     <Link className="btn btn-outline-dark btn-square" to=""><i
                                                         className="fa fa-sync-alt"/></Link>
                                                     <Link className="btn btn-outline-dark btn-square" to=""><i
-                                                        className="fa fa-search"/></Link>
+                                                        className="fa fa-search"/></Link> */}
                                                 </div>
                                             </div>
                                             <div className="text-center py-4">

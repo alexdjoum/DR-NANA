@@ -1,4 +1,5 @@
 import { Route, Routes} from "react-router";
+import React, { useState } from 'react';
 import {BrowserRouter} from "react-router-dom";
 import routesss, {clientRoutes} from "./routes/routes";
 //import adminRoutes from "./routes/adminRoutes";
@@ -11,42 +12,54 @@ import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
+import {LanguageContext, languages} from "./Language/languages";
+import {IntlProvider} from "react-intl";
 
 function App() {
 
     const renderedRoutes = routes.map((route, index) => (
         <Route key={index} path={route.path} element={route.element} />
     ));
+
+    const [selectedLanguage, setSelectedLanguage] = useState(languages.fr);
+
+    const handleLanguageChange = (locale) => {
+        setSelectedLanguage(languages[locale]);
+    };
+
   return (
+    <LanguageContext.Provider value={{selectedLanguage, handleLanguageChange}}>
+        <IntlProvider locale={selectedLanguage.locale} messages={selectedLanguage.messages}>
+            <BrowserRouter>
+                <Routes>
+                    <>
+                        {renderedRoutes}
+                        {clientRoutes.map((route, index) => (
+                            <Route
+                                key={index}
+                                path={route.path}
+                                exact={route.exact}
+                                Component={route.component}
+                            />
+                        ))}
+                        {/*<Route element={<Register />} path="/register" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<Cart />} path="/cart" />
+                        <Route element={<Home />} path="/" />
+                        <Route element={<Shop />} path="/shop" />*/}
+                        {/*<Route
+                            path="/admin"
+                            element={<PrivateRoute Component={Admin} />}
+                        /> */}
 
-        <BrowserRouter>
-              <Routes>
-                  <>
-                      {renderedRoutes}
-                      {clientRoutes.map((route, index) => (
-                          <Route
-                              key={index}
-                              path={route.path}
-                              exact={route.exact}
-                              Component={route.component}
-                          />
-                      ))}
-                      {/*<Route element={<Register />} path="/register" />
-                      <Route element={<Login />} path="/login" />
-                      <Route element={<Cart />} path="/cart" />
-                      <Route element={<Home />} path="/" />
-                      <Route element={<Shop />} path="/shop" />*/}
-                      {/*<Route
-                          path="/admin"
-                          element={<PrivateRoute Component={Admin} />}
-                      /> */}
+                    </>
 
-                  </>
+                    {/*{routeComponents}*/}
 
-                  {/*{routeComponents}*/}
-
-              </Routes>
-          </BrowserRouter>
+                </Routes>
+            </BrowserRouter>
+        </IntlProvider>
+    </LanguageContext.Provider>
   );
 }
 

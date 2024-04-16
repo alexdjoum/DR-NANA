@@ -1,14 +1,21 @@
 import React, {useContext, useState} from 'react'
 import {Link, NavLink, useNavigate} from "react-router-dom";
-import {SearchedByNameContext, useProductStore} from "../app/storeInput";
+import {SearchedByNameContext, /*useProductStore*/} from "../app/storeInput";
+import {useSelector} from "react-redux"
 //import {tags} from "../dynamic/tags";
+import {LanguageContext} from "../Language/languages"
+import {FormattedMessage} from "react-intl";
 
 export default function Header() {
     //const [searched, setSearched] = useState("")
+    //const setSearched = useContext(SearchedByNameContext)
+    const myTotal = useSelector(state => state.cart.cartTotalQuantity)
+    console.log('look ===>> ', myTotal)
     const {searched, setSearched} = useContext(SearchedByNameContext)
     //const searchedByName = useProductStore((state) => state.searchedProductByName)
     //const updatesearched = useProductStore((state) => state.updateSearchedProductByName())
-
+    const locale = useContext(LanguageContext);
+    console.log("je regarde locale", locale)
     const navigate= useNavigate()
     //const [searched, setSearched] = useState('');
     /*const [link, setLink] = useState({
@@ -18,7 +25,7 @@ export default function Header() {
         shopDetail: false
     })
 */
-    console.log("searched in header ==>> ", {"headersearched": searched})
+    //console.log("searched in header ==>> ", {"headersearched": searched})
     //console.log("my link", {home:link.home, page: link.page, shop: link.shop, shopDetail: link.shopDetail})
   return (
       <>
@@ -52,7 +59,7 @@ export default function Header() {
                                       </button>
                                   </div>
                               </div>
-                              <div className="btn-group mx-2">
+                              {/* <div className="btn-group mx-2">
                                   <button type="button" className="btn btn-sm btn-light dropdown-toggle"
                                           data-toggle="dropdown">USD
                                   </button>
@@ -61,16 +68,25 @@ export default function Header() {
                                       <button className="dropdown-item" type="button">GBP</button>
                                       <button className="dropdown-item" type="button">CAD</button>
                                   </div>
-                              </div>
+                              </div> */}
                               <div className="btn-group">
-                                  <button type="button" className="btn btn-sm btn-light dropdown-toggle"
-                                          data-toggle="dropdown">EN
-                                  </button>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                      <button className="dropdown-item" type="button">FR</button>
-                                      <button className="dropdown-item" type="button">AR</button>
-                                      <button className="dropdown-item" type="button">RU</button>
-                                  </div>
+                                  <select
+                                    value={locale?.selectedLanguage.locale}
+                                    onChange={(e)=>locale?.handleLanguageChange(e.target.value)}>
+                                      <option value='fr'>
+                                        <FormattedMessage
+                                                id="app.french"
+                                                description="Greeting to welcome the user to the app"
+                                                defaultMessage="Hello, {name}!"
+                                        />
+                                      </option>
+                                      <option value='en'>
+                                        <FormattedMessage
+                                            id="app.english"
+                                            defaultMessage="English"
+                                        />
+                                      </option>
+                                  </select>
                               </div>
                           </div>
                           <div className="d-inline-flex align-items-center d-block d-lg-none">
@@ -81,8 +97,12 @@ export default function Header() {
                               </Link>
                               <Link to="" className="btn px-0 ml-2">
                                   <i className="fas fa-shopping-cart text-dark"/>
-                                  <span className="badge text-dark border border-dark rounded-circle"
-                                        style={{paddingBottom: "2px"}}>0</span>
+                                  <span 
+                                        className="badge text-dark border border-dark rounded-circle"
+                                        style={{paddingBottom: "2px"}}
+                                  >
+                                    {myTotal}
+                                  </span>
                               </Link>
                           </div>
                       </div>
@@ -240,12 +260,12 @@ export default function Header() {
                                       <Link to="" className="btn px-0">
                                           <i className="fas fa-heart text-primary"/>
                                           <span className="badge text-secondary border border-secondary rounded-circle"
-                                                style={{paddingBottom: "2px"}}>0</span>
+                                                style={{paddingBottom: "2px"}}>{myTotal}</span>
                                       </Link>
-                                      <Link to="" className="btn px-0 ml-3">
+                                      <Link to="/cart" className="btn px-0 ml-3">
                                           <i className="fas fa-shopping-cart text-primary"/>
                                           <span className="badge text-secondary border border-secondary rounded-circle"
-                                                style={{paddingBottom: "2px"}}>0</span>
+                                                style={{paddingBottom: "2px"}}>{myTotal}</span>
                                       </Link>
                                   </div>
                               </div>

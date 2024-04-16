@@ -1,89 +1,122 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useParams} from "react-router";
 import {Link} from "react-router-dom";
 import Header from "../components/Header";
+import { useDispatch, useSelector } from 'react-redux';
+import {decreaseCart, addToCart, removeFromCart, getTotals, clearCart} from "../features/cart/cartSlice"
+//import { products } from '../dynamic/products';
 
-
+const products = [
+    {
+        id: 1,
+        image: "img/product-1.jpg",
+        name: "Camera",
+        newPrice: 321.00,
+        oldPrice: 123.00,
+        sizes: ["XS","L"],
+        stars: 99
+    },
+    {
+        id: 2,
+        image: "img/product-2.jpg",
+        name: "Pul",
+        newPrice: 299,
+        oldPrice: 452,
+        sizes: ["XS", "S", "M", "L", "XL"],
+        stars: 98
+    },
+    {
+        id: 3,
+        image: "img/product-3.jpg",
+        name: "Lampe",
+        newPrice: 300,
+        oldPrice: 222.00,
+        sizes: ["M", "L"],
+        stars: 99
+    },
+    {
+        id: 4,
+        image: "img/product-4.jpg",
+        name: "Chaussure",
+        newPrice: 250,
+        oldPrice: 123.00,
+        sizes: ["XS", "S", "M", "L", "XL"],
+        stars: 85
+    },
+    {
+        id: 5,
+        image: "img/product-5.jpg",
+        name: "Drone",
+        newPrice: 220,
+        oldPrice: 123.00,
+        sizes: ["XS", "S", "M", "L", "XL"],
+        stars: 90
+    },
+    {
+        id: 6,
+        image: "img/product-6.jpg",
+        name: "Montre",
+        newPrice: 333,
+        oldPrice: "$123.00",
+        sizes: ["L", "XL"],
+        stars: 99
+    },
+    {
+        id: 7,
+        image: "img/product-7.jpg",
+        name: "Chemise",
+        newPrice: 123.00,
+        oldPrice: "$123.00",
+        sizes: ["S", "M", "L"],
+        stars: 92
+    },
+    {
+        id: 8,
+        image: "img/product-8.jpg",
+        name: "Pomade",
+        newPrice: 300,
+        oldPrice: "$123.00",
+        sizes: ["M", "L", "XL"],
+        stars: 99
+    },
+    {
+        id: 9,
+        image: "img/product-9.jpg",
+        name: "Chaise",
+        newPrice: 350,
+        oldPrice: "$123.00",
+        sizes: ["XS", "S"],
+        stars: 99
+    }
+]
 function Detail() {
-    const params = useParams()
-        console.log('params ====>', params)
+
+    const cart = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
+  
+    useEffect(() => {
+      dispatch(getTotals());
+    }, [cart, dispatch]);
+  
+    const handleAddToCart = (product) => {
+      dispatch(addToCart(product));
+    };
+    const handleDecreaseCart = (product) => {
+      dispatch(decreaseCart(product));
+    };
+    const handleRemoveFromCart = (product) => {
+      dispatch(removeFromCart(product));
+    };
+    
+    const {num} = useParams()
+    console.log("automatic ===>>> ", num)
+    console.log('my nums ====>', products)
+    const thisProduct = products.find((prod) => prod.id == num);
+    console.log('thisProduct ====>', thisProduct)
     return (
         <>
             <Header />
-            {/*Topbar End*/}
-            {/*Navbar Start*/}
-           {/* <div className="container-fluid bg-dark mb-30">
-                <div className="row px-xl-5">
-                    <div className="col-lg-3 d-none d-lg-block">
-                        <Link className="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse" to="#navbar-vertical" style={{height: "65px", padding: "0 30px;"}}>
-                            <h6 className="text-dark m-0"><i className="fa fa-bars mr-2" />Categories</h6>
-                            <i className="fa fa-angle-down text-dark" />
-                        </Link>
-                        <nav className="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style={{width: "calc(100% - 30px)", zIndex: "999"}}>
-                            <div className="navbar-nav w-100">
-                                <div className="nav-item dropdown dropright">
-                                    <Link
-                                        to="#"
-                                        className="nav-link dropdown-toggle"
-                                        data-toggle="dropdown">
-                                        Dresses <i className="fa fa-angle-right float-right mt-1" />
-                                    </Link>
-                                    <div className="dropdown-menu position-absolute rounded-0 border-0 m-0">
-                                        <Link to="" className="dropdown-item">Men's Dresses</Link>
-                                        <Link to="" className="dropdown-item">Women's Dresses</Link>
-                                        <Link to="" className="dropdown-item">Baby's Dresses</Link>
-                                    </div>
-                                </div>
-                                <Link to="" className="nav-item nav-link">Shirts</Link>
-                                <Link to="" className="nav-item nav-link">Jeans</Link>
-                                <Link to="" className="nav-item nav-link">Swimwear</Link>
-                                <Link to="" className="nav-item nav-link">Sleepwear</Link>
-                                <Link to="" className="nav-item nav-link">Sportswear</Link>
-                                <Link to="" className="nav-item nav-link">Jumpsuits</Link>
-                                <Link to="" className="nav-item nav-link">Blazers</Link>
-                                <Link to="" className="nav-item nav-link">Jackets</Link>
-                                <Link to="" className="nav-item nav-link">Shoes</Link>
-                            </div>
-                        </nav>
-                    </div>
-                    <div className="col-lg-9">
-                        <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
-                            <Link to="" className="text-decoration-none d-block d-lg-none">
-                                <span className="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-                                <span className="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
-                            </Link>
-                            <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                                <span className="navbar-toggler-icon"></span>
-                            </button>
-                            <div className="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                                <div className="navbar-nav mr-auto py-0">
-                                    <Link to="/" className="nav-item nav-link">Home</Link>
-                                    <Link to="/shop" className="nav-item nav-link">Shop</Link>
-                                    <Link to="/detail/:100" className="nav-item nav-link ">Shop Detail</Link>
-                                    <div className="nav-item dropdown">
-                                        <Link to="#" className="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i className="fa fa-angle-down mt-1" /></Link>
-                                        <div className="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                            <Link to="/cart" className="dropdown-item">Shopping Cart</Link>
-                                            <Link to="/checkout" className="dropdown-item">Checkout</Link>
-                                        </div>
-                                    </div>
-                                    <Link to="/contact" className="nav-item nav-link">Contact</Link>
-                                </div>
-                                <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
-                                    <Link to="" className="btn px-0">
-                                        <i className="fas fa-heart text-primary" />
-                                        <span className="badge text-secondary border border-secondary rounded-circle" style={{paddingBottom: "2px"}}>0</span>
-                                    </Link>
-                                    <Link to="" className="btn px-0 ml-3">
-                                        <i className="fas fa-shopping-cart text-primary" />
-                                        <span className="badge text-secondary border border-secondary rounded-circle" style={{paddingBottom: "2px" }}>0</span>
-                                    </Link>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>*/}
+            
             {/*Navbar End*/}
             {/*Breadcrumb Start*/}
             <div className="container-fluid">
@@ -105,9 +138,9 @@ function Detail() {
                         <div id="product-carousel" className="carousel slide" data-ride="carousel">
                             <div className="carousel-inner bg-light">
                                 <div className="carousel-item active">
-                                    <img className="w-100 h-100" src="/img/product-1.jpg" alt="Image" />
+                                    <img className="w-100 h-100" src={'/'+thisProduct.image} alt="Image" />
                                 </div>
-                                <div className="carousel-item">
+                                {/* <div className="carousel-item">
                                     <img className="w-100 h-100" src="/img/product-2.jpg" alt="Image" />
                                 </div>
                                 <div className="carousel-item">
@@ -115,7 +148,7 @@ function Detail() {
                                 </div>
                                 <div className="carousel-item">
                                     <img className="w-100 h-100" src="/img/product-4.jpg" alt="Image" />
-                                </div>
+                                </div> */}
                             </div>
                             <Link className="carousel-control-prev" to="#product-carousel" data-slide="prev">
                                 <i className="fa fa-2x fa-angle-left text-dark" />
@@ -139,7 +172,7 @@ function Detail() {
                                 </div>
                                 <small className="pt-1">(99 Reviews)</small>
                             </div>
-                            <h3 className="font-weight-semi-bold mb-4">$150.00</h3>
+                            <h3 className="font-weight-semi-bold mb-4">${thisProduct.newPrice}</h3>
                             <p className="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit
                                 clita ea. Sanc ipsum et, labore clita lorem magna duo dolor no sea
                                 Nonumy</p>
@@ -196,19 +229,27 @@ function Detail() {
                             <div className="d-flex align-items-center mb-4 pt-2">
                                 <div className="input-group quantity mr-3" style={{width: "130px"}}>
                                     <div className="input-group-btn">
-                                        <button className="btn btn-primary btn-minus">
+                                        <button 
+                                            className="btn btn-primary btn-minus" 
+                                            onClick={() => handleDecreaseCart(thisProduct)}>
                                             <i className="fa fa-minus" />
                                         </button>
                                     </div>
                                     <input type="text" className="form-control bg-secondary border-0 text-center" value="1" />
                                     <div className="input-group-btn">
-                                        <button className="btn btn-primary btn-plus">
+                                        <button 
+                                            className="btn btn-primary btn-plus"
+                                            onClick={() => handleAddToCart(thisProduct)}>
                                             <i className="fa fa-plus" />
                                         </button>
                                     </div>
                                 </div>
-                                <button className="btn btn-primary px-3"><i className="fa fa-shopping-cart mr-1" /> Add To
-                                    Cart</button>
+                                <button 
+                                    className="btn btn-primary px-3" 
+                                    onClick={()=> handleAddToCart(thisProduct)}>
+                                    <i className="fa fa-shopping-cart mr-1" /> 
+                                        Add ToCart
+                                </button>
                             </div>
                             <div className="d-flex pt-2">
                                 <strong className="text-dark mr-2">Share on:</strong>
@@ -361,7 +402,7 @@ function Detail() {
                         <div className="owl-carousel related-carousel">
                             <div className="product-item bg-light">
                                 <div className="product-img position-relative overflow-hidden">
-                                    <img className="img-fluid w-100" src="/img/product-1.jpg" alt="" />
+                                    <img className="img-fluid w-100" src={thisProduct.image} alt="" />
                                     <div className="product-action">
                                         <Link className="btn btn-outline-dark btn-square" to=""><i className="fa fa-shopping-cart" /></Link>
                                         <Link className="btn btn-outline-dark btn-square" to=""><i className="far fa-heart" /></Link>

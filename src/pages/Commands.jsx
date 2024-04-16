@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react"
 import Header from "../components/Header";
 
-function Cart() {
+function Commands() {
     const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -290,7 +290,7 @@ function Cart() {
                                 <button 
                                     className="btn btn-block btn-primary font-weight-bold my-3 py-3"
                                     onClick={redirectToCreateCommand}>
-                                    Proceed To Create command
+                                    Proceed To Valid my command
                                 </button>
                                 {/* <button className="btn btn-block btn-primary font-weight-bold my-3 py-3">
                                     Proceed To Checkout
@@ -422,4 +422,4 @@ function Cart() {
     );
 }
 
-export default Cart;
+export default Commands;

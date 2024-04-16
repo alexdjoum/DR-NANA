@@ -1,43 +1,104 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { toast } from "react-toastify";
 
 export const cartSlice = createSlice({
     name: 'cart',
     initialState: {
-        id: "",
-        name: "",
-        image: "",
-        newPrice: "",
-        products: []
+        cartItems: localStorage.getItem("cartItems")
+          ? JSON.parse(localStorage.getItem("cartItems"))
+          : [],
+        cartTotalQuantity: 0,
+        cartTotalAmount: 0
         /*value: 0*/
     },
     reducers: {
-        increment: state => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the Immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value += 1
+        addToCart: (state, action) => {
+            console.log('addtocart===>> ',action.payload)
+            const existingIndex = state.cartItems.findIndex(
+                (item) => item.id === action.payload.id
+            );
+            if (existingIndex >= 0) {
+            state.cartItems[existingIndex] = {
+                ...state.cartItems[existingIndex],
+                cartQuantity: state.cartItems[existingIndex].cartQuantity + 1,
+            };
+            toast.info("Increased product quantity", {
+                position: "bottom-left",
+            });
+            } else {
+            let tempProductItem = { ...action.payload, cartQuantity: 1 };
+            state.cartItems.push(tempProductItem);
+            toast.success("Product added to cart", {
+                position: "bottom-left",
+            });
+            }
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         },
-        decrement: state => {
-            state.value -= 1
+        decreaseCart: (state, action) => {
+            const itemIndex = state.cartItems.findIndex(
+                (item) => item.id === action.payload.id
+            );
+    
+            if (state.cartItems[itemIndex].cartQuantity > 1) {
+            state.cartItems[itemIndex].cartQuantity -= 1;
+    
+            toast.info("Decreased product quantity", {
+                position: "bottom-left",
+            });
+            } else if (state.cartItems[itemIndex].cartQuantity === 1) {
+            const nextCartItems = state.cartItems.filter(
+                (item) => item.id !== action.payload.id
+            );
+    
+            state.cartItems = nextCartItems;
+    
+            toast.error("Product removed from cart", {
+                position: "bottom-left",
+            });
+            }
+    
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+            
         },
-        addToCart: ((state, action) => {
-            state.products= [
-                ...state,
-                {
-                    id: action.payload,
-                    name: state.name,
-                    image: state.image,
-                    newPrice: state.price
+        removeFromCart: (state, action) => {
+            state.cartItems.map((cartItem) => {
+                if (cartItem.id === action.payload.id) {
+                  const nextCartItems = state.cartItems.filter(
+                    (item) => item.id !== cartItem.id
+                  );
+        
+                  state.cartItems = nextCartItems;
+        
+                  toast.error("Product removed from cart", {
+                    position: "bottom-left",
+                  });
                 }
-            ]
-        }),
-        /*incrementByAmount: (state, action) => {
-            state.value += action.payload
-
-        }*/
+                localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+                return state;
+            });
+        },
+        getTotals: (state) => {
+            const cartTotalQuantity = state.cartItems.reduce(
+              (total, item) => total + item.cartQuantity,
+              0
+            );
+            console.log(`ma quantity total is ${cartTotalQuantity}`)
+      
+            const cartTotalAmount = state.cartItems.reduce(
+              (total, item) => total + item.newPrice * item.cartQuantity,
+              0
+            );
+      
+            state.cartTotalQuantity = cartTotalQuantity;
+            state.cartTotalAmount = cartTotalAmount;
+        },
+        clearCart(state, action) {
+        state.cartItems = [];
+        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        toast.error("Cart cleared", { position: "bottom-left" });
+        },
     }
 })
 // Action creators are generated for each case reducer function
-export const { addToCart, increment, decrement, incrementByAmount } = cartSlice.actions
+export const { addToCart, decreaseCart, removeFromCart, clearCart, getTotals } = cartSlice.actions
 export default cartSlice.reducer

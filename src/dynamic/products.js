@@ -5,7 +5,7 @@ export const products = [
         name: "Camera",
         newPrice: 321.00,
         oldPrice: 123.00,
-        sizes: ["XS", "S", "M", "L", "XL"],
+        sizes: ["XS","L"],
         stars: 99
     },
     {
@@ -23,7 +23,7 @@ export const products = [
         name: "Lampe",
         newPrice: 300,
         oldPrice: 222.00,
-        sizes: ["XS", "S", "M", "L", "XL"],
+        sizes: ["M", "L"],
         stars: 99
     },
     {

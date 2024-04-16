@@ -28,7 +28,7 @@ function Home() {
                                 </div>
                             </div>
                             <div className="carousel-item position-relative" style={{height: "430px"}}>
-                                <img className="position-absolute w-100 h-100" src="/img/carousel-2.jpg" style={{objectFit: "cover"}} />
+                                <img className="position-absolute w-100 h-100" src="/img/carousel-2.jpg" style={{objectFit: "cover"}} alt="" />
                                 <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                     <div className="p-3" style={{maxWidth: "700px"}}>
                                         <h1 className="display-4 text-white mb-3 animate__animated animate__fadeInDown">Women Fashion</h1>
@@ -38,7 +38,7 @@ function Home() {
                                 </div>
                             </div>
                             <div className="carousel-item position-relative" style={{height: "430px"}}>
-                                <img className="position-absolute w-100 h-100" src="/img/carousel-3.jpg" style={{objectFit: "cover"}}/>
+                                <img className="position-absolute w-100 h-100" src="/img/carousel-3.jpg" style={{objectFit: "cover"}} alt=""/>
                                 <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                     <div className="p-3" style={{maxWidth: "700px"}}>
                                         <h1 className="display-4 text-white mb-3 animate__animated animate__fadeInDown">Kids Fashion</h1>
@@ -266,7 +266,7 @@ function Home() {
             <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4"><span className="bg-secondary pr-3">Featured Products</span></h2>
             <div className="row px-xl-5">
                 {products.map(product => (
-                    <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div key={product.id} className="col-lg-3 col-md-4 col-sm-6 pb-1">
                         <div className="product-item bg-light mb-4">
                             <div className="product-img position-relative overflow-hidden">
                                 <img className="img-fluid w-100" src={product.image} alt=""/>

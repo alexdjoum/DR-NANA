@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoutes";
 import Home from "../pages/Home";
 import Shop from "../pages/Shop";
 import Checkout from "../pages/Checkout";
+import Commands from "../pages/Commands";
 
 export const routes = [
     {
@@ -20,7 +21,7 @@ export const routes = [
     },
     {
         path: "/user",
-        element: <PrivateRoute Component={Detail} roles={["user"]} />
+        element: <PrivateRoute Component={Detail} roles={["admin"]} />
     },
 
 ];
@@ -64,6 +65,12 @@ export const clientRoutes = [
     {
         path: '/checkout',
         component: Checkout,
+        exact: true,
+        protected: false
+    },
+    {
+        path: '/commands-list',
+        component: Commands,
         exact: true,
         protected: false
     }

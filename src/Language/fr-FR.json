@@ -1,10 +1,7 @@
 {
     "app.french": "Francais",
     "app.english": "Anglais",
-    "articles.add.title": "Add a family",
-    "articles.add.success": "Article added successfuly",
-    "articles.update.title": "Edit article",
-    "en": "Anglais",
     "fr": "Français",
-    "twenty": "I go to school"
+    "twenty": "I go to school",
+    "featured.product": "Produit en Vedette"
   }

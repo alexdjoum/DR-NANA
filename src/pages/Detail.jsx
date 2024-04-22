@@ -92,13 +92,17 @@ const products = [
 function Detail() {
 
     const cart = useSelector((state) => state.cart);
+    const theProducts = useSelector(state => state.products.products)
+    console.log('theProducts ===> ', theProducts)
+
     const dispatch = useDispatch();
   
-    useEffect(() => {
-      dispatch(getTotals());
-    }, [cart, dispatch]);
+    // useEffect(() => {
+    //   dispatch(getTotals());const filteredPhotos = obj.photos.filter((photo, index) => index !== 0);
+    // }, [cart, dispatch]);
   
     const handleAddToCart = (product) => {
+        
       dispatch(addToCart(product));
     };
     const handleDecreaseCart = (product) => {
@@ -111,7 +115,8 @@ function Detail() {
     const {num} = useParams()
     console.log("automatic ===>>> ", num)
     console.log('my nums ====>', products)
-    const thisProduct = products.find((prod) => prod.id == num);
+    const thisProduct = theProducts.find((prod) => prod.codePro == num);
+    const filteredPhotos = thisProduct.photos.filter((photo, index) => index !== 0);
     console.log('thisProduct ====>', thisProduct)
     return (
         <>
@@ -135,33 +140,29 @@ function Detail() {
             <div className="container-fluid pb-5">
                 <div className="row px-xl-5">
                     <div className="col-lg-5 mb-30">
-                        <div id="product-carousel" className="carousel slide" data-ride="carousel">
-                            <div className="carousel-inner bg-light">
-                                <div className="carousel-item active">
-                                    <img className="w-100 h-100" src={'/'+thisProduct.image} alt="Image" />
-                                </div>
-                                {/* <div className="carousel-item">
-                                    <img className="w-100 h-100" src="/img/product-2.jpg" alt="Image" />
-                                </div>
-                                <div className="carousel-item">
-                                    <img className="w-100 h-100" src="/img/product-3.jpg" alt="Image" />
-                                </div>
-                                <div className="carousel-item">
-                                    <img className="w-100 h-100" src="/img/product-4.jpg" alt="Image" />
-                                </div> */}
-                            </div>
-                            <Link className="carousel-control-prev" to="#product-carousel" data-slide="prev">
-                                <i className="fa fa-2x fa-angle-left text-dark" />
-                            </Link>
-                            <Link className="carousel-control-next" to="#product-carousel" data-slide="next">
-                                <i className="fa fa-2x fa-angle-right text-dark" />
-                            </Link>
-                        </div>
+                    <div id="product-carousel" className="carousel slide" data-ride="carousel">
+        <div className="carousel-inner bg-light">
+          <div className="carousel-item active">
+            <img className="w-100 h-100" src={`http://localhost:8000/${thisProduct?.photos[0]?.lienPhoto}`} alt="Image" />
+          </div>
+          {filteredPhotos.map((p, index) => (
+            <div className="carousel-item" key={index}>
+              <img className="w-100 h-100" src={`http://localhost:8000/${p.lienPhoto}`} alt="Image" />
+            </div>
+          ))}
+        </div>
+        <a className="carousel-control-prev" href="#product-carousel" data-slide="prev">
+          <i className="fa fa-2x fa-angle-left text-dark" />
+        </a>
+        <a className="carousel-control-next" href="#product-carousel" data-slide="next">
+          <i className="fa fa-2x fa-angle-right text-dark" />
+        </a>
+      </div>
                     </div>
 
                     <div className="col-lg-7 h-auto mb-30">
                         <div className="h-100 bg-light p-30">
-                            <h3>Product Name Goes Here</h3>
+                            <h3>{thisProduct.nomPro}</h3>
                             <div className="d-flex mb-3">
                                 <div className="text-primary mr-2">
                                     <small className="fas fa-star"></small>
@@ -172,7 +173,7 @@ function Detail() {
                                 </div>
                                 <small className="pt-1">(99 Reviews)</small>
                             </div>
-                            <h3 className="font-weight-semi-bold mb-4">${thisProduct.newPrice}</h3>
+                            <h3 className="font-weight-semi-bold mb-4">${thisProduct?.prix}</h3>
                             <p className="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit
                                 clita ea. Sanc ipsum et, labore clita lorem magna duo dolor no sea
                                 Nonumy</p>
@@ -402,7 +403,7 @@ function Detail() {
                         <div className="owl-carousel related-carousel">
                             <div className="product-item bg-light">
                                 <div className="product-img position-relative overflow-hidden">
-                                    <img className="img-fluid w-100" src={thisProduct.image} alt="" />
+                                    <img className="img-fluid w-100" src={thisProduct?.photos[0].lienPhoto} alt="" />
                                     <div className="product-action">
                                         <Link className="btn btn-outline-dark btn-square" to=""><i className="fa fa-shopping-cart" /></Link>
                                         <Link className="btn btn-outline-dark btn-square" to=""><i className="far fa-heart" /></Link>

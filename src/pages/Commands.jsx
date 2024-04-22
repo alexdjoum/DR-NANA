@@ -10,9 +10,9 @@ function Commands() {
     const dispatch = useDispatch();
     const navigate = useNavigate()
   
-    useEffect(() => {
-      dispatch(getTotals());
-    }, [cart, dispatch]);
+    // useEffect(() => {
+    //   dispatch(getTotals());
+    // }, [cart, dispatch]);
   
     const handleAddToCart = (product) => {
       dispatch(addToCart(product));

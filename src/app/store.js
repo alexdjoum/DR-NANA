@@ -3,7 +3,7 @@ import cardReducer from '../features/cart/cartSlice'
 import storage from 'redux-persist/lib/storage'
 import {persistReducer} from "redux-persist";
 import { combineReducers } from "redux";
-import productReducer from '../features/productSlice';
+import productReducer from '../features/products/productSlice';
 
 const persistConfig = {
     key: 'root',

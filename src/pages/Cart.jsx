@@ -7,13 +7,14 @@ import Header from "../components/Header";
 
 function Cart() {
     const cart = useSelector((state) => state.cart);
+    console.log("content cart ==> ", cart)
     const dispatch = useDispatch();
     const navigate = useNavigate()
   
-    useEffect(() => {
-      dispatch(getTotals());
-    }, [cart, dispatch]);
-  
+    // useEffect(() => {
+    //   dispatch(getTotals());
+    // }, [cart, dispatch]);
+    console.log("my cart  ",cart )
     const handleAddToCart = (product) => {
       dispatch(addToCart(product));
     };
@@ -208,17 +209,17 @@ function Cart() {
                             </tr>
                             </thead>
                             <tbody className="align-middle">
-                            {cart.cartItems && cart.cartItems.map(item => (
+                            {cart && cart.cartItems.map(item => (
                                 <tr>
                                     <td className="align-middle">
                                         <img
-                                            src={item.image} alt=""
+                                            src={'http://localhost:8000/'+item?.photos[0]?.lienPhoto} alt=""
                                              style={{width: "50px"}}
                                         />
-                                        {item.name}
+                                        {item.nomPro}
                                     </td>
                                     <td className="align-middle">
-                                        {item.newPrice}
+                                        {item.prix}
                                     </td>
                                     <td className="align-middle">
                                         <div className="input-group quantity mx-auto" style={{width: "100px"}}>
@@ -245,7 +246,7 @@ function Cart() {
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="align-middle">{item.cartQuantity*item.newPrice}</td>
+                                    <td className="align-middle">{item.cartQuantity*item.prix}</td>
                                     <td className="align-middle">
                                         <button
                                             className="btn btn-sm btn-danger"
@@ -285,7 +286,7 @@ function Cart() {
                             <div className="pt-2">
                                 <div className="d-flex justify-content-between mt-2">
                                     <h5>Total</h5>
-                                    <h5>{cart.cartTotalQuantity*cart.cartTotalAmount}</h5>
+                                    <h5>{cart.cartTotalAmount}</h5>
                                 </div>
                                 <button 
                                     className="btn btn-block btn-primary font-weight-bold my-3 py-3"

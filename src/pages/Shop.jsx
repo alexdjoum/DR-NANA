@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {Link, useNavigate} from "react-router-dom";
@@ -7,11 +7,15 @@ import {products} from "../dynamic/products";
 import {SearchedByNameContext} from "../app/storeInput";
 import {useDispatch} from "react-redux";
 import {addToCart} from "../features/cart/cartSlice";
+import getMethod from "../api/getMethod"
+import { getProducts } from "../features/products/productSlice";
+
 
 
 function Results() {
     //const searched = useContext(SearchedByNameContext)
     //const searched = useProductStore((state) => state.searchedProductByName)
+    const [productsData, setProducData] = useState([])
     const navigate = useNavigate()
     const [price, setPrice ]= useState([
         {
@@ -27,6 +31,33 @@ function Results() {
             max: 400
         }
     ])
+    // const apiProducts =  getMethod('http://localhost:8000/api/produitsList')
+    // .then(data =>
+    //     setProducData(data),
+    //     console.log('mes products aip', productsData) 
+    // )
+    useEffect(() => {
+        let ignore = false;
+        fetch('http://localhost:8000/api/produitsList').then(response => {
+            if (response.ok) {
+                return response.json()
+                // console.log('mes products aip', result);
+                // if (Array.isArray(result)) { 
+                //     setProducData(result);
+                // }
+            }
+            throw new Error('Someting went wrong')
+        })
+        .then(responseJson => {
+            setProducData(responseJson)
+            dispatch(getProducts(responseJson))
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+        
+    }, []);
+    //console.log('mes produit laravel ', apiProducts)
     const [searched, setSearched]= useState("")
     const [size, setSize] = useState(["XL", "L"])
     const dispatch = useDispatch()
@@ -348,12 +379,12 @@ function Results() {
                                         </div>
                                     </div>
                                 </div>
-                                {productShop.map(p => (
-                                    <div key={p.id} className="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                {productsData.map(p => (
+                                    <div key={p.codePro} className="col-lg-4 col-md-6 col-sm-6 pb-1">
                                         <div className="product-item bg-light mb-4">
                                             <div className="product-img position-relative overflow-hidden">
-                                                <img className="img-fluid w-100" src={p.image} alt=""/>
-                                                <div className="product-action" onClick={() => navigate(`/detail/${p.id}`)}>
+                                                <img className="img-fluid w-100" src={"http://localhost:8000/" + (p?.photos[0]?.lienPhoto)} alt=""/>
+                                                <div className="product-action" onClick={() => navigate(`/detail/${p.codePro}`)}>
                                                     <Link
                                                         className="btn btn-outline-dark btn-square"
                                                         to=""
@@ -370,12 +401,12 @@ function Results() {
                                             </div>
                                             <div className="text-center py-4">
                                                 <Link className="h6 text-decoration-none text-truncate"
-                                                      to="">{p.name}</Link>
+                                                      to="">{p.nomPro}</Link>
                                                 <div className="d-flex align-items-center justify-content-center mt-2">
-                                                    <h5>{p.newPrice}</h5>
-                                                    <h6 className="text-muted ml-2">
+                                                    <h5>{p.prix}</h5>
+                                                    {/* <h6 className="text-muted ml-2">
                                                         <del>{p.oldPrice}</del>
-                                                    </h6>
+                                                    </h6> */}
                                                 </div>
                                                 <div className="d-flex align-items-center justify-content-center mb-1">
                                                     <small className="fa fa-star text-primary mr-1"></small>
@@ -383,7 +414,7 @@ function Results() {
                                                     <small className="fa fa-star text-primary mr-1"></small>
                                                     <small className="fa fa-star text-primary mr-1"></small>
                                                     <small className="fa fa-star text-primary mr-1"></small>
-                                                    <small>{p.stars}</small>
+                                                    {/* <small>{p.stars}</small> */}
                                                 </div>
                                             </div>
                                         </div>

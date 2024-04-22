@@ -12,8 +12,10 @@ import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
+import { ToastContainer } from "react-toastify";
 import {LanguageContext, languages} from "./Language/languages";
 import {IntlProvider} from "react-intl";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 
@@ -31,6 +33,7 @@ function App() {
     <LanguageContext.Provider value={{selectedLanguage, handleLanguageChange}}>
         <IntlProvider locale={selectedLanguage.locale} messages={selectedLanguage.messages}>
             <BrowserRouter>
+                <ToastContainer />
                 <Routes>
                     <>
                         {renderedRoutes}

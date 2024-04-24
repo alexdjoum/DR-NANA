@@ -8,7 +8,9 @@ import {SearchedByNameContext} from "../app/storeInput";
 import {useDispatch} from "react-redux";
 import {addToCart} from "../features/cart/cartSlice";
 import getMethod from "../api/getMethod"
-import { getProducts } from "../features/products/productSlice";
+import { getProducts, isLoading } from "../features/products/productSlice";
+import Loading from "../components/loading/Loading";
+
 
 
 
@@ -49,6 +51,7 @@ function Results() {
             throw new Error('Someting went wrong')
         })
         .then(responseJson => {
+            dispatch(isLoading())
             setProducData(responseJson)
             dispatch(getProducts(responseJson))
         })
@@ -85,6 +88,7 @@ function Results() {
         <SearchedByNameContext.Provider value={{searched, setSearched}}>
             <div>
                 <Header/>
+                {/* {isLoading() && (<Loading />)} */}
                 <div className="container-fluid">
                     <div className="row px-xl-5">
                         <div className="col-12">

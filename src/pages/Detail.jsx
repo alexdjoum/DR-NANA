@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
 import {Link} from "react-router-dom";
 import Header from "../components/Header";
@@ -90,7 +90,7 @@ const products = [
     }
 ]
 function Detail() {
-
+    const [mySize, setMySize] = useState("")
     const cart = useSelector((state) => state.cart);
     const theProducts = useSelector(state => state.products.products)
     console.log('theProducts ===> ', theProducts)
@@ -102,8 +102,9 @@ function Detail() {
     // }, [cart, dispatch]);
   
     const handleAddToCart = (product) => {
-        
-      dispatch(addToCart(product));
+        console.log("product add to cart ===>> ",product)
+        //const prod = product.sizes.concat(mySize)
+        dispatch(addToCart(product));
     };
     const handleDecreaseCart = (product) => {
       dispatch(decreaseCart(product));
@@ -179,32 +180,58 @@ function Detail() {
                                 Nonumy</p>
                             <div className="d-flex mb-3">
                                 <strong className="text-dark mr-3">Sizes:</strong>
-                                <form>
+                                {/* <form> */}
                                     <div className="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" className="custom-control-input" id="size-1" name="size" />
+                                        <input 
+                                            onChange={e => setMySize(e.target.value)}
+                                            value="XS"
+                                            type="radio" 
+                                            className="custom-control-input" 
+                                            id="size-1" 
+                                            name="size" />
                                         <label className="custom-control-label" htmlFor="size-1">XS</label>
                                     </div>
                                     <div className="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" className="custom-control-input" id="size-2" name="size" />
+                                        <input 
+                                            type="radio" 
+                                            className="custom-control-input" 
+                                            id="size-2" 
+                                            name="size" 
+                                        />
                                         <label className="custom-control-label" htmlFor="size-2">S</label>
                                     </div>
                                     <div className="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" className="custom-control-input" id="size-3" name="size" />
+                                        <input 
+                                            type="radio" 
+                                            className="custom-control-input" 
+                                            id="size-3" 
+                                            name="size" 
+                                        />
                                         <label className="custom-control-label" htmlFor="size-3">M</label>
                                     </div>
                                     <div className="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" className="custom-control-input" id="size-4" name="size" />
+                                        <input 
+                                            type="radio" 
+                                            className="custom-control-input" 
+                                            id="size-4" 
+                                            name="size" 
+                                        />
                                         <label className="custom-control-label" htmlFor="size-4">L</label>
                                     </div>
                                     <div className="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" className="custom-control-input" id="size-5" name="size" />
+                                        <input 
+                                            type="radio" 
+                                            className="custom-control-input" 
+                                            id="size-5" 
+                                            name="size" 
+                                        />
                                         <label className="custom-control-label" htmlFor="size-5">XL</label>
                                     </div>
-                                </form>
+                                {/* </form> */}
                             </div>
                             <div className="d-flex mb-4">
                                 <strong className="text-dark mr-3">Colors:</strong>
-                                <form>
+                                {/* <form> */}
                                     <div className="custom-control custom-radio custom-control-inline">
                                         <input type="radio" className="custom-control-input" id="color-1" name="color" />
                                         <label className="custom-control-label" htmlFor="color-1">Black</label>
@@ -225,7 +252,7 @@ function Detail() {
                                         <input type="radio" className="custom-control-input" id="color-5" name="color" />
                                         <label className="custom-control-label" htmlFor="color-5">Green</label>
                                     </div>
-                                </form>
+                                {/* </form> */}
                             </div>
                             <div className="d-flex align-items-center mb-4 pt-2">
                                 <div className="input-group quantity mr-3" style={{width: "130px"}}>
@@ -236,7 +263,8 @@ function Detail() {
                                             <i className="fa fa-minus" />
                                         </button>
                                     </div>
-                                    <input type="text" className="form-control bg-secondary border-0 text-center" value="1" />
+                                    <input 
+                                        type="text" className="form-control bg-secondary border-0 text-center" value="1" />
                                     <div className="input-group-btn">
                                         <button 
                                             className="btn btn-primary btn-plus"

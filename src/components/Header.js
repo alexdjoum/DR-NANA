@@ -141,14 +141,15 @@ export default function Header() {
                   </div>
               </div>
               <div className="container-fluid bg-dark mb-30">
-                  <div className="row px-xl-5">
-                      <div className="col-lg-3 d-none d-lg-block">
+                  <div className="row px-xl-5" style={{background: "#435c70"}}>
+                      <div className="col-lg-3 d-none d-lg-block" style={{background: "red"}}>
                           <a
-                              className="btn d-flex align-items-center justify-content-between bg-primary w-100"
+                              className="btn d-flex align-items-center justify-content-between w-100"
+                            //   bg-primary
                               data-toggle="collapse" href="#navbar-vertical"
-                              style={{height: "65px", padding: "0 30px"}}>
-                              <h6 className="text-dark m-0"><i className="fa fa-bars mr-2"/>Categories</h6>
-                              <i className="fa fa-angle-down text-dark"/>
+                              style={{height: "65px", padding: "0 30px", background: "red"}}>
+                              <h6 className="text-white m-0"><i className="fa fa-bars mr-2" style={{color: "white"}}/>Categories</h6>
+                              <i className="fa fa-angle-down text-dark" style={{color: "white"}}/>
                           </a>
                           <nav
                               className="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
@@ -186,7 +187,10 @@ export default function Header() {
                                       data-target="#navbarCollapse">
                                   <span className="navbar-toggler-icon"></span>
                               </button>
-                              <div className="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                              <div 
+                                className="collapse navbar-collapse justify-content-between" 
+                                id="navbarCollapse" 
+                                style={{background: "#435c70"}}>
                                   <div className="navbar-nav mr-auto py-0">
                                       {/*<Link
                                         to="/"

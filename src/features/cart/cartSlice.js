@@ -13,35 +13,71 @@ export const cartSlice = createSlice({
     },
     reducers: {
         addToCart: (state, action) => {
-            //console.log('addtocart===>> ',action.payload)
+            console.log('action payload===>> ',action.payload)
+            const {size, color} = action.payload
+            console.log('size verify ====>>>> ', size)
             //console.log('mon cartItems ====>>', state.cartItems)
             const existingIndex = state.cartItems.findIndex(
-                (item) => item.codePro === action.payload.codePro
+                (item) => item.products.codePro === action.payload.codePro
             );
+
+            console.log('Verify existing item ===>>> ', existingIndex)
             if (existingIndex >= 0) {
-                console.log("Ici j'ajoute 1")
-                state.cartItems[existingIndex] = {
-                    ...state.cartItems[existingIndex],
-                    cartQuantity: state.cartItems[existingIndex].cartQuantity + 1,
-                };
+                state.cartItems[existingIndex].sizesToSend.push(size);
+                state.cartItems[existingIndex].colorToSend.push(color);
+                state.cartItems[existingIndex].products.cartQuantity += 1;
+                // console.log("Ici j'ajoute 1 ===>> ",state.cartItems[existingIndex].cartQuantity)
+                // state.cartItems[existingIndex] = {
+                //     ...state.cartItems[existingIndex].products,
+                //     cartQuantity: state.cartItems[existingIndex].cartQuantity + 1,
+                // };
+                // Le produit existe déjà dans le panier
+                // const updatedCartItems = [...state.cartItems];
+                // const existingCartItem = updatedCartItems[existingIndex];
+                //console.log('existing new method  ', existingCartItem)
+                // Augmentez le cartQuantity de +1
+                //existingCartItem.cartQuantity += 1;
+
+                // Mettez à jour les propriétés sizesToSend et colorToSend avec les nouvelles valeurs
+                //existingCartItem.sizesToSend.push(state.cartItems[existingCartItem].size);
+                //existingCartItem.colorToSend.push(products.color);
+
                 toast.info("Increased product quantity", {
                     position: "bottom-left",
                 });
-            } else {
-                let tempProductItem = { ...action.payload, cartQuantity: 1 };
-                state.cartItems.push(tempProductItem);
-                console.log('mon cartItems ====>>', state.cartItems)
+            }else  if(action.payload.size && action.payload.color) {
+                //Creation du format de l'objet qui sera dans le cartItem
+                const newCartItem = {
+                    products: {},
+                    sizesToSend: [],
+                    colorToSend: []
+                };
+
+                //Modification de la propriété products qui est dans l'objet newCartItems
+                newCartItem.products = {...action.payload, cartQuantity: 1}
+                
+                //Modification de la propriété sizesToSend qui est dans l'objet newCartItems
+                newCartItem.sizesToSend.push(action.payload.size);
+
+                //Modification de la propriété colorToSend qui est dans l'objet newCartItems
+                newCartItem.colorToSend.push(action.payload.color);
+                console.log('newCartItem ===>> ',newCartItem)
+                    
+                state.cartItems.push(newCartItem);
                 toast.success("Product added to cart", {
                     position: "bottom-left",
                 });
-            
             }
+            //let tempProductItem = { ...action.payload, cartQuantity: 1 };
+            //state.cartItems.push(newCartItem);
+            console.log('mon cartItems ====>>', state.cartItems)
+            
             state.cartTotalQuantity = state.cartItems.reduce(
-                (total, item) => total + item.cartQuantity,
+                (total, item) => total + item.products.cartQuantity,
                 0
             );
             state.cartTotalAmount = state.cartItems.reduce(
-                (total, item) => total + (item.prix * item.cartQuantity),
+                (total, item) => total + (item.products.prix * item.products.cartQuantity),
                 0
             );
             //console.log('cartTotalquantity ===>> ', state.cartTotalQuantity)
@@ -50,16 +86,16 @@ export const cartSlice = createSlice({
             //localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         },
         decreaseCart: (state, action) => {
+            console.log('lorsque decremente ===>> ',action.payload)
             const itemIndex = state.cartItems.findIndex(
-                (item) => item.codePro === action.payload.codePro
+                (item) => item.products.codePro === action.payload.products.codePro
             );
-            console.log('lorsque decremente ===>> ',itemIndex)
             
     
-            if (state.cartItems[itemIndex].cartQuantity > 1) {
+            if (state.cartItems[itemIndex].products.cartQuantity > 1) {
                 //console.log('Ici je retire 1')
-                state.cartItems[itemIndex].cartQuantity -= 1;
-                const actualMount = state.cartTotalAmount - action.payload.prix
+                state.cartItems[itemIndex].products.cartQuantity -= 1;
+                const actualMount = state.cartTotalAmount - action.payload.products.prix
                 state.cartTotalAmount = actualMount
 
                 const actualCartTotalQuantity = state.cartTotalQuantity -1
@@ -67,14 +103,14 @@ export const cartSlice = createSlice({
                 toast.info("Decreased product quantity", {
                     position: "bottom-left",
                 });
-            } else if (state.cartItems[itemIndex].cartQuantity === 1) {
+            } else if (state.cartItems[itemIndex].products.cartQuantity === 1) {
                 console.log('il safiiche lorsque le cartquantity est egale à 1 ===================')
                 const nextCartItems = state.cartItems.filter(
-                    (item) => item.codePro !== action.payload.codePro
+                    (item) => item.products.codePro !== action.payload.products.codePro
                 );
     
                 state.cartItems = nextCartItems;
-                const actualMount = state.cartTotalAmount - action.payload.prix
+                const actualMount = state.cartTotalAmount - action.payload.products.prix
                 state.cartTotalAmount = actualMount
 
                 const actualCartTotalQuantity = state.cartTotalQuantity -1
@@ -100,11 +136,11 @@ export const cartSlice = createSlice({
         removeFromCart: (state, action) => {
             const currentCartItems = [...state.cartItems];
             const existingCartItem = currentCartItems.find(
-                item => item.codePro === action.payload.codePro
+                item => item.products.codePro === action.payload.products.codePro
             )
             currentCartItems.splice(currentCartItems.indexOf(existingCartItem), 1) 
-            const newCartQuantity = state.cartTotalQuantity - action.payload.cartQuantity   
-            state.cartTotalAmount = state.cartTotalAmount - action.payload.cartQuantity*action.payload.prix   
+            const newCartQuantity = state.cartTotalQuantity - action.payload.products.cartQuantity   
+            state.cartTotalAmount = state.cartTotalAmount - action.payload.products.cartQuantity*action.payload.products.prix   
             state.cartTotalQuantity = newCartQuantity             
             state.cartItems = currentCartItems
             toast.error("Product removed from cart", {
@@ -157,7 +193,7 @@ export const cartSlice = createSlice({
         // },
         clearCart(state, action) {
         state.cartItems = [];
-        localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        //localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         toast.error("Cart cleared", { position: "bottom-left" });
         },
     }

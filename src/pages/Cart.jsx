@@ -214,13 +214,14 @@ function Cart() {
                                 <tr>
                                     <td className="align-middle">
                                         <img
-                                            src={'http://localhost:8000/'+item?.photos[0]?.lienPhoto} alt=""
-                                             style={{width: "50px"}}
+                                            src={'http://localhost:8000/'+item?.products.photos[0]?.lienPhoto} 
+                                            alt=""
+                                            style={{width: "50px"}}
                                         />
-                                        {item.nomPro}
+                                        {item.products.nomPro}
                                     </td>
                                     <td className="align-middle">
-                                        {item.prix}
+                                        {item.products.prix}
                                     </td>
                                     <td className="align-middle">
                                         <div className="input-group quantity mx-auto" style={{width: "100px"}}>
@@ -235,7 +236,7 @@ function Cart() {
                                             <input
                                                 type="text"
                                                 className="form-control form-control-sm bg-secondary border-0 text-center"
-                                                value={item.cartQuantity}/>
+                                                value={item.products.cartQuantity}/>
                                             <div className="input-group-btn">
                                                 <button 
                                                     className="btn btn-sm btn-primary btn-plus"
@@ -247,7 +248,7 @@ function Cart() {
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="align-middle">{item.cartQuantity*item.prix}</td>
+                                    <td className="align-middle">{item.products.cartQuantity*item.products.prix}</td>
                                     <td className="align-middle">
                                         <button
                                             className="btn btn-sm btn-danger"
@@ -290,10 +291,105 @@ function Cart() {
                                     <h5>{cart.cartTotalAmount}</h5>
                                 </div>
                                 <button 
-                                    className="btn btn-block btn-primary font-weight-bold my-3 py-3"
-                                    onClick={redirectToCreateCommand}>
+                                    className="btn btn-block btn-primary font-weight-bold my-3 py-3 "
+                                    data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
+                                    //onClick={redirectToCreateCommand}
+                                >
                                     Proceed To Create command
                                 </button>
+
+                                <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div className="modal-dialog" role="document">
+                                        <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLabel">Create a Command</h5>
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <form>
+                                                <div className="form-group">
+                                                    <label 
+                                                        for="recipient-name" 
+                                                        className="col-form-label">
+                                                            Name:
+                                                    </label>
+                                                    <input 
+                                                        type="text" 
+                                                        className="form-control" 
+                                                        id="recipient-name" />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label 
+                                                        for="recipient-name" 
+                                                        className="col-form-label">
+                                                            Phone:
+                                                    </label>
+                                                    <input 
+                                                        type="text" 
+                                                        className="form-control" 
+                                                        id="recipient-name" />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label 
+                                                        htmlFor="recipient-name" 
+                                                        className="col-form-label">
+                                                            Montant:
+                                                    </label>
+                                                    <input 
+                                                        type="text" 
+                                                        className="form-control" 
+                                                        id="recipient-name" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label 
+                                                        htmlFor="recipient-name" 
+                                                        className="col-form-label">
+                                                            Avance:
+                                                    </label>
+                                                    <input 
+                                                        type="text" 
+                                                        className="form-control" 
+                                                        id="recipient-name" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label 
+                                                        htmlFor="recipient-name" 
+                                                        className="col-form-label">
+                                                            Remise:
+                                                    </label>
+                                                    <input 
+                                                        type="text" 
+                                                        className="form-control" 
+                                                        id="recipient-name" />
+                                                </div>
+                                                {/* <div class="form-group">
+                                                    <label 
+                                                        htmlFor="message-text" 
+                                                        className="col-form-label">
+                                                            Message:
+                                                    </label>
+                                                    <textarea class="form-control" id="message-text">
+
+                                                        
+                                                    </textarea>
+                                                </div> */}
+                                            </form>
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                className="btn btn-primary">
+                                                    Create Command
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                                 {/* <button className="btn btn-block btn-primary font-weight-bold my-3 py-3">
                                     Proceed To Checkout
                                 </button> */}

@@ -7,13 +7,14 @@ import {FormattedMessage} from "react-intl";
 import {useDispatch} from "react-redux"
 import { getRedCategories, isLoading } from "../features/category/categorySlice";
 
+
 function Home() {
     const dispatch = useDispatch()
     const [getcategories , setGetCategories] = useState([])
 
     useEffect(() => {
         
-        fetch('http://localhost:8000/api/listCategories').then(response => {
+        fetch(`${process.env.REACT_APP_API_URL}/api/listCategories`).then(response => {
             if (response.ok) {
                 return response.json()
                 // console.log('mes products aip', result);
@@ -149,150 +150,6 @@ function Home() {
                         </Link>
                     </div>
                 ))}
-                
-                {/* <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-2.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-3.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-4.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-4.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-3.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-2.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-1.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width:"100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-2.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-1.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-4.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <Link className="text-decoration-none" to="">
-                        <div className="cat-item img-zoom d-flex align-items-center mb-4">
-                            <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                <img className="img-fluid" src="/img/cat-3.jpg" alt="" />
-                            </div>
-                            <div className="flex-fill pl-3">
-                                <h6>Category Name</h6>
-                                <small className="text-body">100 Products</small>
-                            </div>
-                        </div>
-                    </Link>
-                </div> */}
             </div>
         </div>
         <div className="container-fluid pt-5 pb-3">

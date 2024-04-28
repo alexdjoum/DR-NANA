@@ -5,7 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {products} from "../dynamic/products";
 //import {priceFilter} from "../dynamic/tags";
 import {SearchedByNameContext} from "../app/storeInput";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addToCart} from "../features/cart/cartSlice";
 import getMethod from "../api/getMethod"
 import { getProducts, isLoading } from "../features/products/productSlice";
@@ -17,6 +17,8 @@ import Loading from "../components/loading/Loading";
 function Results() {
     //const searched = useContext(SearchedByNameContext)
     //const searched = useProductStore((state) => state.searchedProductByName)
+    
+    const loading = useSelector(state => state.products)
     const [productsData, setProducData] = useState([])
     const navigate = useNavigate()
     const [price, setPrice ]= useState([
@@ -40,7 +42,7 @@ function Results() {
     // )
     useEffect(() => {
         let ignore = false;
-        fetch('http://localhost:8000/api/produitsList').then(response => {
+        fetch(`${process.env.REACT_APP_API_URL}/api/produitsList`).then(response => {
             if (response.ok) {
                 return response.json()
                 // console.log('mes products aip', result);
@@ -66,6 +68,11 @@ function Results() {
     const dispatch = useDispatch()
 
     const handleAddToCart = (product) => {
+        // const updatedProduct = {
+        //     ...product,
+        //     color: "red"
+        // };
+        // console.log("updatedProduct ===>>>> ", updatedProduct)
         dispatch(addToCart(product))
     }
     const performFiltering = () => {
@@ -88,7 +95,7 @@ function Results() {
         <SearchedByNameContext.Provider value={{searched, setSearched}}>
             <div>
                 <Header/>
-                {/* {isLoading() && (<Loading />)} */}
+                {isLoading() && (<Loading />)}
                 <div className="container-fluid">
                     <div className="row px-xl-5">
                         <div className="col-12">

@@ -1,21 +1,59 @@
 import '../App.css';
+import React, {useState} from "react"
 import {Link, useNavigate} from "react-router-dom";
+import Loading from "../components/loading/Loading";
 import {decreaseCart, addToCart, removeFromCart, getTotals, clearCart} from "../features/cart/cartSlice"
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react"
 import Header from "../components/Header";
+import { products } from '../dynamic/products';
 
 function Cart() {
+    const [villes , setVilles] = useState([])
+    const [command, setCommand] = useState({
+        nomClient: "", 
+        remise: "",
+        montant: 0,
+        mobile: "",
+        villeId: null,
+        description: ""
+    })
+    const [pending, setPending]= useState(false)
+    useEffect(() => {
+        
+        fetch(`${process.env.REACT_APP_API_URL}/api/listVilles`).then(response => {
+            if (response.ok) {
+                return response.json()
+                
+            }
+            throw new Error('Someting went wrong')
+        })
+        .then(responseJson => {
+            console.log('mes Villes ===> ', responseJson)
+            //dispatch(isLoading())
+            setVilles(responseJson.ville)
+            //dispatch(getRedCategories(responseJson))
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+        
+    }, []);
+    const productList = useSelector((state) => state.cart.cartItems)
+                        .map(({sizesToSend: taille, colorToSend: couleur, products: {codePro, nomPro, prix, cartQuantity: qte }}) =>({codePro, nomPro, prix, taille, couleur, qte}))
     const cart = useSelector((state) => state.cart);
-    console.log("content cart ==> ", cart)
+    const montant = useSelector(state => state.cart.cartTotalAmount)
+    console.log("List Product filter ==> ", productList)
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    
   
     // useEffect(() => {
     //   dispatch(getTotals());
     // }, [cart, dispatch]);
     console.log("my cart  ",cart )
     const handleAddToCart = (product) => {
+        console.log("See add product in cart ===>>> ", product)
       dispatch(addToCart(product));
     };
     const handleDecreaseCart = (product) => {
@@ -35,10 +73,78 @@ function Cart() {
         }
 
     }
+
+    const updateField = (value, field) => {
+        setCommand(prevState =>({...prevState, [field]: value}))
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        //const formData = new FormData()
+        // formData.append("nomClient", "IGOR")
+        // formData.append("mobile", "69745254")
+        // formData.append("remise", "0.1")
+        // formData.append("ville_id", 1)
+        // formData.append('productList',[{"taille":"xl","qte":45,"couleur":"red","codePro":145637}])
+        
+        // fetch(`${process.env.REACT_APP_API_URL}/api/createCommande`, {
+        //     method: 'POST',
+        //     headers: {'Content-Type':'application/json'},
+        //     body: {
+        //         formData: JSON.stringify({
+        //             montant:10000,
+        //             nomClient:"Alex",
+        //             mobile:"655470373",
+        //             remise:0,
+        //             ville_id:1,
+        //             productList:[{
+        //                 codePro:54563,
+        //                 qte:19,
+        //                 taille:"xl",
+        //                 couleur:"red"
+        //             }]
+        //         })
+        //     }
+        // });
+
+        async function postJSON(data) {
+            try {
+              setPending(true)
+              const response = await fetch(`${process.env.REACT_APP_API_URL}/api/createCommande`, {
+                method: "POST", // or 'PUT'
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              });
+          
+              const result = await response.json();
+              setPending(false)
+              console.log("Success:", result);
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          }
+          
+        const data = {
+            montant:montant,
+            nomClient:command.nomClient,
+            mobile:command.mobile,
+            remise:0,
+            ville_id:command.villeId,
+            productList:productList
+        };
+
+        console.log('See data ===>>> ', data)
+          postJSON(data);
+    
+    }
+    console.log('look command form ===>>', command)
     //console.log("content cart ===>> ", cart)
     return (
         <>
             <Header />
+            {pending && (<Loading />)}
             {/*Topbar Start */}
             {/*<div className="container-fluid">
                 <div className="row bg-secondary py-1 px-xl-5">
@@ -308,7 +414,7 @@ function Cart() {
                                             </button>
                                         </div>
                                         <div className="modal-body">
-                                            <form>
+                                            <form onSubmit={handleSubmit}>
                                                 <div className="form-group">
                                                     <label 
                                                         for="recipient-name" 
@@ -317,8 +423,11 @@ function Cart() {
                                                     </label>
                                                     <input 
                                                         type="text" 
+                                                        value={command.nomClient}
+                                                        onChange={(e) => updateField(e.target.value, "nomClient")}
                                                         className="form-control" 
-                                                        id="recipient-name" />
+                                                        id="recipient-name" 
+                                                    />
                                                 </div>
                                                 <div className="form-group">
                                                     <label 
@@ -327,7 +436,9 @@ function Cart() {
                                                             Phone:
                                                     </label>
                                                     <input 
-                                                        type="text" 
+                                                        type="number" 
+                                                        value={command.mobile}
+                                                        onChange={(e) => updateField(e.target.value, "mobile")}
                                                         className="form-control" 
                                                         id="recipient-name" />
                                                 </div>
@@ -339,6 +450,8 @@ function Cart() {
                                                     </label>
                                                     <input 
                                                         type="text" 
+                                                        value={montant}
+                                                        onChange={(e) => updateField(e.target.value, "montant")}
                                                         className="form-control" 
                                                         id="recipient-name" />
                                                 </div>
@@ -346,10 +459,12 @@ function Cart() {
                                                     <label 
                                                         htmlFor="recipient-name" 
                                                         className="col-form-label">
-                                                            Avance:
+                                                            Description:
                                                     </label>
                                                     <input 
                                                         type="text" 
+                                                        value={command.description}
+                                                        onChange={(e) => updateField(e.target.value, "description")}
                                                         className="form-control" 
                                                         id="recipient-name" />
                                                 </div>
@@ -364,6 +479,21 @@ function Cart() {
                                                         className="form-control" 
                                                         id="recipient-name" />
                                                 </div>
+                                                <div className="form-group">
+                                                    <select 
+                                                        value={command.villeId}
+                                                        className="form-control mb-3" 
+                                                        onChange={e => updateField(e.target.value, "villeId")}
+                                                        aria-label=".form-select-lg example"
+                                                    >
+                                                        <option selected>
+                                                            Ouvrir pour sélectionner une ville
+                                                        </option>
+                                                        {villes.map(ville => (
+                                                            <option value={ville.id}>{ville.libelle}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
                                                 {/* <div class="form-group">
                                                     <label 
                                                         htmlFor="message-text" 
@@ -375,18 +505,19 @@ function Cart() {
                                                         
                                                     </textarea>
                                                 </div> */}
+                                                <div className="modal-footer">
+                                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <button 
+                                                        type="submit" 
+                                                        className="btn btn-primary">
+                                                            Create Command
+                                                    </button>
+                                            </div>
                                             </form>
                                         </div>
-                                        <div className="modal-footer">
-                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">
-                                                Close
-                                            </button>
-                                            <button 
-                                                type="button" 
-                                                className="btn btn-primary">
-                                                    Create Command
-                                            </button>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>

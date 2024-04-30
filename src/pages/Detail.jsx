@@ -92,6 +92,7 @@ const products = [
 function Detail() {
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedColor, setSelectedColor] = useState("")
+    
     //const [mySize, setMySize] = useState("")
     const cart = useSelector((state) => state.cart);
     const theProducts = useSelector(state => state.products.products)
@@ -106,8 +107,13 @@ function Detail() {
     console.log('selectedSize ======>>>>> ', selectedSize)
   
     const handleAddToCart = (product) => {
+        const {nomPro, codePro, photos, prix} = product
         const updatedProduct = {
-            ...product,
+            //...product,
+            prix: prix,
+            nomPro: nomPro,
+            codePro: codePro,
+            photos: photos,
             color: selectedColor,
             size: selectedSize
         };

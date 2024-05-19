@@ -1,25 +1,44 @@
+// import 'bootstrap/dist/css/bootstrap.min.css';
+
 import {useState, useEffect} from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import {Link, useNavigate} from "react-router-dom";
-import {products} from "../dynamic/products";
+//import {products} from "../dynamic/products";
 //import {priceFilter} from "../dynamic/tags";
 import {SearchedByNameContext} from "../app/storeInput";
 import {useDispatch, useSelector} from "react-redux";
 import {addToCart} from "../features/cart/cartSlice";
-import getMethod from "../api/getMethod"
 import { getProducts, isLoading } from "../features/products/productSlice";
+import { onNavigateNext, onNavigatePrev, onchangeCurrentPage, onClickCurrentPage, onChangeProductsPerpage} from "../features/products/productSlice"
+//import getMethod from "../api/getMethod"
+//import { getProducts, isLoading } from "../features/products/productSlice";
 import Loading from "../components/loading/Loading";
-
+//import { PaginationControl } from 'react-bootstrap-pagination-control';
+import { Pagination } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Stack from '@mui/material/Stack';
 
 
 
 function Results() {
     //const searched = useContext(SearchedByNameContext)
     //const searched = useProductStore((state) => state.searchedProductByName)
-    
-    const loading = useSelector(state => state.products)
-    const [productsData, setProducData] = useState([])
+    //const [currentPage, setCurrentPage] = useState(0)
+    //loading = useSelector(state => state.products.loading)
+    const itemsPerPage = 10;
+    const currentPage = useSelector(state => state.products.products.current_page)
+    console.log('page current ==> ', currentPage)
+    const totalProducts = useSelector(state => state.products.products.total)
+    //const [page, setPage] = useState(1)
+    const [pageCount, setPageCount] = useState(1)
+    // Calculate the total number of pages
+    //const pageCount = Math.ceil(productsData.find())
+    const productFilter = useSelector(state => state.products.products)
+    console.log('product filter ===>> ', productFilter)
+    const {loading} = useSelector(state => state.products)
+    // const [productsData, setProducData] = useState([])
+    // const [productss, setProductss] = useState({})
     const navigate = useNavigate()
     const [price, setPrice ]= useState([
         {
@@ -35,34 +54,7 @@ function Results() {
             max: 400
         }
     ])
-    // const apiProducts =  getMethod('http://localhost:8000/api/produitsList')
-    // .then(data =>
-    //     setProducData(data),
-    //     console.log('mes products aip', productsData) 
-    // )
-    useEffect(() => {
-        let ignore = false;
-        fetch(`${process.env.REACT_APP_API_URL}/api/produitsList`).then(response => {
-            if (response.ok) {
-                return response.json()
-                // console.log('mes products aip', result);
-                // if (Array.isArray(result)) { 
-                //     setProducData(result);
-                // }
-            }
-            throw new Error('Someting went wrong')
-        })
-        .then(responseJson => {
-            dispatch(isLoading())
-            setProducData(responseJson)
-            dispatch(getProducts(responseJson))
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-        
-    }, []);
-    //console.log('mes produit laravel ', apiProducts)
+    
     const [searched, setSearched]= useState("")
     const [size, setSize] = useState(["XL", "L"])
     const dispatch = useDispatch()
@@ -75,27 +67,63 @@ function Results() {
         // console.log("updatedProduct ===>>>> ", updatedProduct)
         dispatch(addToCart(product))
     }
-    const performFiltering = () => {
-        const pricesFiltered = products.filter(product =>
-            price.some(p => product.newPrice >= p.min && product.newPrice <= p.max));
 
-       const sizeFiltered = pricesFiltered.filter(product =>
-            size.some(item => product.sizes.includes(item)));
+    // const navigatePrev = () => {
+    //     if (currentPage !== 1) {
+    //         dispatch(onNavigatePrev())
+    //     }
+    // }
 
-        const searchFiltered = sizeFiltered.filter(({name, newPrice}) =>
-            name.toLowerCase().includes(searched.toLowerCase()) ||
-            `${newPrice}`.toLowerCase().includes(searched.toLowerCase())
-        );
-        return searchFiltered;
-        //return pricesFiltered;
-    }
+    // const navigateNext = () => {
+    //     if (currentPage !== totalProducts) {
+    //         dispatch(onNavigateNext())
+    //     }
+    // }
 
-    const productShop = performFiltering()
+    const handlePageChange = async(value, my_page) => {
+        console.log('which page ===>> ', my_page)
+        //dispatch(onchangeCurrentPage(my_page));
+        try {
+            isLoading()
+            const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitsList?page=${my_page}`)
+            const data = await response.json();
+            console.log('data from header ===>>> ', data)
+            dispatch(getProducts(data))
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        } catch (error) {
+            console.log(error)
+        }
+        
+    };
+    // const performFiltering = () => {
+    //     const pricesFiltered = products.filter(product =>
+    //         price.some(p => product.newPrice >= p.min && product.newPrice <= p.max));
+
+    //    const sizeFiltered = pricesFiltered.filter(product =>
+    //         size.some(item => product.sizes.includes(item)));
+
+    //     const searchFiltered = sizeFiltered.filter(({name, newPrice}) =>
+    //         name.toLowerCase().includes(searched.toLowerCase()) ||
+    //         `${newPrice}`.toLowerCase().includes(searched.toLowerCase())
+    //     );
+    //     return searchFiltered;
+    //     //return pricesFiltered;
+    // }
+
+    // const handlePageChange = (selectedPage) => {
+    //     setCurrentPage()
+    // }
+
+    //console.log('products Filter ===>> ',productFilter)
+
+    // const productShop = performFiltering()
     return (
         <SearchedByNameContext.Provider value={{searched, setSearched}}>
             <div>
+                {/* {loading && (<Loading />)} */}
                 <Header/>
-                {isLoading() && (<Loading />)}
+                <span> je vois {currentPage}</span>
                 <div className="container-fluid">
                     <div className="row px-xl-5">
                         <div className="col-12">
@@ -390,11 +418,11 @@ function Results() {
                                         </div>
                                     </div>
                                 </div>
-                                {productsData.map(p => (
+                                {productFilter?.items?.map(p => (
                                     <div key={p.codePro} className="col-lg-4 col-md-6 col-sm-6 pb-1">
-                                        <div className="product-item bg-light mb-4">
-                                            <div className="product-img position-relative overflow-hidden">
-                                                <img className="img-fluid w-100" src={"http://localhost:8000/" + (p?.photos[0]?.lienPhoto)} alt=""/>
+                                        <div className="product-item bg-light mb-30">
+                                            <div className="product-img position-relative overflow-hidden" style={{height: "183px"}} >
+                                                <img className="img-fluid w-100" src={`${process.env.REACT_APP_API_URL}`+'/'+ (p?.photos[0]?.lienPhoto)} alt=""/>
                                                 <div className="product-action" onClick={() => navigate(`/detail/${p.codePro}`)}>
                                                     <Link
                                                         className="btn btn-outline-dark btn-square"
@@ -402,12 +430,7 @@ function Results() {
                                                     >
                                                         <i className="fa fa-shopping-cart" onClick={() => handleAddToCart(p)}/>
                                                     </Link>
-                                                    {/* <Link className="btn btn-outline-dark btn-square" to=""><i
-                                                        className="far fa-heart"/></Link>
-                                                    <Link className="btn btn-outline-dark btn-square" to=""><i
-                                                        className="fa fa-sync-alt"/></Link>
-                                                    <Link className="btn btn-outline-dark btn-square" to=""><i
-                                                        className="fa fa-search"/></Link> */}
+                                                    
                                                 </div>
                                             </div>
                                             <div className="text-center py-4">
@@ -415,9 +438,7 @@ function Results() {
                                                       to="">{p.nomPro}</Link>
                                                 <div className="d-flex align-items-center justify-content-center mt-2">
                                                     <h5>{p.prix}</h5>
-                                                    {/* <h6 className="text-muted ml-2">
-                                                        <del>{p.oldPrice}</del>
-                                                    </h6> */}
+                                                    
                                                 </div>
                                                 <div className="d-flex align-items-center justify-content-center mb-1">
                                                     <small className="fa fa-star text-primary mr-1"></small>
@@ -425,7 +446,7 @@ function Results() {
                                                     <small className="fa fa-star text-primary mr-1"></small>
                                                     <small className="fa fa-star text-primary mr-1"></small>
                                                     <small className="fa fa-star text-primary mr-1"></small>
-                                                    {/* <small>{p.stars}</small> */}
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -434,14 +455,57 @@ function Results() {
                                 <div className="col-12">
                                     <nav>
                                         <ul className="pagination justify-content-center">
-                                            <li className="page-item disabled"><Link className="page-link"
-                                                                                     to="#">Previous</Link></li>
-                                            <li className="page-item active"><Link className="page-link" to="#">1</Link>
-                                            </li>
-                                            <li className="page-item"><Link className="page-link" to="#">2</Link></li>
-                                            <li className="page-item"><Link className="page-link" to="#">3</Link></li>
-                                            <li className="page-item"><Link className="page-link" to="#">Next</Link>
-                                            </li>
+                                            {/* <li className="page-item disabled">
+                                                <Link className="page-link"to="#">
+                                                    Previous
+                                                </Link>
+                                            </li> */}
+                                            <Stack spacing={2}>
+                                                <Pagination 
+                                                    count={productFilter?.last_page} 
+                                                    page={productFilter?.current_page} 
+                                                    onChange={(e, page) => handlePageChange(e.target.value, page)} 
+                                                />
+                                                <Typography>Page: {productFilter?.current_page}</Typography>
+                                            </Stack>
+                                            
+                                            {/* <Typography>Page: {productFilter.current_page}</Typography> */}
+                                            {/* <PaginationControl
+                                                page={currentPage}
+                                                total={totalProducts.total}
+                                                limit={9}
+                                                changePage={handlePageChange}
+                                            /> */}
+
+                                            {/* <PaginationControl
+                                                page={currentPage}
+                                                between={4}
+                                                total={totalProducts}
+                                                limit={9}
+                                                changePage={handlePageChange}
+                                                ellipsis={5}
+                                            /> */}
+                                            {/* {Array.from({ length: productsData.last_page}, (_, i) => (
+                                                <li className="page-item active">
+                                                    <Link className="page-link" to="#">
+                                                        {productsData}
+                                                    </Link>
+                                                </li> 
+                                            ))} */}
+                                            {/* for (let index = 0; index < productsData.last_page ; index++) {
+                                               <li className="page-item active">
+                                                    <Link className="page-link" to="#">
+                                                        {index}
+                                                    </Link>
+                                                </li> 
+                                                
+                                            } */}
+                                            
+                                            {/* <li className="page-item">
+                                                <Link className="page-link" to="#">
+                                                    Next
+                                                </Link>
+                                            </li> */}
                                         </ul>
                                     </nav>
                                 </div>

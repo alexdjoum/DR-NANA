@@ -7,10 +7,11 @@ const Loading=()=>{
       textAlign: "center",
       minHeight: "100vh"
     }
-  return(
+    return(
     <div style={styleloader}>
-        <div class="spinner"></div>
-         <p>Loading...</p>
+      <span class="visually-hidden">Loading...</span>
+      <div class="spinner-border" role="status">
+      </div>
     </div>
     // <div id="loader-container">
     //   <svg id="loader" width="285" height="59" viewBox="0 0 285 59" fill="none" xmlns="http://www.w3.org/2000/svg">

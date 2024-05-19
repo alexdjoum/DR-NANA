@@ -13,71 +13,96 @@ export const cartSlice = createSlice({
     },
     reducers: {
         addToCart: (state, action) => {
-            console.log('action payload===>> ',action.payload)
+            console.log('incremented test 2===>> ',action.payload)
             const {size, color} = action.payload
-            console.log('size verify ====>>>> ', size)
+            //console.log('size verify ====>>>> ', size)
             //console.log('mon cartItems ====>>', state.cartItems)
             const existingIndex = state.cartItems.findIndex(
-                (item) => item.products.codePro === action.payload.codePro
+                (item) => item?.products?.codePro === action.payload.codePro
             );
 
-            console.log('Verify existing item ===>>> ', existingIndex)
             if (existingIndex >= 0) {
-                state.cartItems[existingIndex].sizesToSend.push(size);
-                state.cartItems[existingIndex].colorToSend.push(color);
-                state.cartItems[existingIndex].products.cartQuantity += 1;
-                // console.log("Ici j'ajoute 1 ===>> ",state.cartItems[existingIndex].cartQuantity)
-                // state.cartItems[existingIndex] = {
-                //     ...state.cartItems[existingIndex].products,
-                //     cartQuantity: state.cartItems[existingIndex].cartQuantity + 1,
-                // };
-                // Le produit existe déjà dans le panier
-                // const updatedCartItems = [...state.cartItems];
-                // const existingCartItem = updatedCartItems[existingIndex];
-                //console.log('existing new method  ', existingCartItem)
-                // Augmentez le cartQuantity de +1
-                //existingCartItem.cartQuantity += 1;
-
-                // Mettez à jour les propriétés sizesToSend et colorToSend avec les nouvelles valeurs
-                //existingCartItem.sizesToSend.push(state.cartItems[existingCartItem].size);
-                //existingCartItem.colorToSend.push(products.color);
-
+                if (!action.payload.size && !action.payload.color) {
+                    state.cartItems[existingIndex].products.cartQuantity += 1;
+                    console.log("produit sans size et sans couleur ===>> ", action.payload)
+                }else if(action.payload.size && action.payload.color) {
+                    state.cartItems[existingIndex].sizesToSend.push(size);
+                    state.cartItems[existingIndex].colorToSend.push(color);
+                    state.cartItems[existingIndex].products.cartQuantity += 1;
+                } 
+                
                 toast.info("Increased product quantity", {
                     position: "bottom-left",
                 });
-            }else  if(action.payload.size && action.payload.color) {
-                //Creation du format de l'objet qui sera dans le cartItem
-                const newCartItem = {
-                    products: {},
-                    sizesToSend: [],
-                    colorToSend: []
-                };
+            }else {
+                console.log('incrementé test 1 ===>>> ', action.payload)
 
-                //Modification de la propriété products qui est dans l'objet newCartItems
-                newCartItem.products = {...action.payload, cartQuantity: 1}
-                
-                //Modification de la propriété sizesToSend qui est dans l'objet newCartItems
-                newCartItem.sizesToSend.push(action.payload.size);
-
-                //Modification de la propriété colorToSend qui est dans l'objet newCartItems
-                newCartItem.colorToSend.push(action.payload.color);
-                console.log('newCartItem ===>> ',newCartItem)
+                if (action.payload.size && action.payload.color){
+                    const newCartItem = {
+                        products: {},
+                        sizesToSend: [],
+                        colorToSend: []
+                    };
+    
+                    //Modification de la propriété products qui est dans l'objet newCartItems
+                    newCartItem.products = {...action.payload, cartQuantity: 1}
                     
-                state.cartItems.push(newCartItem);
+                    //Modification de la propriété sizesToSend qui est dans l'objet newCartItems
+                    newCartItem.sizesToSend.push(action.payload.size);
+    
+                    //Modification de la propriété colorToSend qui est dans l'objet newCartItems
+                    newCartItem.colorToSend.push(action.payload.color);
+                    console.log('newCartItem ===>> ',newCartItem)
+                        
+                    state.cartItems.push(newCartItem);
+                } else if (!action.payload.size && action.payload.color) {
+                    const newCartItem = {
+                        products: {},
+                        sizesToSend: [],
+                        colorToSend: []
+                    };
+                     //Modification de la propriété products qui est dans l'objet newCartItems
+                     newCartItem.products = {...action.payload, cartQuantity: 1}
+                    
+                     //Modification de la propriété sizesToSend qui est dans l'objet newCartItems
+                     //newCartItem.sizesToSend.push(action.payload.size);
+     
+                     //Modification de la propriété colorToSend qui est dans l'objet newCartItems
+                     newCartItem.colorToSend.push(action.payload.color);
+                     console.log('newCartItem ===>> ',newCartItem)
+                         
+                     state.cartItems.push(newCartItem);
+                     
+                } else {
+                    const newCartItem = {
+                        products: {},
+                        sizesToSend: [],
+                        colorToSend: []
+                    };
+                    const firstTime = action.payload
+                    newCartItem.products = {...firstTime, cartQuantity: 1}
+                    console.log("saw ===>", firstTime)
+                    state.cartItems.push(newCartItem)
+                    // state.cartItems.sizesToSend = [""]
+                    // state.cartItems.colorToSend = [""]
+
+                }
                 toast.success("Product added to cart", {
                     position: "bottom-left",
                 });
-            }
+                //Creation du format de l'objet qui sera dans le cartItem
+                
+            } 
             //let tempProductItem = { ...action.payload, cartQuantity: 1 };
             //state.cartItems.push(newCartItem);
             console.log('mon cartItems ====>>', state.cartItems)
             
             state.cartTotalQuantity = state.cartItems.reduce(
-                (total, item) => total + item.products.cartQuantity,
+                (total, item) => total + item?.products?.cartQuantity,
                 0
             );
             state.cartTotalAmount = state.cartItems.reduce(
-                (total, item) => total + (item.products.prix * item.products.cartQuantity),
+                (total, item) => total + (item?.products?.prix * item?.products?.cartQuantity),
                 0
             );
             //console.log('cartTotalquantity ===>> ', state.cartTotalQuantity)
@@ -192,7 +217,10 @@ export const cartSlice = createSlice({
         //       );;
         // },
         clearCart(state, action) {
-        state.cartItems = [];
+            state.cartItems = [];
+            state.cartTotalAmount = 0 ;
+            state.cartTotalQuantity = 0
+
         //localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         toast.error("Cart cleared", { position: "bottom-left" });
         },

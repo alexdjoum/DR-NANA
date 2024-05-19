@@ -1,22 +1,72 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import {SearchedByNameContext, /*useProductStore*/} from "../app/storeInput";
-import {useSelector} from "react-redux"
+import {useSelector, useDispatch} from "react-redux"
 //import {tags} from "../dynamic/tags";
 import {LanguageContext} from "../Language/languages"
 import {FormattedMessage} from "react-intl";
+import { getProducts } from '../features/products/productSlice';
+import { onchangeCurrentPage } from '../features/products/productSlice';
+import { getRedCategories } from '../features/category/categorySlice';
 
 export default function Header() {
     //const [searched, setSearched] = useState("")
     //const setSearched = useContext(SearchedByNameContext)
+    const {categories} = useSelector(state => state.category)
+    //console.log('categories dans selector ===>> ', categories)
+    const dispatch = useDispatch()
+    //const productss = useSelector(state => state.products )
     const myTotal = useSelector(state => state.cart.cartTotalQuantity)
-    console.log('look ===>> ', myTotal)
+    //console.log('look ===>> ', myTotal)
     const {searched, setSearched} = useContext(SearchedByNameContext)
     //const searchedByName = useProductStore((state) => state.searchedProductByName)
     //const updatesearched = useProductStore((state) => state.updateSearchedProductByName())
     const locale = useContext(LanguageContext);
-    console.log("je regarde locale", locale)
+    //console.log("je regarde locale", locale)
     const navigate= useNavigate()
+    //const [searchQuery, setSearchQuery] = useState('')
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitsList`);
+                const data = await response.json();
+                dispatch(getProducts(data));
+                //dispatch(onchangeCurrentPage(page))
+            } catch (error) {
+                console.log(error);
+            }
+        };
+    
+        fetchData(); 
+    }, []);
+    
+    const handleInputChange = async (event) => {
+        const query = event.target.value;
+        setSearched(query)
+        try {
+            const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitsList?search=${query}`)
+            const data = await response.json();
+            console.log('data from header ===>>> ', data)
+            dispatch(getProducts(data))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const onclickCategory = async(id) => {
+
+        console.log('id onClickCategory ====>>> ',id)
+        //e.preventDefault()
+        try {
+            const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitByCategories/${id}`)
+            const data = await response.json();
+            console.log('data from header ===>>> ', data)
+            dispatch(getProducts(data))
+        } catch (error) {
+            console.log(error)
+        }
+        //console.log('prevent ==>> ',e.target.value)
+    }
     //const [searched, setSearched] = useState('');
     /*const [link, setLink] = useState({
         home: true,
@@ -119,10 +169,12 @@ export default function Header() {
                               <div className="input-group">
                                   <input
                                       type="text"
+
                                       className="form-control"
                                       placeholder="Search for products"
                                       value={searched}
-                                      onChange={e => setSearched(e.target.value)}
+                                      onChange={handleInputChange}
+                                      //onChange={e => setSearched(e.target.value)}
                                       //value={searchedByName}
                                       //onChange={(e) => updatesearched(e.currentTarget.value)}
                                   />
@@ -155,7 +207,7 @@ export default function Header() {
                               className="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
                               id="navbar-vertical" style={{width: "calc(100% - 30px)", zIndex: "999"}}>
                               <div className="navbar-nav w-100">
-                                  <div className="nav-item dropdown dropright">
+                                  {/* <div className="nav-item dropdown dropright">
                                       <Link to="#" className="nav-link dropdown-toggle"
                                             data-toggle="dropdown">Dresses <i
                                           className="fa fa-angle-right float-right mt-1"/></Link>
@@ -164,16 +216,26 @@ export default function Header() {
                                           <Link to="" className="dropdown-item">Women's Dresses</Link>
                                           <Link to="" className="dropdown-item">Baby's Dresses</Link>
                                       </div>
-                                  </div>
-                                  <Link to="" className="nav-item nav-link">Shirts</Link>
-                                  <Link to="" className="nav-item nav-link">Jeans</Link>
+                                  </div> */}
+                                  {categories.map(cat => (
+                                    <Link 
+                                        id={cat.id}
+                                        to="/shop" 
+                                        className="nav-item nav-link"
+                                        onClick={() => onclickCategory(cat.id)}
+                                    >
+                                            {cat.nomCat}
+                                    </Link>
+                                  ))}
+                                  
+                                  {/* <Link to="" className="nav-item nav-link">Jeans</Link>
                                   <Link to="" className="nav-item nav-link">Swimwear</Link>
                                   <Link to="" className="nav-item nav-link">Sleepwear</Link>
                                   <Link to="" className="nav-item nav-link">Sportswear</Link>
                                   <Link to="" className="nav-item nav-link">Jumpsuits</Link>
                                   <Link to="" className="nav-item nav-link">Blazers</Link>
                                   <Link to="" className="nav-item nav-link">Jackets</Link>
-                                  <Link to="" className="nav-item nav-link">Shoes</Link>
+                                  <Link to="" className="nav-item nav-link">Shoes</Link> */}
                               </div>
                           </nav>
                       </div>

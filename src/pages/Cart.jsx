@@ -1,6 +1,6 @@
 import '../App.css';
-import React, {useState} from "react"
-import {Link, useNavigate} from "react-router-dom";
+import React, {useState, useRef} from "react"
+import {Link, Navigate, useNavigate} from "react-router-dom";
 import Loading from "../components/loading/Loading";
 import {decreaseCart, addToCart, removeFromCart, getTotals, clearCart} from "../features/cart/cartSlice"
 import {useDispatch, useSelector} from "react-redux";
@@ -9,6 +9,9 @@ import Header from "../components/Header";
 import { products } from '../dynamic/products';
 
 function Cart() {
+    const closeButtonRef = useRef(null);
+    const [messageValid, setMessageValide] = useState('')
+    const [messageToCreateOrder, setMessageToCreateOrder] = useState('')
     const [villes , setVilles] = useState([])
     const [command, setCommand] = useState({
         nomClient: "", 
@@ -29,7 +32,7 @@ function Cart() {
             throw new Error('Someting went wrong')
         })
         .then(responseJson => {
-            console.log('mes Villes ===> ', responseJson)
+            //console.log('mes Villes ===> ', responseJson)
             //dispatch(isLoading())
             setVilles(responseJson.ville)
             //dispatch(getRedCategories(responseJson))
@@ -40,10 +43,10 @@ function Cart() {
         
     }, []);
     const productList = useSelector((state) => state.cart.cartItems)
-                        .map(({sizesToSend: taille, colorToSend: couleur, products: {codePro, nomPro, prix, cartQuantity: qte }}) =>({codePro, nomPro, prix, taille, couleur, qte}))
+        .map(({sizesToSend: taille, colorToSend: couleur, products: {codePro, nomPro, prix, cartQuantity: qte }}) =>({codePro, nomPro, prix, taille, couleur, qte}))
     const cart = useSelector((state) => state.cart);
     const montant = useSelector(state => state.cart.cartTotalAmount)
-    console.log("List Product filter ==> ", productList)
+    //console.log("List Product filter ==> ", productList)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
@@ -51,10 +54,10 @@ function Cart() {
     // useEffect(() => {
     //   dispatch(getTotals());
     // }, [cart, dispatch]);
-    console.log("my cart  ",cart )
+    //console.log("my cart  ",cart )
     const handleAddToCart = (product) => {
-        console.log("See add product in cart ===>>> ", product)
-      dispatch(addToCart(product));
+        console.log("See add product increment ===>>> ", product)
+        dispatch(addToCart(product.products));
     };
     const handleDecreaseCart = (product) => {
       dispatch(decreaseCart(product));
@@ -68,7 +71,7 @@ function Cart() {
 
     const redirectToCreateCommand = () => {
         if(cart.cartItems.length > 0){
-            console.log('good')
+            //console.log('good')
             navigate('/commands-list')
         }
 
@@ -119,13 +122,20 @@ function Cart() {
               });
           
               const result = await response.json();
+              //console.log('voir le resulat ===>> ', result.status_message)
+              //window.location.reload()
               setPending(false)
-              console.log("Success:", result);
+              //console.log("Success:", result);
+              setMessageValide(result.status_message)
+              setMessageToCreateOrder('Nous avons reçu votre commande')
+              dispatch(clearCart())
+              console.log('le current click ==>> ', closeButtonRef.current)
+              closeButtonRef.current.click();
             } catch (error) {
-              console.error("Error:", error);
-            }
+                console.error("Error:", error);
+            } 
           }
-          
+        //console.log('voir le resultat du message valid ================>>>', messageValid)
         const data = {
             montant:montant,
             nomClient:command.nomClient,
@@ -135,7 +145,7 @@ function Cart() {
             productList:productList
         };
 
-        console.log('See data ===>>> ', data)
+        //console.log('See data ===>>> ', data)
           postJSON(data);
     
     }
@@ -145,6 +155,15 @@ function Cart() {
         <>
             <Header />
             {pending && (<Loading />)}
+            {messageValid  && (
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{messageToCreateOrder}</strong> 
+                    <button type="button" class="close"  data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            )}
+            
             {/*Topbar Start */}
             {/*<div className="container-fluid">
                 <div className="row bg-secondary py-1 px-xl-5">
@@ -316,18 +335,18 @@ function Cart() {
                             </tr>
                             </thead>
                             <tbody className="align-middle">
-                            {cart && cart.cartItems.map(item => (
+                            {cart && cart.cartItems?.map(item => (
                                 <tr>
                                     <td className="align-middle">
                                         <img
-                                            src={'http://localhost:8000/'+item?.products.photos[0]?.lienPhoto} 
+                                            src={`${process.env.REACT_APP_API_URL}`+'/'+item?.products?.photos?.[0]?.lienPhoto} 
                                             alt=""
                                             style={{width: "50px"}}
                                         />
-                                        {item.products.nomPro}
+                                        {item?.products?.nomPro}
                                     </td>
                                     <td className="align-middle">
-                                        {item.products.prix}
+                                        {item?.products?.prix}
                                     </td>
                                     <td className="align-middle">
                                         <div className="input-group quantity mx-auto" style={{width: "100px"}}>
@@ -403,7 +422,6 @@ function Cart() {
                                 >
                                     Proceed To Create command
                                 </button>
-
                                 <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div className="modal-dialog" role="document">
                                         <div className="modal-content">
@@ -506,13 +524,14 @@ function Cart() {
                                                     </textarea>
                                                 </div> */}
                                                 <div className="modal-footer">
-                                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">
+                                                    <button type="button" ref={closeButtonRef} className="btn btn-secondary" data-dismiss="modal">
                                                         Close
                                                     </button>
                                                     <button 
                                                         type="submit" 
-                                                        className="btn btn-primary">
-                                                            Create Command
+                                                        className="btn btn-primary"
+                                                    >
+                                                        Create Command
                                                     </button>
                                             </div>
                                             </form>

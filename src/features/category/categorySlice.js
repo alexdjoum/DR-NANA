@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 import { toast } from "react-toastify";
 
 export const categorySlice = createSlice({
-    name: 'cart',
+    name: 'category',
     initialState: {
-        products: [],
+        categories: [],
         pending: false,
         error: false
     },
@@ -15,7 +15,9 @@ export const categorySlice = createSlice({
 
         },
         getRedCategories: (state, action) => {
-            
+            console.log('log redux categories ===>> ', action.payload)
+            state.categories = action.payload
+            state.loading = false
         },
     }
 })

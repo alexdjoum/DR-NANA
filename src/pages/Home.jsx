@@ -4,13 +4,15 @@ import Footer from "../components/Footer";
 import {Link} from "react-router-dom";
 import {products} from "../dynamic/products";
 import {FormattedMessage} from "react-intl";
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import { getRedCategories, isLoading } from "../features/category/categorySlice";
 
 
 function Home() {
     const dispatch = useDispatch()
-    const [getcategories , setGetCategories] = useState([])
+    const {categories} = useSelector(state => state.category)
+    //const [getcategories , setGetCategories] = useState([])
+    console.log('categories dans home ====>> ', categories)
 
     useEffect(() => {
         
@@ -27,7 +29,7 @@ function Home() {
         .then(responseJson => {
             console.log('mes categories ===> ', responseJson)
             dispatch(isLoading())
-            setGetCategories(responseJson)
+            //setGetCategories(responseJson)
             dispatch(getRedCategories(responseJson))
         })
         .catch((error) => {
@@ -135,12 +137,15 @@ function Home() {
         <div className="container-fluid pt-5">
             <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4"><span className="bg-secondary pr-3">Categories</span></h2>
             <div className="row px-xl-5 pb-3">
-                {getcategories.map(cat => (
+                 {/* getCategories */}
+                {categories.map(cat => (
                     <div className="col-lg-3 col-md-4 col-sm-6 pb-1">
                         <Link className="text-decoration-none" to="">
                             <div className="cat-item d-flex align-items-center mb-4">
                                 <div className="overflow-hidden" style={{width: "100px", height: "100px"}}>
-                                    <img className="img-fluid" src={'http://localhost:8000/'+cat.image} alt="" />
+                                    <img 
+                                        className="img-fluid" 
+                                        src={`${process.env.REACT_APP_API_URL}`+'/'+cat.image} alt="" />
                                 </div>
                                 <div className="flex-fill pl-3">
                                     <h6>{cat.nomCat}</h6>

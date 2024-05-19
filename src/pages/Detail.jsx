@@ -92,56 +92,49 @@ const products = [
 function Detail() {
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedColor, setSelectedColor] = useState("")
-    
     //const [mySize, setMySize] = useState("")
     const cart = useSelector((state) => state.cart);
-    const theProducts = useSelector(state => state.products.products)
-    console.log('theProducts ===> ', theProducts)
-
+    const theProducts = useSelector(state => state.products.products.items)
+    console.log('mon products dans cart ===> ', cart)
+    
     const dispatch = useDispatch();
-  
+    
     // useEffect(() => {
-    //   dispatch(getTotals());const filteredPhotos = obj.photos.filter((photo, index) => index !== 0);
-    // }, [cart, dispatch]);
-
-    console.log('selectedSize ======>>>>> ', selectedSize)
-  
-    const handleAddToCart = (product) => {
-        const {nomPro, codePro, photos, prix} = product
-        const updatedProduct = {
-            //...product,
-            prix: prix,
-            nomPro: nomPro,
-            codePro: codePro,
-            photos: photos,
-            color: selectedColor,
-            size: selectedSize
-        };
-        // const updateProduct = {
-        //     actif: 1,
-        //     categorie_id: 6,
-        //     codeArrivage: "FE36",
-        //     codePro: 145637,
-        //     color: "Yellow",
-        //     size: "L"
-        // }
-        console.log("Update product===>> ",updatedProduct)
-        console.log("")
+        //   dispatch(getTotals());const filteredPhotos = obj.photos.filter((photo, index) => index !== 0);
+        // }, [cart, dispatch]);
+        
+        //console.log('selectedSize ======>>>>> ', selectedSize)
+        
+        const handleAddToCart = (product) => {
+            const {nomPro, codePro, photos, prix} = product
+            const updatedProduct = {
+                //...product,
+                prix: prix,
+                nomPro: nomPro,
+                codePro: codePro,
+                photos: photos,
+                color: selectedColor,
+                size: selectedSize
+            };
+            console.log("Update product===>> ",updatedProduct)
+        //console.log("")
         dispatch(addToCart(updatedProduct));
     };
     const handleDecreaseCart = (product) => {
-      dispatch(decreaseCart(product));
+        console.log('product que je décrémente dans detail ===>>', product)
+        dispatch(decreaseCart(product));
     };
     const handleRemoveFromCart = (product) => {
-      dispatch(removeFromCart(product));
+        dispatch(removeFromCart(product));
     };
     
     const {num} = useParams()
-    console.log("automatic ===>>> ", num)
-    console.log('my nums ====>', products)
+    console.log('my nums ====>', num)
+    const selectedItem = cart.cartItems.find(elt => elt.products.codePro.toString() === String(num));
+    console.log("selected    Item ===>>> ", selectedItem)
     const thisProduct = theProducts.find((prod) => prod.codePro == num);
-    const filteredPhotos = thisProduct.photos.filter((photo, index) => index !== 0);
-    console.log('thisProduct ====>', thisProduct)
+    const filteredPhotos = thisProduct?.photos?.filter((photo, index) => index !== 0);
+    //console.log('thisProduct ====>', thisProduct)
     return (
         <>
             <Header />
@@ -169,15 +162,15 @@ function Detail() {
                                 <div className="carousel-item active">
                                     <img 
                                         className="w-100 h-100" 
-                                        src={`http://localhost:8000/${thisProduct?.photos[0]?.lienPhoto}`} 
+                                        src={`${process.env.REACT_APP_API_URL}/${thisProduct?.photos[0]?.lienPhoto}`} 
                                         alt="Image" 
                                     />
                                 </div>
-                                {filteredPhotos.map((p, index) => (
+                                {filteredPhotos?.map((p, index) => (
                                     <div className="carousel-item" key={index}>
                                         <img 
                                             className="w-100 h-100" 
-                                            src={`http://localhost:8000/${p.lienPhoto}`} 
+                                            src={`${process.env.REACT_APP_API_URL}/${p?.lienPhoto}`} 
                                             alt="Image" 
                                         />
                                     </div>
@@ -193,7 +186,7 @@ function Detail() {
                     </div>
                     <div className="col-lg-7 h-auto mb-30">
                     <div className="h-100 bg-light p-30">
-                        <h3>{thisProduct.nomPro}</h3>
+                        <h3>{thisProduct?.nomPro}</h3>
                         <div className="d-flex mb-3">
                             <div className="text-primary mr-2">
                                 <small className="fas fa-star"></small>
@@ -211,7 +204,7 @@ function Detail() {
                         <div className="d-flex mb-3">
                             <strong className="text-dark mr-3">Sizes:</strong>
                             {/* <form> */}
-                            {thisProduct.sizes.map((s, index) => (
+                            {thisProduct?.sizes?.map((s, index) => (
                                 <div className="custom-control custom-radio custom-control-inline" key={index}>
                                     <input 
                                     onChange={() => setSelectedSize(s.sizeName)}
@@ -231,7 +224,7 @@ function Detail() {
                         <div className="d-flex mb-4">
                             <strong className="text-dark mr-3">Colors:</strong>
                             {/* <form> */}
-                            {thisProduct.colors.map((color, index) => (
+                            {thisProduct?.colors?.map((color, index) => (
                                 <div className="custom-control custom-radio custom-control-inline">
                                     <input 
                                         onChange={() => setSelectedColor(color.colorName)}
@@ -276,7 +269,13 @@ function Detail() {
                                     </button>
                                 </div>
                                 <input 
-                                    type="text" className="form-control bg-secondary border-0 text-center" value="1" />
+                                    type="text" 
+                                    className="form-control bg-secondary border-0 text-center" 
+                                    value={selectedItem
+                                        ? selectedItem.products.cartQuantity 
+                                        : 0
+                                    }
+                                />
                                 <div className="input-group-btn">
                                     <button 
                                         className="btn btn-primary btn-plus"
@@ -287,7 +286,8 @@ function Detail() {
                             </div>
                             <button 
                                 className="btn btn-primary px-3" 
-                                onClick={()=> handleAddToCart(thisProduct)}>
+                                onClick={()=> handleAddToCart(thisProduct)}
+                            >
                                 <i className="fa fa-shopping-cart mr-1" /> 
                                     Add ToCart
                             </button>
@@ -336,7 +336,7 @@ function Detail() {
                         <div className="tab-content">
                             <div className="tab-pane fade show active" id="tab-pane-1">
                                 <h4 className="mb-3">Product Description</h4>
-                                <p>{thisProduct.description}</p>
+                                <p>{thisProduct?.description}</p>
                                 <p></p>
                             </div>
                             <div className="tab-pane fade" id="tab-pane-2">

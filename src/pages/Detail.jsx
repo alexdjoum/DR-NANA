@@ -121,8 +121,13 @@ function Detail() {
         dispatch(addToCart(updatedProduct));
     };
     const handleDecreaseCart = (product) => {
-        console.log('product que je décrémente dans detail ===>>', product)
-        dispatch(decreaseCart(product));
+        const decreaseProduct = {
+            products: product,
+            sizesToSend: [],
+            colorToSend: []
+        }
+        console.log('product que je décrémente dans detail ===>>', decreaseProduct)
+        dispatch(decreaseCart(decreaseProduct));
     };
     const handleRemoveFromCart = (product) => {
         dispatch(removeFromCart(product));

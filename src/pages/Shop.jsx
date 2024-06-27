@@ -89,6 +89,7 @@ function Results() {
             const data = await response.json();
             console.log('data from header ===>>> ', data)
             dispatch(getProducts(data))
+            navigate(`/shop?page=${my_page}`)
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         } catch (error) {

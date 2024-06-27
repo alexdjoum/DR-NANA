@@ -9,6 +9,8 @@ import Home from "../pages/Home";
 import Shop from "../pages/Shop";
 import Checkout from "../pages/Checkout";
 import Commands from "../pages/Commands";
+import ShopPerPage from "../pages/ShopPerPage";
+import CollapsibleTable from "../pages/ProductCreated";
 
 export const routes = [
     {
@@ -71,6 +73,18 @@ export const clientRoutes = [
     {
         path: '/commands-list',
         component: Commands,
+        exact: true,
+        protected: false
+    },
+    {
+        path: '/shop?page=/:num',
+        component: ShopPerPage,
+        exact: true,
+        protected: false
+    },
+    {
+        path: '/create-product',
+        component: CollapsibleTable,
         exact: true,
         protected: false
     }

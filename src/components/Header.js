@@ -28,7 +28,7 @@ export default function Header() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitsList`);
+                const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitsList?page=1`);
                 const data = await response.json();
                 dispatch(getProducts(data));
                 //dispatch(onchangeCurrentPage(page))
@@ -278,14 +278,14 @@ export default function Header() {
                                       >
                                           Shop
                                       </NavLink>
-                                      <NavLink
+                                      {/* <NavLink
                                           to="/detail/100"
                                           className={({isActive}) =>
                                               isActive ? "nav-item nav-link active" : "nav-item nav-link"
                                           }
                                       >
                                           Detail Shop
-                                      </NavLink>
+                                      </NavLink> */}
                                       {/*<Link
                                     to="/shop"
                                     onClick={() => setLink( prev =>
@@ -300,18 +300,11 @@ export default function Header() {
                                     className={`nav-item nav-link ${link.shopDetail ? "active" : ""}`}>
                                     Detail Shop
                                 </Link>*/}
-                                      <div className="nav-item dropdown">
+                                      {/* <div className="nav-item dropdown">
                                           <Link
                                               to="#"
                                               className={`nav-item dropdown-toggle nav-link "active"`}
                                               data-toggle="dropdown"
-                                              /*onClick={() => setLink(prev =>
-                                                  ({
-                                                      home: !prev.home,
-                                                      shop: prev.page,
-                                                      page: !prev.page,
-                                                      shopDetail: prev.shopDetail
-                                                  }))}*/
                                           >
                                               Pages <i className="fa fa-angle-down mt-1"/>
                                           </Link>
@@ -319,8 +312,8 @@ export default function Header() {
                                               <Link to="/cart" className="dropdown-item">Shopping Cart</Link>
                                               <Link to="/checkout" className="dropdown-item">Checkout</Link>
                                           </div>
-                                      </div>
-                                      <Link to="contact.html" className="nav-item nav-link">Contact</Link>
+                                      </div> */}
+                                      {/* <Link to="contact.html" className="nav-item nav-link">Contact</Link> */}
                                   </div>
                                   <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
                                       <Link to="" className="btn px-0">

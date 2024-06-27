@@ -83,32 +83,6 @@ function Cart() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        //const formData = new FormData()
-        // formData.append("nomClient", "IGOR")
-        // formData.append("mobile", "69745254")
-        // formData.append("remise", "0.1")
-        // formData.append("ville_id", 1)
-        // formData.append('productList',[{"taille":"xl","qte":45,"couleur":"red","codePro":145637}])
-        
-        // fetch(`${process.env.REACT_APP_API_URL}/api/createCommande`, {
-        //     method: 'POST',
-        //     headers: {'Content-Type':'application/json'},
-        //     body: {
-        //         formData: JSON.stringify({
-        //             montant:10000,
-        //             nomClient:"Alex",
-        //             mobile:"655470373",
-        //             remise:0,
-        //             ville_id:1,
-        //             productList:[{
-        //                 codePro:54563,
-        //                 qte:19,
-        //                 taille:"xl",
-        //                 couleur:"red"
-        //             }]
-        //         })
-        //     }
-        // });
 
         async function postJSON(data) {
             try {
@@ -134,19 +108,19 @@ function Cart() {
             } catch (error) {
                 console.error("Error:", error);
             } 
-          }
+        }
         //console.log('voir le resultat du message valid ================>>>', messageValid)
         const data = {
             montant:montant,
             nomClient:command.nomClient,
             mobile:command.mobile,
             remise:0,
-            ville_id:command.villeId,
+            ville_id:Number(command.villeId),
             productList:productList
         };
 
-        //console.log('See data ===>>> ', data)
-          postJSON(data);
+        console.log('See data command===>>> ', data)
+        postJSON(data);
     
     }
     console.log('look command form ===>>', command)
@@ -389,18 +363,18 @@ function Cart() {
                         </table>
                     </div>
                     <div className="col-lg-4">
-                        <form className="mb-30" action="">
+                        {/* <form className="mb-30" action="">
                             <div className="input-group">
                                 <input type="text" className="form-control border-0 p-4" placeholder="Coupon Code"/>
                                 <div className="input-group-append">
                                     <button className="btn btn-primary">Apply Coupon</button>
                                 </div>
                             </div>
-                        </form>
+                        </form> */}
                         <h5 className="section-title position-relative text-uppercase mb-3"><span
                             className="bg-secondary pr-3">Cart Summary</span></h5>
                         <div className="bg-light p-30 mb-5">
-                            <div className="border-bottom pb-2">
+                            {/* <div className="border-bottom pb-2">
                                 <div className="d-flex justify-content-between mb-3">
                                     <h6>Subtotal</h6>
                                     <h6>$150</h6>
@@ -409,7 +383,7 @@ function Cart() {
                                     <h6 className="font-weight-medium">Shipping</h6>
                                     <h6 className="font-weight-medium">$10</h6>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="pt-2">
                                 <div className="d-flex justify-content-between mt-2">
                                     <h5>Total</h5>

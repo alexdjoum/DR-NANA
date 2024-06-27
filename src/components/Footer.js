@@ -30,10 +30,10 @@ export default function Footer() {
                     <div className="d-flex flex-column justify-content-start">
                         <a className="text-secondary mb-2" href="#"><i className="fa fa-angle-right mr-2"/>Home</a>
                         <a className="text-secondary mb-2" href="#"><i className="fa fa-angle-right mr-2"/>Our Shop</a>
-                        <a className="text-secondary mb-2" href="#"><i className="fa fa-angle-right mr-2"/>Shop Detail</a>
+                        {/* <a className="text-secondary mb-2" href="#"><i className="fa fa-angle-right mr-2"/>Shop Detail</a> */}
                         <a className="text-secondary mb-2" href="#"><i className="fa fa-angle-right mr-2"/>Shopping Cart</a>
                         <a className="text-secondary mb-2" href="#"><i className="fa fa-angle-right mr-2"/>Checkout</a>
-                        <a className="text-secondary" href="#"><i className="fa fa-angle-right mr-2"/>Contact Us</a>
+                        {/* <a className="text-secondary" href="#"><i className="fa fa-angle-right mr-2"/>Contact Us</a> */}
                     </div>
                 </div>
                 <div className="col-md-4 mb-5">

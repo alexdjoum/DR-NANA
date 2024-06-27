@@ -192,3 +192,15 @@ h2 {
   position: absolute;
   left: -9999px;
 }
+
+p~input {
+  color: red;
+}
+
+li:hover > i {
+  cursor: pointer;
+}
+
+.list-admin li:hover i {
+  border-color: red;
+}

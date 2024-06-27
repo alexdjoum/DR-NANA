@@ -5,7 +5,8 @@ const Loading=()=>{
       justifyContent: "center",
       alignItems: "center",
       textAlign: "center",
-      minHeight: "100vh"
+      height: `calc(20% - 50px)`
+      //minHeight: "100vh"
     }
     return(
     <div style={styleloader}>

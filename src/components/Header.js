@@ -8,6 +8,7 @@ import {FormattedMessage} from "react-intl";
 import { getProducts } from '../features/products/productSlice';
 import { onchangeCurrentPage } from '../features/products/productSlice';
 import { getRedCategories } from '../features/category/categorySlice';
+import WhatsAppButton from './WhatsAppButton';
 
 export default function Header() {
     //const [searched, setSearched] = useState("")
@@ -188,7 +189,8 @@ export default function Header() {
                       </div>
                       <div className="col-lg-4 col-6 text-right">
                           <p className="m-0">Customer Service</p>
-                          <h5 className="m-0">+012 345 6789</h5>
+                          <WhatsAppButton phoneNumber="654500121" />
+                          {/* <h5 className="m-0">+012 345 6789</h5> */}
                       </div>
                   </div>
               </div>
@@ -198,7 +200,7 @@ export default function Header() {
                           <a
                               className="btn d-flex align-items-center justify-content-between w-100"
                             //   bg-primary
-                              data-toggle="collapse" href="#navbar-vertical"
+                              data-bs-toggle="collapse" href="#navbar-vertical"
                               style={{height: "65px", padding: "0 30px", background: "red"}}>
                               <h6 className="text-white m-0"><i className="fa fa-bars mr-2" style={{color: "white"}}/>Categories</h6>
                               <i className="fa fa-angle-down text-dark" style={{color: "white"}}/>

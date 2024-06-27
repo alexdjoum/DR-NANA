@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router";
 import {Link} from "react-router-dom";
-import Header from "../components/Header";
+import HeaderDetail from "../components/HeaderDetail";
 import { useDispatch, useSelector } from 'react-redux';
 import {decreaseCart, addToCart, removeFromCart, getTotals, clearCart} from "../features/cart/cartSlice"
 //import { products } from '../dynamic/products';
@@ -95,7 +95,7 @@ function Detail() {
     //const [mySize, setMySize] = useState("")
     const cart = useSelector((state) => state.cart);
     const theProducts = useSelector(state => state.products.products.items)
-    console.log('mon products dans cart ===> ', cart)
+    console.log('Le detail de mon product ===> ', theProducts)
     
     const dispatch = useDispatch();
     
@@ -139,11 +139,11 @@ function Detail() {
     console.log("selected    Item ===>>> ", selectedItem)
     const thisProduct = theProducts.find((prod) => prod.codePro == num);
     const filteredPhotos = thisProduct?.photos?.filter((photo, index) => index !== 0);
-    //console.log('thisProduct ====>', thisProduct)
+    console.log('thisProduct ====>', thisProduct)
     return (
         <>
-            <Header />
-            
+            {/* <Header /> */}
+            <HeaderDetail />
             {/*Navbar End*/}
             {/*Breadcrumb Start*/}
             <div className="container-fluid">
@@ -162,7 +162,7 @@ function Detail() {
             <div className="container-fluid pb-5">
                 <div className="row px-xl-5">
                     <div className="col-lg-5 mb-30">
-                        <div id="product-carousel" className="carousel slide" data-ride="carousel">
+                        <div id="product-carousel" className="carousel slide" data-bs-ride="carousel">
                             <div className="carousel-inner bg-light">
                                 <div className="carousel-item active">
                                     <img 
@@ -181,10 +181,10 @@ function Detail() {
                                     </div>
                                 ))}
                             </div>
-                            <a className="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                            <a className="carousel-control-prev" href="#product-carousel" data-bs-slide="prev">
                                 <i className="fa fa-2x fa-angle-left text-dark" />
                             </a>
-                            <a className="carousel-control-next" href="#product-carousel" data-slide="next">
+                            <a className="carousel-control-next" href="#product-carousel" data-bs-slide="next">
                                 <i className="fa fa-2x fa-angle-right text-dark" />
                             </a>
                         </div>

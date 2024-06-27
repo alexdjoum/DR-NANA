@@ -20,6 +20,13 @@ import Typography from "@mui/material/Typography";
 import Stack from '@mui/material/Stack';
 
 
+const formatNumber = (num) => {
+    const str = num.toString();
+    if (str.length !== 6) {
+      return str; // Return the original string if it's not 6 characters long
+    }
+    return str.slice(0, 3) + '-' + str.slice(3);
+};
 
 function Results() {
     //const searched = useContext(SearchedByNameContext)
@@ -442,11 +449,12 @@ function Results() {
                                                     
                                                 </div>
                                                 <div className="d-flex align-items-center justify-content-center mb-1">
+                                                    <p className="h4">{formatNumber(p.codePro)}</p>
+                                                    {/* <small className="fa fa-star text-primary mr-1"></small>
                                                     <small className="fa fa-star text-primary mr-1"></small>
                                                     <small className="fa fa-star text-primary mr-1"></small>
                                                     <small className="fa fa-star text-primary mr-1"></small>
-                                                    <small className="fa fa-star text-primary mr-1"></small>
-                                                    <small className="fa fa-star text-primary mr-1"></small>
+                                                    <small className="fa fa-star text-primary mr-1"></small> */}
                                                     
                                                 </div>
                                             </div>

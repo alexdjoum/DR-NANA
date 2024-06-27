@@ -11,6 +11,7 @@ import Checkout from "../pages/Checkout";
 import Commands from "../pages/Commands";
 import ShopPerPage from "../pages/ShopPerPage";
 import CollapsibleTable from "../pages/ProductCreated";
+import ProductCreated2 from "../pages/ProductCreated2";
 
 export const routes = [
     {
@@ -85,6 +86,12 @@ export const clientRoutes = [
     {
         path: '/create-product',
         component: CollapsibleTable,
+        exact: true,
+        protected: false
+    },
+    {
+        path: '/create-product2',
+        component: ProductCreated2,
         exact: true,
         protected: false
     }

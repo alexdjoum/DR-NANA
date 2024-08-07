@@ -9,6 +9,8 @@ import { getProducts } from '../features/products/productSlice';
 import { onchangeCurrentPage } from '../features/products/productSlice';
 import { getRedCategories } from '../features/category/categorySlice';
 import WhatsAppButton from './WhatsAppButton';
+import CreditCard from './CreditCard';
+import HeaderWithContainSearch from './HeaderWithContainSearch';
 
 export default function Header() {
     //const [searched, setSearched] = useState("")
@@ -29,7 +31,7 @@ export default function Header() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitsList?page=1`);
+                const response  = await fetch(`${process.env.REACT_APP_API_URL}/produitsList?page=1`);
                 const data = await response.json();
                 dispatch(getProducts(data));
                 //dispatch(onchangeCurrentPage(page))
@@ -81,105 +83,30 @@ export default function Header() {
   return (
       <>
         {/*<SearchedByNameContext.Provider value={searched}>*/}
-          <div>
-              <div className="container-fluid">
-                  <div className="row bg-secondary py-1 px-xl-5">
-                      <div className="col-lg-6 d-none d-lg-block">
-                          <div className="d-inline-flex align-items-center h-100">
-                              <Link className="text-body mr-3" to="">About</Link>
-                              <Link className="text-body mr-3" to="">Contact</Link>
-                              <Link className="text-body mr-3" to="">Help</Link>
-                              <Link className="text-body mr-3" to="">FAQs</Link>
-                          </div>
-                      </div>
-                      <div className="col-lg-6 text-center text-lg-right">
-                          <div className="d-inline-flex align-items-center">
-                              <div className="btn-group">
-                                  <button type="button" className="btn btn-sm btn-light dropdown-toggle"
-                                          data-toggle="dropdown">My Account
-                                  </button>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                      <Link className="btn btn-sm btn-light dropdown-toggle" to="/login">Sign in</Link>
-                                      <Link className="btn btn-sm btn-light dropdown-toggle" to="/register">Sign
-                                          up</Link>
-                                      <button className="dropdown-item" type="button"
-                                              onClick={() => navigate("/login")}>Sign in
-                                      </button>
-                                      <button className="dropdown-item" type="button"
-                                              onClick={() => navigate("/register")}>Sign up
-                                      </button>
-                                  </div>
-                              </div>
-                              {/* <div className="btn-group mx-2">
-                                  <button type="button" className="btn btn-sm btn-light dropdown-toggle"
-                                          data-toggle="dropdown">USD
-                                  </button>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                      <button className="dropdown-item" type="button">EUR</button>
-                                      <button className="dropdown-item" type="button">GBP</button>
-                                      <button className="dropdown-item" type="button">CAD</button>
-                                  </div>
-                              </div> */}
-                              <div className="btn-group">
-                                  <select
-                                    value={locale?.selectedLanguage.locale}
-                                    onChange={(e)=>locale?.handleLanguageChange(e.target.value)}>
-                                      <option value='fr'>
-                                        <FormattedMessage
-                                                id="app.french"
-                                                description="Greeting to welcome the user to the app"
-                                                defaultMessage="Hello, {name}!"
-                                        />
-                                      </option>
-                                      <option value='en'>
-                                        <FormattedMessage
-                                            id="app.english"
-                                            defaultMessage="English"
-                                        />
-                                      </option>
-                                  </select>
-                              </div>
-                          </div>
-                          <div className="d-inline-flex align-items-center d-block d-lg-none">
-                              <Link to="" className="btn px-0 ml-2">
-                                  <i className="fas fa-heart text-dark"></i>
-                                  <span className="badge text-dark border border-dark rounded-circle"
-                                        style={{paddingBottom: "2px"}}>0</span>
-                              </Link>
-                              <Link to="" className="btn px-0 ml-2">
-                                  <i className="fas fa-shopping-cart text-dark"/>
-                                  <span 
-                                        className="badge text-dark border border-dark rounded-circle"
-                                        style={{paddingBottom: "2px"}}
-                                  >
-                                    {myTotal}
-                                  </span>
-                              </Link>
-                          </div>
-                      </div>
-                  </div>
-                  <div className="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-                      <div className="col-lg-4">
-                          <Link to="" className="text-decoration-none">
-                              <span className="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                              <span className="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
-                          </Link>
-                      </div>
-                      <div className="col-lg-4 col-6 text-left">
-                          <form action="">
-                              <div className="input-group">
-                                  <input
-                                      type="text"
-
-                                      className="form-control"
-                                      placeholder="Search for products"
-                                      value={searched}
-                                      onChange={handleInputChange}
-                                      //onChange={e => setSearched(e.target.value)}
-                                      //value={searchedByName}
-                                      //onChange={(e) => updatesearched(e.currentTarget.value)}
-                                  />
-                                  <div className="input-group-append">
+            <div>
+                <HeaderWithContainSearch />
+                <div className="container-fluid">
+                    <div className="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+                        <div className="col-lg-4">
+                            <Link to="" className="text-decoration-none">
+                                <span className="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
+                                <span className="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
+                            </Link>
+                        </div>
+                        <div className="col-lg-4 col-6 text-left">
+                            <form>
+                                <div className="input-group">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Search for products"
+                                        value={searched}
+                                        onChange={handleInputChange}
+                                        //onChange={e => setSearched(e.target.value)}
+                                        //value={searchedByName}
+                                        //onChange={(e) => updatesearched(e.currentTarget.value)}
+                                    />
+                                <div className="input-group-append">
                                 <span className="input-group-text bg-transparent text-primary">
                                     <i className="fa fa-search"></i>
                                 </span>
@@ -189,19 +116,19 @@ export default function Header() {
                       </div>
                       <div className="col-lg-4 col-6 text-right">
                           <p className="m-0">Customer Service</p>
-                          <WhatsAppButton phoneNumber="654500121" />
+                          <WhatsAppButton phoneNumber="676892402" />
                           {/* <h5 className="m-0">+012 345 6789</h5> */}
                       </div>
                   </div>
               </div>
-              <div className="container-fluid bg-dark mb-30">
-                  <div className="row px-xl-5" style={{background: "#435c70"}}>
-                      <div className="col-lg-3 d-none d-lg-block" style={{background: "red"}}>
+              <div className="container-fluid  mb-30" style={{background: "rgb(67, 92, 112)"}}>
+                  <div className="row px-xl-5" style={{background: "rgb(67, 92, 112)"}}>
+                      <div className="col-lg-3 d-none d-lg-block" style={{background: "rgb(67, 92, 112)"}}>
                           <a
-                              className="btn d-flex align-items-center justify-content-between w-100"
-                            //   bg-primary
+                              className="btn d-flex align-items-center justify-content-between w-100 bg-primary"
+                            
                               data-bs-toggle="collapse" href="#navbar-vertical"
-                              style={{height: "65px", padding: "0 30px", background: "red"}}>
+                              style={{height: "65px", padding: "0 30px"}}>
                               <h6 className="text-white m-0"><i className="fa fa-bars mr-2" style={{color: "white"}}/>Categories</h6>
                               <i className="fa fa-angle-down text-dark" style={{color: "white"}}/>
                           </a>
@@ -280,6 +207,15 @@ export default function Header() {
                                       >
                                           Shop
                                       </NavLink>
+                                      <NavLink
+                                          to="/creditCard"
+                                          className={({isActive}) =>
+                                              isActive ? "nav-item nav-link active" : "nav-item nav-link"
+                                          }
+                                      >
+                                          Credit card
+                                      </NavLink>
+                                      {/* <CreditCard /> */}
                                       {/* <NavLink
                                           to="/detail/100"
                                           className={({isActive}) =>

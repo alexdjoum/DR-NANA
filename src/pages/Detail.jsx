@@ -3,99 +3,19 @@ import {useParams} from "react-router";
 import {Link} from "react-router-dom";
 import HeaderDetail from "../components/HeaderDetail";
 import { useDispatch, useSelector } from 'react-redux';
+
 import {decreaseCart, addToCart, removeFromCart, getTotals, clearCart} from "../features/cart/cartSlice"
 //import { products } from '../dynamic/products';
 
-const products = [
-    {
-        id: 1,
-        image: "img/product-1.jpg",
-        name: "Camera",
-        newPrice: 321.00,
-        oldPrice: 123.00,
-        sizes: ["XS","L"],
-        stars: 99
-    },
-    {
-        id: 2,
-        image: "img/product-2.jpg",
-        name: "Pul",
-        newPrice: 299,
-        oldPrice: 452,
-        sizes: ["XS", "S", "M", "L", "XL"],
-        stars: 98
-    },
-    {
-        id: 3,
-        image: "img/product-3.jpg",
-        name: "Lampe",
-        newPrice: 300,
-        oldPrice: 222.00,
-        sizes: ["M", "L"],
-        stars: 99
-    },
-    {
-        id: 4,
-        image: "img/product-4.jpg",
-        name: "Chaussure",
-        newPrice: 250,
-        oldPrice: 123.00,
-        sizes: ["XS", "S", "M", "L", "XL"],
-        stars: 85
-    },
-    {
-        id: 5,
-        image: "img/product-5.jpg",
-        name: "Drone",
-        newPrice: 220,
-        oldPrice: 123.00,
-        sizes: ["XS", "S", "M", "L", "XL"],
-        stars: 90
-    },
-    {
-        id: 6,
-        image: "img/product-6.jpg",
-        name: "Montre",
-        newPrice: 333,
-        oldPrice: "$123.00",
-        sizes: ["L", "XL"],
-        stars: 99
-    },
-    {
-        id: 7,
-        image: "img/product-7.jpg",
-        name: "Chemise",
-        newPrice: 123.00,
-        oldPrice: "$123.00",
-        sizes: ["S", "M", "L"],
-        stars: 92
-    },
-    {
-        id: 8,
-        image: "img/product-8.jpg",
-        name: "Pomade",
-        newPrice: 300,
-        oldPrice: "$123.00",
-        sizes: ["M", "L", "XL"],
-        stars: 99
-    },
-    {
-        id: 9,
-        image: "img/product-9.jpg",
-        name: "Chaise",
-        newPrice: 350,
-        oldPrice: "$123.00",
-        sizes: ["XS", "S"],
-        stars: 99
-    }
-]
 function Detail() {
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedColor, setSelectedColor] = useState("")
     //const [mySize, setMySize] = useState("")
     const cart = useSelector((state) => state.cart);
-    const theProducts = useSelector(state => state.products.products.items)
-    console.log('Le detail de mon product ===> ', theProducts)
+    const theProducts = useSelector(state => state.products.products)
+    
+    //console.log('Le main dsfds de mon product ===> ', mainImage)
+    console.log('Le myProducts de mon product ===> ', theProducts)
     
     const dispatch = useDispatch();
     
@@ -136,10 +56,19 @@ function Detail() {
     const {num} = useParams()
     console.log('my nums ====>', num)
     const selectedItem = cart.cartItems.find(elt => elt.products.codePro.toString() === String(num));
-    console.log("selected    Item ===>>> ", selectedItem)
+    //console.log("selected    Item ===>>> ", selectedItem)
     const thisProduct = theProducts.find((prod) => prod.codePro == num);
     const filteredPhotos = thisProduct?.photos?.filter((photo, index) => index !== 0);
-    console.log('thisProduct ====>', thisProduct)
+
+    const [mainImage, setMainImage] = useState(thisProduct?.photos[0]?.lienPhoto)
+    const [selectedImage, setSelectedImage] = useState(thisProduct?.photos[0]?.lienPhoto)
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    //console.log('voir le mainImage ====>', mainImage)
+    const handleImageClick = (src) => {
+        setMainImage(src?.lienPhoto);
+        setSelectedImage(src?.lienPhoto)
+    };
     return (
         <>
             {/* <Header /> */}
@@ -160,161 +89,182 @@ function Detail() {
             {/*Breadcrumb End*/}
             {/*Shop Detail Start*/}
             <div className="container-fluid pb-5">
-                <div className="row px-xl-5">
-                    <div className="col-lg-5 mb-30">
-                        <div id="product-carousel" className="carousel slide" data-bs-ride="carousel">
-                            <div className="carousel-inner bg-light">
-                                <div className="carousel-item active">
+                <div className="row" style={{height: "800px"}}>
+                    <div className="col-lg-5 mb-30 text-center">
+                        {/* <div 
+                            id="product-carousel" 
+                            className="carousel slide" 
+                            data-bs-ride="carousel" 
+                            style={{height: "225px", width: "225px"}}
+                        > */}
+                            {/* <div 
+                                style={{width: '700px'}}
+                                className="carousel-inner bg-light"
+                            > */}
+                                {/* <div 
+                                    style={{width: '700px'}}
+                                    className="carousel-item active"
+                                > */}
                                     <img 
-                                        className="w-100 h-100" 
-                                        src={`${process.env.REACT_APP_API_URL}/${thisProduct?.photos[0]?.lienPhoto}`} 
-                                        alt="Image" 
+                                
+                                        //src={`${process.env.REACT_APP_API_BACKEND}/${thisProduct?.photos[0]?.lienPhoto}`} 
+                                        src={`${process.env.REACT_APP_API_BACKEND}/${mainImage}`} 
+                                        alt="Image"
+                                        style={{height: "500px", width: "300px"}}
+                                        // className='w-100' 
                                     />
-                                </div>
-                                {filteredPhotos?.map((p, index) => (
-                                    <div className="carousel-item" key={index}>
+                                {/* </div> */}
+                                {/* {filteredPhotos?.map((src, index) => (
+                                    <div className={`carousel-item`} key={index} onClick={() => handleImageClick(src)}>
                                         <img 
-                                            className="w-100 h-100" 
-                                            src={`${process.env.REACT_APP_API_URL}/${p?.lienPhoto}`} 
+                                            className="img-thumbnail" 
+                                            src={`${process.env.REACT_APP_API_BACKEND}/${src?.lienPhoto}`} 
                                             alt="Image" 
                                         />
                                     </div>
-                                ))}
-                            </div>
-                            <a className="carousel-control-prev" href="#product-carousel" data-bs-slide="prev">
+                                ))} */}
+                            {/* </div> */}
+                            {/* <a className="carousel-control-prev" href="#product-carousel" data-bs-slide="prev">
                                 <i className="fa fa-2x fa-angle-left text-dark" />
                             </a>
                             <a className="carousel-control-next" href="#product-carousel" data-bs-slide="next">
                                 <i className="fa fa-2x fa-angle-right text-dark" />
-                            </a>
+                            </a> */}
+                        {/* </div> */}
+                    </div>
+                    {/* <div className="row">
+                        <div class="col-md-8">
+                            <img 
+                                id="mainImage" 
+                                src={`${process.env.REACT_APP_API_BACKEND}/${thisProduct?.photos[0]?.lienPhoto}`} 
+                                class="img-fluid" 
+                                alt="Main"
+                            />
                         </div>
                     </div>
-                    <div className="col-lg-7 h-auto mb-30">
-                    <div className="h-100 bg-light p-30">
-                        <h3>{thisProduct?.nomPro}</h3>
-                        <div className="d-flex mb-3">
-                            <div className="text-primary mr-2">
-                                <small className="fas fa-star"></small>
-                                <small className="fas fa-star"></small>
-                                <small className="fas fa-star"></small>
-                                <small className="fas fa-star-half-alt"></small>
-                                <small className="far fa-star"></small>
+                    <div class="row">
+                        {filteredPhotos?.map((src, index) => (
+                            <div 
+                                className="col-4" 
+                                key={index} 
+                                style={{width: "100px", height: "100px"}}
+                                //onClick={() => handleImageClick(src)}
+                            >
+                                <img src={`${process.env.REACT_APP_API_BACKEND}/${src?.lienPhoto}`} alt={`Thumbnail ${index}`} className="img-thumbnail" />
                             </div>
-                            <small className="pt-1">(99 Reviews)</small>
-                        </div>
-                        <h3 className="font-weight-semi-bold mb-4">${thisProduct?.prix}</h3>
-                        <p className="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit
-                            clita ea. Sanc ipsum et, labore clita lorem magna duo dolor no sea
-                            Nonumy</p>
-                        <div className="d-flex mb-3">
-                            <strong className="text-dark mr-3">Sizes:</strong>
-                            {/* <form> */}
-                            {thisProduct?.sizes?.map((s, index) => (
-                                <div className="custom-control custom-radio custom-control-inline" key={index}>
-                                    <input 
-                                    onChange={() => setSelectedSize(s.sizeName)}
-                                    value={s.sizeName}
-                                    type="radio" 
-                                    className="custom-control-input" 
-                                    id={`size-${index}`} 
-                                    name="size" 
-                                    checked={selectedSize === s.sizeName}
-                                    />
-                                    <label className="custom-control-label" htmlFor={`size-${index}`}>
-                                        {s.sizeName}
-                                    </label> 
-                                </div>
-                            ))}
-                        </div>
-                        <div className="d-flex mb-4">
-                            <strong className="text-dark mr-3">Colors:</strong>
-                            {/* <form> */}
-                            {thisProduct?.colors?.map((color, index) => (
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input 
-                                        onChange={() => setSelectedColor(color.colorName)}
-                                        value={color.colorName}
+                        ))}
+                    </div> */}
+                    
+                    <div className="col-lg-7 h-auto mb-30">
+                        <div className="h-100 bg-light p-30">
+                            <h3>{thisProduct?.nomPro}</h3>
+                            <div className="d-flex overflow-scroll" style={{width: "500px", maxHeight: "500px"}}>
+                                {filteredPhotos?.map((src, index) => (
+                                    <div 
+                                        className={`col-3 ${selectedImage === src.lienPhoto ? 'border border-primary' : ''}`} 
+                                        key={index} 
+                                        style={{height: '113px', width: "81px"}}
+                                        onClick={() => handleImageClick(src)}
+                                    >
+                                        <img src={`${process.env.REACT_APP_API_BACKEND}/${src?.lienPhoto}`} alt={`Thumbnail ${index}`} className="img-thumbnail" />
+                                    </div>
+                                ))} 
+                            </div>
+                            <h3 className="font-weight-semi-bold mb-4">{thisProduct?.prix} {process.env.REACT_APP_API_UNITE}</h3>
+                            <p className="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit
+                                clita ea. Sanc ipsum et, labore clita lorem magna duo dolor no sea
+                                Nonumy</p>
+                            <div className="d-flex mb-3">
+                                <strong className="text-dark mr-3">Sizes:</strong>
+                                {thisProduct?.sizes?.map((s, index) => (
+                                    <div className="custom-control custom-radio custom-control-inline" key={index}>
+                                        <input 
+                                        onChange={() => setSelectedSize(s.sizeName)}
+                                        value={s.sizeName}
                                         type="radio" 
                                         className="custom-control-input" 
-                                        id={`color-${index}`}
-                                        name="color" 
-                                        checked={selectedColor === color.colorName}
+                                        id={`size-${index}`} 
+                                        name="size" 
+                                        checked={selectedSize === s.sizeName}
+                                        />
+                                        <label className="custom-control-label" htmlFor={`size-${index}`}>
+                                            {s.sizeName}
+                                        </label> 
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <div className="d-flex mb-4">
+                                <strong className="text-dark mr-3">Colors:</strong>
+                                {thisProduct?.colors?.map((color, index) => (
+                                    <div className="custom-control custom-radio custom-control-inline">
+                                        <input 
+                                            onChange={() => setSelectedColor(color.colorName)}
+                                            value={color.colorName}
+                                            type="radio" 
+                                            className="custom-control-input" 
+                                            id={`color-${index}`}
+                                            name="color" 
+                                            checked={selectedColor === color.colorName}
+                                        />
+                                        <label className="custom-control-label" htmlFor={`color-${index}`}>
+                                            {color.colorName}
+                                        </label>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            <div className="d-flex align-items-center mb-4 pt-2">
+                                <div className="input-group quantity mr-3" style={{width: "130px"}}>
+                                    <div className="input-group-btn">
+                                        <button 
+                                            className="btn btn-primary btn-minus" 
+                                            onClick={() => handleDecreaseCart(thisProduct)}>
+                                            <i className="fa fa-minus" />
+                                        </button>
+                                    </div>
+                                    <input 
+                                        type="text" 
+                                        className="form-control bg-secondary border-0 text-center" 
+                                        value={selectedItem
+                                            ? selectedItem.products.cartQuantity 
+                                            : 0
+                                        }
                                     />
-                                    <label className="custom-control-label" htmlFor={`color-${index}`}>
-                                        {color.colorName}
-                                    </label>
+                                    <div className="input-group-btn">
+                                        <button 
+                                            className="btn btn-primary btn-plus"
+                                            onClick={() => handleAddToCart(thisProduct)}>
+                                            <i className="fa fa-plus" />
+                                        </button>
+                                    </div>
                                 </div>
-                            ))}
-                                
-                                {/* <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="color-2" name="color" />
-                                    <label className="custom-control-label" htmlFor="color-2">White</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="color-3" name="color" />
-                                    <label className="custom-control-label" htmlFor="color-3">Red</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="color-4" name="color" />
-                                    <label className="custom-control-label" htmlFor="color-4">Blue</label>
-                                </div>
-                                <div className="custom-control custom-radio custom-control-inline">
-                                    <input type="radio" className="custom-control-input" id="color-5" name="color" />
-                                    <label className="custom-control-label" htmlFor="color-5">Green</label>
-                                </div> */}
-                            {/* </form> */}
-                        </div>
-                        <div className="d-flex align-items-center mb-4 pt-2">
-                            <div className="input-group quantity mr-3" style={{width: "130px"}}>
-                                <div className="input-group-btn">
-                                    <button 
-                                        className="btn btn-primary btn-minus" 
-                                        onClick={() => handleDecreaseCart(thisProduct)}>
-                                        <i className="fa fa-minus" />
-                                    </button>
-                                </div>
-                                <input 
-                                    type="text" 
-                                    className="form-control bg-secondary border-0 text-center" 
-                                    value={selectedItem
-                                        ? selectedItem.products.cartQuantity 
-                                        : 0
-                                    }
-                                />
-                                <div className="input-group-btn">
-                                    <button 
-                                        className="btn btn-primary btn-plus"
-                                        onClick={() => handleAddToCart(thisProduct)}>
-                                        <i className="fa fa-plus" />
-                                    </button>
+                                <button 
+                                    className="btn btn-primary px-3" 
+                                    onClick={()=> handleAddToCart(thisProduct)}
+                                >
+                                    <i className="fa fa-shopping-cart mr-1" /> 
+                                        Add ToCart
+                                </button>
+                            </div>
+                            <div className="d-flex pt-2">
+                                <strong className="text-dark mr-2">Share on:</strong>
+                                <div className="d-inline-flex">
+                                    <Link className="text-dark px-2" to="">
+                                        <i className="fab fa-facebook-f facebook-icon" />
+                                    </Link>
+                                    <Link className="text-dark px-2" to="">
+                                        <i className="fab fa-twitter twitter-icon" />
+                                    </Link>
+                                    {/* <Link className="text-dark px-2" to="">
+                                        <i className="fab fa-linkedin-in" />
+                                    </Link>
+                                    <Link className="text-dark px-2" to="">
+                                        <i className="fab fa-pinterest" />
+                                    </Link> */}
                                 </div>
                             </div>
-                            <button 
-                                className="btn btn-primary px-3" 
-                                onClick={()=> handleAddToCart(thisProduct)}
-                            >
-                                <i className="fa fa-shopping-cart mr-1" /> 
-                                    Add ToCart
-                            </button>
                         </div>
-                        <div className="d-flex pt-2">
-                            <strong className="text-dark mr-2">Share on:</strong>
-                            <div className="d-inline-flex">
-                                <Link className="text-dark px-2" to="">
-                                    <i className="fab fa-facebook-f" />
-                                </Link>
-                                <Link className="text-dark px-2" to="">
-                                    <i className="fab fa-twitter" />
-                                </Link>
-                                <Link className="text-dark px-2" to="">
-                                    <i className="fab fa-linkedin-in" />
-                                </Link>
-                                <Link className="text-dark px-2" to="">
-                                    <i className="fab fa-pinterest" />
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div className="row px-xl-5">
@@ -327,7 +277,7 @@ function Detail() {
                                 to="#tab-pane-1">
                                 Description
                             </Link>
-                            <Link
+                            {/* <Link
                                 className="nav-item nav-link text-dark"
                                 data-toggle="tab"
                                 to="#tab-pane-2">Information</Link>
@@ -336,7 +286,7 @@ function Detail() {
                                 data-toggle="tab"
                                 to="#tab-pane-3">
                                 Reviews (0)
-                            </Link>
+                            </Link> */}
                         </div>
                         <div className="tab-content">
                             <div className="tab-pane fade show active" id="tab-pane-1">
@@ -438,10 +388,10 @@ function Detail() {
                     </div>
                 </div>
             </div>
-            </div>
+            {/* </div> */}
             {/*Shop Detail End*/}
             {/*Products Start*/}
-            <div className="container-fluid py-5">
+            {/* <div className="container-fluid py-5">
                 <h2 className="section-title position-relative text-uppercase mx-xl-5 mb-4">
                     <span className="bg-secondary pr-3">You May Also Like</span>
                 </h2>
@@ -597,7 +547,7 @@ function Detail() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             {/*Products End*/}
             {/*Footer Start*/}
             <div className="container-fluid bg-dark text-secondary mt-5 pt-5">
@@ -668,6 +618,7 @@ function Detail() {
                         <img className="img-fluid" src="/img/payments.png" alt="" />
                     </div>
                 </div>
+            </div>
             </div>
             {/*Footer End */}
             {/*Back to Top*/}

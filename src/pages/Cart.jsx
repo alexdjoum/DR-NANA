@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react"
 import Header from "../components/Header";
 import { products } from '../dynamic/products';
+import CommandService from '../services/commandService';
 
 function Cart() {
     const closeButtonRef = useRef(null);
@@ -15,16 +16,17 @@ function Cart() {
     const [villes , setVilles] = useState([])
     const [command, setCommand] = useState({
         nomClient: "", 
-        remise: "",
+        // remise: "",
         montant: 0,
         mobile: "",
+        addresse: "",
         villeId: null,
         description: ""
     })
     const [pending, setPending]= useState(false)
     useEffect(() => {
         
-        fetch(`${process.env.REACT_APP_API_URL}/api/listVilles`).then(response => {
+        fetch(`${process.env.REACT_APP_API_URL}/listVilles`).then(response => {
             if (response.ok) {
                 return response.json()
                 
@@ -81,49 +83,40 @@ function Cart() {
         setCommand(prevState =>({...prevState, [field]: value}))
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
-        async function postJSON(data) {
-            try {
-              setPending(true)
-              const response = await fetch(`${process.env.REACT_APP_API_URL}/api/createCommande`, {
-                method: "POST", // or 'PUT'
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-              });
-          
-              const result = await response.json();
-              //console.log('voir le resulat ===>> ', result.status_message)
-              //window.location.reload()
-              setPending(false)
-              //console.log("Success:", result);
-              setMessageValide(result.status_message)
-              setMessageToCreateOrder('Nous avons reçu votre commande')
-              dispatch(clearCart())
-              console.log('le current click ==>> ', closeButtonRef.current)
-              closeButtonRef.current.click();
-            } catch (error) {
-                console.error("Error:", error);
-            } 
-        }
-        //console.log('voir le resultat du message valid ================>>>', messageValid)
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+      
         const data = {
-            montant:montant,
-            nomClient:command.nomClient,
-            mobile:command.mobile,
-            remise:0,
-            ville_id:Number(command.villeId),
-            productList:productList
+          montant: montant,
+          nomClient: command.nomClient,
+          mobile: command.mobile,
+          addresse: command.addresse,
+          commentaire: command.description,
+          ville_id: Number(command.villeId),
+          productList: productList
         };
-
-        console.log('See data command===>>> ', data)
-        postJSON(data);
-    
-    }
-    console.log('look command form ===>>', command)
+      
+        console.log('See data command===>>>  ZOZIZIZ');
+      
+        try {
+          setPending(true);
+      
+          const response = await CommandService.createCommand(data)
+          console.log("Success:", response);
+      
+          setMessageValide(response.status_message);
+          setMessageToCreateOrder('Nous avons reçu votre commande');
+          dispatch(clearCart());
+          closeButtonRef.current.click();
+      
+        } catch (error) {
+          console.error("Error:", error);
+          setMessageValide("Une erreur s'est produite lors de la création de la commande");
+        } finally {
+          setPending(false);
+        }
+      };
+    //console.log('look command form ===>>', command)
     //console.log("content cart ===>> ", cart)
     return (
         <>
@@ -296,13 +289,15 @@ function Cart() {
             </div>
             <div className="container-fluid">
                 <div className="row px-xl-5">
-                    <div className="col-lg-8 table-responsive mb-5">
+                    <div className="col-lg-12 table-responsive mb-5">
                         <table className="table table-light table-borderless table-hover text-center mb-0">
                             <thead className="thead-dark">
                             <tr>
                                 <th>Products</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
+                                <th>Sizes</th>
+                                <th>Colors</th>
                                 {/* <th>Size</th> */}
                                 <th>Total</th>
                                 <th>Remove</th>
@@ -347,6 +342,11 @@ function Cart() {
                                             </div>
                                         </div>
                                     </td>
+                                    <td className="align-middle"><p>
+                                        {item.sizesToSend.map(size => <p className="font-weight-bold"> {size} </p>)}</p></td>
+                                    <td className="align-middle">
+                                        {item.colorToSend.map(color => <p className="font-weight-bold"> {color} </p>)}
+                                    </td>
                                     <td className="align-middle">{item.products.cartQuantity*item.products.prix}</td>
                                     <td className="align-middle">
                                         <button
@@ -362,7 +362,9 @@ function Cart() {
                             </tbody>
                         </table>
                     </div>
-                    <div className="col-lg-4">
+                </div>
+                <div className="row justify-content-center">
+                    <div className="col-lg-6">
                         {/* <form className="mb-30" action="">
                             <div className="input-group">
                                 <input type="text" className="form-control border-0 p-4" placeholder="Coupon Code"/>
@@ -436,6 +438,19 @@ function Cart() {
                                                 </div>
                                                 <div className="form-group">
                                                     <label 
+                                                        for="recipient-name" 
+                                                        className="col-form-label">
+                                                            Quartier:
+                                                    </label>
+                                                    <input 
+                                                        type="text" 
+                                                        value={command.addresse}
+                                                        onChange={(e) => updateField(e.target.value, "addresse")}
+                                                        className="form-control" 
+                                                        id="recipient-name" />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label 
                                                         htmlFor="recipient-name" 
                                                         className="col-form-label">
                                                             Montant:
@@ -443,6 +458,7 @@ function Cart() {
                                                     <input 
                                                         type="text" 
                                                         value={montant}
+                                                        disabled
                                                         onChange={(e) => updateField(e.target.value, "montant")}
                                                         className="form-control" 
                                                         id="recipient-name" />
@@ -451,16 +467,16 @@ function Cart() {
                                                     <label 
                                                         htmlFor="recipient-name" 
                                                         className="col-form-label">
-                                                            Description:
+                                                            Message / Parler-nous:
                                                     </label>
-                                                    <input 
+                                                    <textarea 
                                                         type="text" 
                                                         value={command.description}
                                                         onChange={(e) => updateField(e.target.value, "description")}
                                                         className="form-control" 
                                                         id="recipient-name" />
                                                 </div>
-                                                <div class="form-group">
+                                                {/* <div class="form-group">
                                                     <label 
                                                         htmlFor="recipient-name" 
                                                         className="col-form-label">
@@ -470,7 +486,7 @@ function Cart() {
                                                         type="text" 
                                                         className="form-control" 
                                                         id="recipient-name" />
-                                                </div>
+                                                </div> */}
                                                 <div className="form-group">
                                                     <select 
                                                         value={command.villeId}
@@ -520,8 +536,10 @@ function Cart() {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
+        
             {/*Cart End*/}
             {/*Footer Start*/}
             <div className="container-fluid bg-dark text-secondary mt-5 pt-5">

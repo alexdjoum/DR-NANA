@@ -16,7 +16,7 @@ function Home() {
 
     useEffect(() => {
         
-        fetch(`${process.env.REACT_APP_API_URL}/api/listCategories`).then(response => {
+        fetch(`${process.env.REACT_APP_API_URL}/listCategories`).then(response => {
             if (response.ok) {
                 return response.json()
                 // console.log('mes products aip', result);

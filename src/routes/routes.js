@@ -12,6 +12,7 @@ import Commands from "../pages/Commands";
 import ShopPerPage from "../pages/ShopPerPage";
 import CollapsibleTable from "../pages/ProductCreated";
 import ProductCreated2 from "../pages/ProductCreated2";
+import CreditCard from "../pages/CreditCard";
 
 export const routes = [
     {
@@ -62,6 +63,12 @@ export const clientRoutes = [
     {
         path: '/shop',
         component: Shop,
+        exact: true,
+        protected: false
+    },
+    {
+        path: '/creditCard',
+        component: CreditCard,
         exact: true,
         protected: false
     },

@@ -19,9 +19,17 @@ export const productsSlice = createSlice({
         },
         getProducts: (state, action) => {
             
-            state.products = action.payload
+            //state.products = action.payload
+            console.log("produits à incrémenter ===>> ", action.payload)
             state.loading = false
+            //state.products= action.payload.items;
+            state.products= [...state.products, ...action.payload.items];
             //console.log('getProduct redux ==>> ', state.products)
+        },
+        getProductsByPrice: (state, action) => {
+            state.loading = true;
+            state.products = action.payload;
+            state.loading = false
         },
         onNavigateNext: (state) => {
             state.currentPage++
@@ -41,5 +49,5 @@ export const productsSlice = createSlice({
     }
 })
 // Action creators are generated for each case reducer function
-export const { getProducts, isLoading, onChangeProductsPerpage, onNavigatePrev,onNavigateNext, onClickCurrentPage, onchangeCurrentPage } = productsSlice.actions
+export const { getProducts, isLoading, getProductsByPrice, onChangeProductsPerpage, onNavigatePrev,onNavigateNext, onClickCurrentPage, onchangeCurrentPage } = productsSlice.actions
 export default productsSlice.reducer

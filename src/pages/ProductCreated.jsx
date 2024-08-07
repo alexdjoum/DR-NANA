@@ -112,7 +112,7 @@ export default function CollapsibleTable() {
       try {
         console.log('see in the try => ', dataToSends)
         setLoading(true)
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/createProduit`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/createProduit`, {
           method: "POST", // or 'PUT'
           headers: {
             "Content-Type": "application/json",
@@ -196,7 +196,7 @@ export default function CollapsibleTable() {
           const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitsList`);
           const data = await response.json();
           console.log("success products ==>>> ", data)
-          setProducts(data);
+          setProducts(data.items);
           setLoading(false)
           //dispatch(onchangeCurrentPage(page))
       } catch (error) {
@@ -277,7 +277,7 @@ export default function CollapsibleTable() {
                       </tr>
                     </thead>
                     <tbody>
-                      {products.items.map(elt => (
+                      {/* {products.map(elt => (
                         <tr class="alert" role="alert">
                           <td>
                             <label class="checkbox-wrap checkbox-primary">
@@ -308,7 +308,7 @@ export default function CollapsibleTable() {
                         </td>
                         </tr>
                       ))}
-                      
+                       */}
                     </tbody> 
                   </table>
                 </div>

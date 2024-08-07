@@ -19,4 +19,30 @@ export default async function getJSON(url) {
       console.error("Error:", error);
     }
   }
-  
+
+  const POST = function (url, data) {
+      console.log("login ===>",data);
+      return fetch(url, {
+          "method": "POST",
+          "headers": {
+              "content-type": "application/json",
+              "accept": "application/json"
+          },
+          "body": JSON.stringify(data)
+      })
+  };
+
+  const GET = function (url) {
+    return fetch(url, {
+        "method": "GET",
+        "headers": {
+            "content-type": "application/json",
+            "accept": "application/json"
+        }
+    })
+  };
+
+export {
+  POST,
+  GET
+};

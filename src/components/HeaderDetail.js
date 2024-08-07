@@ -44,7 +44,7 @@ export default function HeaderDetail() {
         const query = event.target.value;
         setSearched(query)
         try {
-            const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitsList?search=${query}`)
+            const response  = await fetch(`${process.env.REACT_APP_API_URL}/produitsList?search=${query}`)
             const data = await response.json();
             console.log('data from header ===>>> ', data)
             dispatch(getProducts(data))
@@ -58,7 +58,7 @@ export default function HeaderDetail() {
         console.log('id onClickCategory ====>>> ',id)
         //e.preventDefault()
         try {
-            const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitByCategories/${id}`)
+            const response  = await fetch(`${process.env.REACT_APP_API_URL}/produitByCategories/${id}`)
             const data = await response.json();
             console.log('data from header ===>>> ', data)
             dispatch(getProducts(data))
@@ -84,7 +84,7 @@ export default function HeaderDetail() {
               <div className="container-fluid">
                   <div className="row bg-secondary py-1 px-xl-5">
                       <div className="col-lg-6 d-none d-lg-block">
-                          <div className="d-inline-flex align-items-center h-100">
+                          <div className="d-inline-flex align-items-center h-100" >
                               <Link className="text-body mr-3" to="">About</Link>
                               <Link className="text-body mr-3" to="">Contact</Link>
                               <Link className="text-body mr-3" to="">Help</Link>
@@ -192,14 +192,14 @@ export default function HeaderDetail() {
                       </div>
                   </div>
               </div>
-              <div className="container-fluid bg-dark mb-30">
-                  <div className="row px-xl-5" style={{background: "#435c70"}}>
-                      <div className="col-lg-3 d-none d-lg-block" style={{background: "red"}}>
+              <div className="container-fluid bg-dark mb-30" style={{background: "rgb(67, 92, 112)"}}>
+                  <div className="row px-xl-5" style={{background: "rgb(67, 92, 112)"}}>
+                      <div className="col-lg-3 d-none d-lg-block" style={{background: "rgb(67, 92, 112)"}}>
                           <a
-                              className="btn d-flex align-items-center justify-content-between w-100"
-                            //   bg-primary
+                              className="btn d-flex align-items-center justify-content-between w-100 bg-primary"
+                            //   
                               data-bs-toggle="collapse" href="#navbar-vertical"
-                              style={{height: "65px", padding: "0 30px", background: "red"}}>
+                              style={{height: "65px", padding: "0 30px"}}>
                               <h6 className="text-white m-0"><i className="fa fa-bars mr-2" style={{color: "white"}}/>Categories</h6>
                               <i className="fa fa-angle-down text-dark" style={{color: "white"}}/>
                           </a>

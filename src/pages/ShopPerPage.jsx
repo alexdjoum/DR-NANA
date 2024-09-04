@@ -139,7 +139,7 @@ function ShopPerPage() {
                     <div className="row px-xl-5">
                         <div className="col-lg-3 col-md-4">
                             <h5 className="section-title position-relative text-uppercase mb-3"><span
-                                className="bg-secondary pr-3">Filter by price</span></h5>
+                                className="bg-secondary pr-3">Filtrer par prix</span></h5>
                             <div className="bg-light p-4 mb-30">
                                 <form>
                                     <div

@@ -56,7 +56,7 @@ export const clientRoutes = [
     },
     {
         path: '/',
-        component: Home,
+        component: Shop,
         exact: true,
         protected: false
     },

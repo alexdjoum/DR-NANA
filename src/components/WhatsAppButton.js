@@ -1,5 +1,8 @@
 import React from 'react';
 // import { Button } from 'antd';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp, } from "@fortawesome/free-regular-svg-icons";
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 const WhatsAppButton = ({ phoneNumber, message }) => {
   // const handleWhatsAppClick = () => {
@@ -10,13 +13,13 @@ const WhatsAppButton = ({ phoneNumber, message }) => {
 
   return (
     <a 
+      className="btn"
       href={url} 
       target="_blank" 
       rel="noopener noreferrer"
-      //type="primary" 
-      // onClick={handleWhatsAppClick}
+      style={{backgroundColor: "#25D366", borderRadius: "9px", color: "white"}}
     >
-      WhatsApp 676892402 
+      <FontAwesomeIcon icon={faWhatsapp} /> whatsapp
     </a>
   );
 };

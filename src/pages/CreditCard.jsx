@@ -3,13 +3,15 @@ import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import productListService from '../services/productListService';
 import FirstHeader from '../components/FirstHeader';
+import Footer from '../components/Footer';
 import BannerWithLinks from '../components/BannerWithLinks';
+import HeaderWithoutContainSearch from '../components/HeaderWithoutContentSearch';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Validation schema avec Yup
 const validationSchema = Yup.object({
     matricule: Yup.string().required('Veuillez entrer votre matricule'),
-
+    mobile: Yup.string().required("Veuillez votre numéro de téléphone")
 })
 
 function CreditCard() {
@@ -20,37 +22,54 @@ function CreditCard() {
         console.log('see value ==> ', values)
         const response = await productListService.getFidelityCard(values)
         setFidelity(response)
-        console.log('Voir la response ==>> ', response)
+        //console.log('Voir la response ==>> ', response)
         //alert(`Matricule soumis: ${values.matricule}`, null, 4);
         //setSubmitting(false);
     };
     return (
-        <div>
-            <FirstHeader />
+        <>
+            {/* <FirstHeader /> */}
+            <HeaderWithoutContainSearch />
             <BannerWithLinks />
-             <div className="container">
-            <div className='row justify-content-center'>
-                <div className='col-md-8'>
-                    <h1>Carte de Fidelité</h1>
+            <div className='fidelity template d-flex justify-content-center align-items-center vh-90 mb-5 mt-5'>
+                <div className='form_container p-5 rounded bg-white border-dark'>
+                    
                     <Formik
                         initialValues={{
-                            matricule: '',
+                            matricule: null,
+                            mobile: ''
                         }}
                         validationSchema={validationSchema}
                         onSubmit={handleSubmit}
                     >
                         {({ errors, touched }) => (
                             <Form>
+                                <h1 className='text-center mb-5'>Carte de Fidelité</h1>
                                 <div className="form-group">
-                                    <label htmlFor="matricule">Matricule</label>
-                                    <Field 
-                                        id="matricule" 
-                                        name="matricule" 
-                                        className="form-control" 
-                                        placeholder="Entrer le matricule"
-                                    />
-                                    {errors.matricule && touched.matricule ? <div className="text-danger">{errors.matricule}</div> : null}
-                                    <div className="d-flex justify-content-center mt-2">
+                                    <div className='mb-4'>
+                                        <label htmlFor="matricule">Matricule</label>
+                                        <Field 
+                                            id="matricule" 
+                                            name="matricule" 
+                                            type='number'
+                                            className="form-control" 
+                                            placeholder="Entrer le matricule"
+                                        />
+                                        {errors.matricule && touched.matricule ? <div className="text-danger">{errors.matricule}</div> : null}
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="mobile">Mobile</label>
+                                        <Field 
+                                            id="mobile" 
+                                            // type='number'
+                                            name="mobile" 
+                                            className="form-control" 
+                                            placeholder="Entrer le numéro de téléphone"
+                                        />
+                                        {errors.mobile && touched.mobile ? <div className="text-danger">{errors.mobile}</div> : null}
+                                    </div>
+                                    
+                                    <div className="d-grid mt-5 mb-5">
                                         <button 
                                             type="submit" 
                                             className="btn btn-info"
@@ -115,6 +134,33 @@ function CreditCard() {
                                                     <h6 className='text-muted'>{fidelity.dateNaiss}</h6>
                                                 </div>
                                             </div>
+                                            <div className='row'>
+                                                <div className='col-sm-6'>
+                                                    <p className='font-weight-bold'>Point:</p>
+                                                    <h6 className='text-muted'>{fidelity.point}</h6>
+                                                </div>
+                                                <div className='col-sm-6'>
+                                                    <p className='font-weight-bold'>Montant tontine:</p>
+                                                    <h6 className='text-muted'>{fidelity.montantTontine}</h6>
+                                                </div>
+                                            </div>
+                                            <div className='row mt-3 mb-3'>
+                                                <div className='col-6'>
+                                                    <button className="btn btn-outline-info">Bon d'achat:</button>
+                                                    {/* <h6 className='text-muted'>{fidelity.nom}</h6> */}
+                                                </div>
+                                                <div className='col-6'>
+                                                    <button 
+                                                        className='btn btn-outline-warning'
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#exampleModal" 
+                                                        data-bs-whatever="@mdo"
+                                                    >
+                                                        Tontines:
+                                                    </button>
+                                                    {/* <h6 className='text-muted'>{fidelity.dateNaiss}</h6> */}
+                                                </div>
+                                            </div>
                                             {/* <h4 className='mt-3'>Projects</h4>
                                             <hr className='bg-primary'/>
                                             <div className='row'>
@@ -143,10 +189,42 @@ function CreditCard() {
                     )}
                 </div>
             </div>          
-        </div>
-        </div>
-        
-       
+            <Footer />
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Tableau des tontines de ...</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">Montant </th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {fidelity?.tontines.map((tont, index) => (
+                                <tr key={index}>
+                                    <td>{tont.montant}</td>
+                                    <td>{tont.validite === 1 ? "Retrait" : "Dépot"}</td>
+                                    <td>{tont.client_carte_matr}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        {/* <button type="button" class="btn btn-primary">Action</button> */}
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </>   
     );
 }
 

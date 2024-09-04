@@ -6,6 +6,9 @@ import {products} from "../dynamic/products";
 import {FormattedMessage} from "react-intl";
 import {useDispatch, useSelector} from "react-redux"
 import { getRedCategories, isLoading } from "../features/category/categorySlice";
+import FirstHeader from "../components/FirstHeader";
+import HeaderWithoutContainSearch from "../components/HeaderWithoutContentSearch";
+import BannerWithLinks from "../components/BannerWithLinks";
 
 
 function Home() {
@@ -39,7 +42,10 @@ function Home() {
     }, []);
     return (
       <div>
-          <Header />
+          {/* <Header /> */}
+          {/* <FirstHeader /> */}
+          <HeaderWithoutContainSearch />
+          <BannerWithLinks />
         <div className="container-fluid mb-3">
             <div className="row px-xl-5">
                 <div className="col-lg-8">

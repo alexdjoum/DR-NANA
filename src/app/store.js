@@ -1,17 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
 import cardReducer from '../features/cart/cartSlice'
-import storage from 'redux-persist/lib/storage'
-import {persistReducer} from "redux-persist";
+//import storage from 'redux-persist/lib/storage'
+//import {persistReducer} from "redux-persist";
 import { combineReducers } from "redux";
 import productReducer from '../features/products/productSlice';
 import categoryReducer from '../features/category/categorySlice'
 
 
-const persistConfig = {
-    key: 'root',
-    // version: 1,
-    storage,
-}
+// const persistConfig = {
+//     key: 'root',
+//     storage,
+// }
 
 const rootReducer = combineReducers({
     cart: cardReducer,
@@ -19,11 +18,11 @@ const rootReducer = combineReducers({
     category: categoryReducer
 })
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+//const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export default configureStore({
-    reducer: persistedReducer,
-    // reducer: rootReducer,
+    //reducer: persistedReducer,
+    reducer: rootReducer,
     // middleware: (getDefaultMiddleware) =>
     //     getDefaultMiddleware({
     //         serializableCheck: {

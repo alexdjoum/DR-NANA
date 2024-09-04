@@ -5,6 +5,8 @@ import HeaderDetail from "../components/HeaderDetail";
 import { useDispatch, useSelector } from 'react-redux';
 
 import {decreaseCart, addToCart, removeFromCart, getTotals, clearCart} from "../features/cart/cartSlice"
+import HeaderWithContainSearch from '../components/HeaderWithContainSearch';
+import BannerWithLinks from '../components/BannerWithLinks';
 //import { products } from '../dynamic/products';
 
 function Detail() {
@@ -72,7 +74,8 @@ function Detail() {
     return (
         <>
             {/* <Header /> */}
-            <HeaderDetail />
+            <HeaderWithContainSearch />
+            <BannerWithLinks />
             {/*Navbar End*/}
             {/*Breadcrumb Start*/}
             <div className="container-fluid">
@@ -89,7 +92,7 @@ function Detail() {
             {/*Breadcrumb End*/}
             {/*Shop Detail Start*/}
             <div className="container-fluid pb-5">
-                <div className="row" style={{height: "800px"}}>
+                <div className="row">
                     <div className="col-lg-5 mb-30 text-center">
                         {/* <div 
                             id="product-carousel" 
@@ -158,23 +161,33 @@ function Detail() {
                     <div className="col-lg-7 h-auto mb-30">
                         <div className="h-100 bg-light p-30">
                             <h3>{thisProduct?.nomPro}</h3>
-                            <div className="d-flex overflow-scroll" style={{width: "500px", maxHeight: "500px"}}>
-                                {filteredPhotos?.map((src, index) => (
+                            {/* overflow-scroll */}
+                            <div 
+                                className="d-flex h-25" 
+                                // style={{width: "500px", maxHeight: "500px"}}
+                            >
+                                {thisProduct?.photos?.map((src, index) => (
                                     <div 
-                                        className={`col-3 ${selectedImage === src.lienPhoto ? 'border border-primary' : ''}`} 
+                                        className={`${selectedImage === src.lienPhoto ? 'border border-primary' : ''}`} 
                                         key={index} 
-                                        style={{height: '113px', width: "81px"}}
+                                        // style={{height: '113px', width: "81px"}}
                                         onClick={() => handleImageClick(src)}
                                     >
-                                        <img src={`${process.env.REACT_APP_API_BACKEND}/${src?.lienPhoto}`} alt={`Thumbnail ${index}`} className="img-thumbnail" />
+                                        <img 
+                                            src={`${process.env.REACT_APP_API_BACKEND}/${src?.lienPhoto}`} 
+                                            alt={`Thumbnail ${index}`} 
+                                            className="img-thumbnail img-fluid h-100" 
+                                        />
                                     </div>
                                 ))} 
                             </div>
-                            <h3 className="font-weight-semi-bold mb-4">{thisProduct?.prix} {process.env.REACT_APP_API_UNITE}</h3>
-                            <p className="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit
+                            <h3 className="font-weight-semi-bold mb-4">{Intl.NumberFormat('en-DE').format(thisProduct?.prix)} {process.env.REACT_APP_API_UNITE}</h3>
+                            {/* <p className="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit
                                 clita ea. Sanc ipsum et, labore clita lorem magna duo dolor no sea
-                                Nonumy</p>
-                            <div className="d-flex mb-3">
+                                Nonumy</p> */}
+                            
+                            
+                            <div className="d-flex tshirtsizes mb-3">
                                 <strong className="text-dark mr-3">Sizes:</strong>
                                 {thisProduct?.sizes?.map((s, index) => (
                                     <div className="custom-control custom-radio custom-control-inline" key={index}>
@@ -214,17 +227,18 @@ function Detail() {
                                 ))}
                             </div>
                             
-                            <div className="d-flex align-items-center mb-4 pt-2">
-                                <div className="input-group quantity mr-3" style={{width: "130px"}}>
-                                    <div className="input-group-btn">
+                            <div className="d-flex mb-4 pt-2">
+                                <div className="d-flex quantity mr-3">
+                                    {/* <div className="input-group-btn">
                                         <button 
                                             className="btn btn-primary btn-minus" 
                                             onClick={() => handleDecreaseCart(thisProduct)}>
                                             <i className="fa fa-minus" />
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <input 
                                         type="text" 
+                                        style={{maxWidth: "87px"}}
                                         className="form-control bg-secondary border-0 text-center" 
                                         value={selectedItem
                                             ? selectedItem.products.cartQuantity 
@@ -267,7 +281,7 @@ function Detail() {
                         </div>
                 </div>
             </div>
-            <div className="row px-xl-5">
+            <div className="row px-xl-5 mt-5">
                 <div className="col">
                     <div className="bg-light p-30">
                         <div className="nav nav-tabs mb-4">
@@ -337,7 +351,7 @@ function Detail() {
                                     <div className="col-md-6">
                                         <h4 className="mb-4">1 review for "Product Name"</h4>
                                         <div className="media mb-4">
-                                            <img src="/img/user.jpg" alt="Image" className="img-fluid mr-3 mt-1" style={{width: "45px"}} />
+                                            <img src="/img/user.jpg" alt="Image" className="img-fluid mr-3 mt-1" />
                                             <div className="media-body">
                                                 <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
                                                 <div className="text-primary mb-2">
@@ -551,7 +565,7 @@ function Detail() {
             {/*Products End*/}
             {/*Footer Start*/}
             <div className="container-fluid bg-dark text-secondary mt-5 pt-5">
-                <div className="row px-xl-5 pt-5">
+                <div className="row px-xl-5 position-fixed pt-5">
                     <div className="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
                         <h5 className="text-secondary text-uppercase mb-4">Get In Touch</h5>
                         <p className="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
@@ -608,15 +622,16 @@ function Detail() {
                 <div className="row border-top mx-xl-5 py-4" style={{borderColor: "rgba(256, 256, 256, 0.1) !important"}}>
                     <div className="col-md-6 px-xl-0">
                         <p className="mb-md-0 text-center text-md-left text-secondary">
-                            <Link className="text-primary" to="#">Domain</Link>. All Rights Reserved. Designed
+                            {/* <Link className="text-primary" to="#">Domain</Link> */}
+                            All Rights Reserved. Designed
                             by
-                            <Link className="text-primary" to="https://htmlcodex.com">HTML Codex</Link>
-                            <br />Distributed By: <Link to="https://themewagon.com" target="_blank">ThemeWagon</Link>
+                            <Link className="text-primary" to="/shop">Bambino</Link>
+                            {/* <br />Distributed By: <Link to="https://themewagon.com" target="_blank">ThemeWagon</Link> */}
                         </p>
                     </div>
-                    <div className="col-md-6 px-xl-0 text-center text-md-right">
+                    {/* <div className="col-md-6 px-xl-0 text-center text-md-right">
                         <img className="img-fluid" src="/img/payments.png" alt="" />
-                    </div>
+                    </div> */}
                 </div>
             </div>
             </div>

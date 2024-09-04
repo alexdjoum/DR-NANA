@@ -5,7 +5,8 @@ export const categorySlice = createSlice({
     name: 'category',
     initialState: {
         categories: [],
-        pending: false,
+        loading: false,
+        categorySelected: "",
         error: false
     },
     reducers: {
@@ -14,13 +15,18 @@ export const categorySlice = createSlice({
             console.log("displaying pending ==> ", state.pending)
 
         },
+        updatedCategorySelected: (state, action) => {
+            state.loading = true;
+            state.categorySelected = action.payload;
+            state.loading = false;
+        },
         getRedCategories: (state, action) => {
-            console.log('log redux categories ===>> ', action.payload)
-            state.categories = action.payload
+            console.log('log redux categories ===>> ', action)
+            state.categories = [...action.payload]
             state.loading = false
         },
     }
 })
 // Action creators are generated for each case reducer function
-export const { getRedCategories, isLoading } = categorySlice.actions
+export const { getRedCategories, isLoading, updatedCategorySelected } = categorySlice.actions
 export default categorySlice.reducer

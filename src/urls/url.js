@@ -7,6 +7,8 @@ const backendUrls = {
     productList: {
         productList: authenticationBaseUrl + "/produitsList"
     }, 
-    getFidelityCard: authenticationBaseUrl + "/clients/"
+    getFidelityCard: authenticationBaseUrl + "/client/",
+    categoriesList: authenticationBaseUrl +'/listCategories',
+    productsByCategory: authenticationBaseUrl +'/produitByCategories/'
 }
 export default backendUrls;

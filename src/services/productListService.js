@@ -3,9 +3,10 @@ import backendUrls from '../urls/url';
 
 
 const productListService = {
-    productList: async function () {
-        const url = backendUrls.productList.productList
-        console.log(`data de create Command ==>>`, url)
+    productList: async function (params) {
+        //console.log('voir params ==>> ',params)
+        const url = backendUrls.productList.productList+'?'+params;
+        //console.log(`data de create Command ==>>`, url)
         const result = await GET(url)
         .then((r) => r.json())
         return result;
@@ -18,10 +19,16 @@ const productListService = {
     },
     getFidelityCard: async function (data) {
         console.log('Voir la data de la carte de fidelité ==> ', data)
-        const url = `${backendUrls.getFidelityCard}${data.matricule}`;
+        const url = `${backendUrls.getFidelityCard}${data.matricule}/${data.mobile}`;
         const result = await GET(url)
         .then((r) => r.json())
         return result
+    },
+    getProductByCategory: async function (id) {
+        const url = backendUrls.productsByCategory+id;
+        const result = await GET(url)
+        .then((r) => r.json())
+        return result;
     }
 
 }

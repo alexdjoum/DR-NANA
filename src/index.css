@@ -35,3 +35,51 @@ input[type="range"].slider-track {
   color: #1DA1F2; /* Code couleur officiel de Twitter */
   /* font-size: 50px;  */
 }
+
+.nav-link {
+  color: #000;
+  font-weight: normal;
+  background-color: transparent;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.nav-link.active {
+  color: #007bff;
+  font-weight: bold;
+  background-color: #e9ecef;
+  border-left: 3px solid #007bff;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .tshirtsizes {
+    display: none;
+  }
+}
+
+/* Styles pour les mobiles (largeur d'écran inférieure à 768px) */
+@media only screen and (max-width: 767px) {
+  .tshirtsizes {
+    display: none;
+  }
+}
+
+.form_container {
+  width: 30%;
+}
+
+@media screen and (max-width: 1000px) {
+  .form_container {
+    width: 45%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .form_container {
+    width: 65%;
+  }
+}
+
+.activeNavLink {
+  background: #0403f1;
+}

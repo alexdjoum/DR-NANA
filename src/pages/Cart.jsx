@@ -6,8 +6,12 @@ import {decreaseCart, addToCart, removeFromCart, getTotals, clearCart} from "../
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react"
 import Header from "../components/Header";
+import HeaderWithoutContentSearch from "../components/HeaderWithoutContentSearch";
+import FirstHeader from "../components/FirstHeader";
+import BannerWithLinks from "../components/BannerWithLinks";
 import { products } from '../dynamic/products';
 import CommandService from '../services/commandService';
+import HeaderDetail from '../components/HeaderDetail';
 
 function Cart() {
     const closeButtonRef = useRef(null);
@@ -120,7 +124,9 @@ function Cart() {
     //console.log("content cart ===>> ", cart)
     return (
         <>
-            <Header />
+            {/* <FirstHeader />  */}
+            <HeaderWithoutContentSearch />
+            <BannerWithLinks />
             {pending && (<Loading />)}
             {messageValid  && (
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

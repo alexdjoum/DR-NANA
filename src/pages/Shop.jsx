@@ -9,7 +9,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {SearchedByNameContext} from "../app/storeInput";
 import {useDispatch, useSelector} from "react-redux";
 import {addToCart} from "../features/cart/cartSlice";
-import { getProducts, getProductsByPrice, isLoading } from "../features/products/productSlice";
+import { getProducts, getProductsByPrice, isLoading, setCurrentPage, handleMaxPriceChange,handleMinPriceChange } from "../features/products/productSlice";
 import { onNavigateNext, onNavigatePrev, onchangeCurrentPage, onClickCurrentPage, onChangeProductsPerpage} from "../features/products/productSlice"
 //import getMethod from "../api/getMethod"
 //import { getProducts, isLoading } from "../features/products/productSlice";
@@ -23,6 +23,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import FirstHeader from "../components/FirstHeader";
 import HeaderWithContainSearch from "../components/HeaderWithContainSearch";
 import BannerWithLinks from "../components/BannerWithLinks";
+import categoryService from '../services/categoryService';
+import { getRedCategories, updatedCategorySelected } from '../features/category/categorySlice';
 
 const formatNumber = (num) => {
     const str = num.toString();
@@ -45,41 +47,35 @@ function Results() {
     //const [pageCount, setPageCount] = useState(1)
     // Calculate the total number of pages
     //const pageCount = Math.ceil(productsData.find())
+    //const [page, setPage] = useState(1)
+    const categories = useSelector(state => state.category.categories);
+    const [lastPage, setLastPage] = useState(0)
+    const search = useSelector(state => state.products.search)
+    const currenPage = useSelector(state => state.products.currentPage)
     const items = useSelector(state => state.products.products)
-    const [price, setPrice] = useState(0)
-    console.log('items à partir de shop ===>> ', items)
-    const {loading} = useSelector(state => state.products)
+    const s = useSelector(state => state.products)
+    //console.log('sss ==> ', s)
+    //const [price, setPrice] = useState(0)
+    //console.log('items à partir de shop ===>> ', items)
+    //const {loading} = useSelector(state => state.products)
     // const [productsData, setProducData] = useState([])
     // const [productss, setProductss] = useState({})
     const navigate = useNavigate()
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(150000);
-    //const [items, setItems] = useState([]);
+    // const [minPrice, setMinPrice] = useState(0);
+    // const [maxPrice, setMaxPrice] = useState(150000);
+    const { minPrice, maxPrice } = useSelector((state) => state.products);
+
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [page, setPage] = useState(1);
-    const loadedItemIds = useRef(new Set());
-    //const hasMore = useRef(true);
-    const [hasMore, setHasMore] = useState(true)
-    const loader = useRef(null);
-    const pageRef = useRef(1)
+    //const [page, setPage] = useState(1);
 
-    // const [price, setPrice ]= useState([
-    //     {
-    //         min: 100,
-    //         max: 200
-    //     },
-    //     {
-    //         min: 200,
-    //         max: 300
-    //     },
-    //     {
-    //         min: 300,
-    //         max: 400
-    //     }
-    // ])
+    const [hasMore, setHasMore] = useState(true)
+    const elementRef = useRef(null);
+
+    //const [category, setCategory] = useState(null)
+    const {categorySelected} = useSelector(state => state.category)
     
-    const [searched, setSearched]= useState("")
+    //const [searched, setSearched]= useState("")
     const [size, setSize] = useState(["XL", "L"])
     const dispatch = useDispatch()
 
@@ -91,7 +87,103 @@ function Results() {
         // console.log("updatedProduct ===>>>> ", updatedProduct)
         dispatch(addToCart(product))
     }
+    
+    const fetchProducts = async (search, currenPage, minPrice, maxPrice, category) => {
+        const arr =[];
+        if (category) {
+            arr.push(`nomCat=${category}`)
+        }
 
+        if (search) {
+            arr.push(`search=${search}`)
+        }
+        if (currenPage) {
+            arr.push(`page=${currenPage}`)
+        }
+
+        if (minPrice) {
+            arr.push(`prix1=${minPrice}`)
+        }
+
+        if (maxPrice) {
+            arr.push(`prix2=${maxPrice}`)
+        }
+        
+        const queryString = arr.join('&');
+        //console.log("JO ===>> ", queryString)
+        setIsLoading(true)
+        const response = await productListService.productList(queryString)
+        setIsLoading(false)
+        //console.log('hum items ===>> ', response)
+        dispatch(getProducts(response.items))
+        setLastPage(response.last_page)
+        return response;
+    }
+
+    useEffect(() => {
+        fetchProducts(search, currenPage, minPrice, maxPrice, categorySelected)
+    },[search, currenPage, minPrice, maxPrice, categorySelected])
+    
+    const load = (newPage) => {
+        dispatch(setCurrentPage(newPage))
+    }
+    const onMinPriceChange = (event) => {
+        dispatch(handleMinPriceChange(parseInt(event.target.value, 10)));
+    };
+
+    const onMaxPriceChange = (event) => {
+        dispatch(handleMaxPriceChange(parseInt(event.target.value, 10)));
+    };
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const response = await categoryService.categoryList()
+            console.log("Hummmm ==> ",response)
+            dispatch(getRedCategories(response))
+        }
+        fetchCategories()
+    }, []);
+
+    // const handleMinPriceChange = (event) => {
+    //     const value = parseInt(event.target.value, 10);
+    //     if (value <= maxPrice) {
+    //         setMinPrice(value);
+    //     } else {
+    //         setMinPrice(maxPrice); // Adjusts minPrice if it goes beyond maxPrice
+    //     }
+    // };
+    
+    // const handleMaxPriceChange = (event) => {
+    //     const value = parseInt(event.target.value, 10);
+    //     if (value >= minPrice) {
+    //         setMaxPrice(value);
+    //     } else {
+    //         setMaxPrice(minPrice); // Adjusts maxPrice if it goes below minPrice
+    //     }
+    // };
+
+    // const navigatePrev = () => {
+        //     if (currentPage !== 1) {
+        //         dispatch(onNavigatePrev())
+        //     }
+        // }
+    
+         // const navigatePrev = () => {
+    //     if (currentPage !== 1) {
+    //         dispatch(onNavigatePrev())
+    //     }
+    // }
+
+    // const navigateNext = () => {
+    //     if (currentPage !== totalProducts) {
+    //         dispatch(onNavigateNext())
+    //     }
+    // }
+   // const navigateNext = () => {
+        //     if (currentPage !== totalProducts) {
+        //         dispatch(onNavigateNext())
+        //     }
+        // }
     // const navigatePrev = () => {
     //     if (currentPage !== 1) {
     //         dispatch(onNavigatePrev())
@@ -104,241 +196,15 @@ function Results() {
     //     }
     // }
 
-    const handlePageChange = async(value, my_page) => {
-        console.log('which page ===>> ', my_page)
-        //dispatch(onchangeCurrentPage(my_page));
-        try {
-            isLoading()
-            const response  = await fetch(`${process.env.REACT_APP_API_URL}/produitsList?page=${my_page}`)
-            const data = await response.json();
-            console.log('data from header ===>>> ', data)
-            dispatch(getProducts(data))
-            navigate(`/shop?page=${my_page}`)
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        } catch (error) {
-            console.log(error)
-        }
-        
-    };
-
-    const filterByPrice = async (event) => {
-        setPrice(event.target.value);
-        const response = await productListService.productList()
-        //dispatch(response)
-    }
-
-    const handleMinPriceChange = async (event) => {
-        const value = parseFloat(event.target.value);
-        if (value <= maxPrice) {
-            setMinPrice(value);
-            const response = await productListService.productListWithFilterByPage(value, maxPrice)
-            dispatch(getProductsByPrice(response.items))
-            //setItems(response.items)
-        }
-        
-        //dispatch(getProducts(response))
-    };
-    
-    const handleMaxPriceChange = async (event) => {
-        const valueMax = parseFloat(event.target.value);
-            if (valueMax >= minPrice) {
-                setMaxPrice(valueMax);
-                const response = await productListService.productListWithFilterByPage(minPrice, valueMax)
-                dispatch(getProductsByPrice(response.items))
-                //setItems(response.items)
-            }
-        
-        //dispatch(getProducts(response))
-    };
-
-
-
-    const fetchItemsPage = async (page = pageRef.current, isFetchingFirstTime) => {
-        try {
-            isFetchingFirstTime && setIsLoading(true)
-            const response = await fetch(`${process.env.REACT_APP_API_URL}/produitsList?page=${page}`);
-            const data = await response.json()
-            dispatch(getProducts(data))
-            if (items.length < data.total) {
-                setHasMore(true)
-            } else {
-                setHasMore(false)
-            }
-            
-            return data;
-            
-        } catch (error) {
-            setHasMore(false)
-            setError(true)
-        } finally {
-            isFetchingFirstTime && setIsLoading(false)
-        }
-
-        
-        
-    }
-
-    useEffect(() => {
-        fetchItemsPage(1, true)
-
-    }
-    , [])
-
-    const [isSpinnerRefVisible, setIsSpinnerRefVisible] = useState(false)
-
-    const [isIntersecting, setIsIntersecting] = useState(false)
-
-    useEffect(() => {
-        const ref = loader.current;
-
-        const observer = new IntersectionObserver(([entry]) => {
-            setIsIntersecting(entry.isIntersecting)
-            //console.log('Quelles entries ===>> ',entries)
-        }, {
-            root: null,
-            rootMargin: "0px",
-            threshold: 1,
-        });
-
-        if (ref) {
-            observer.observe(ref)
-        }
-
-        return () => ref && observer.unobserve(ref);
-    }, [loader])
-
-    useEffect(() => {
-        if (hasMore && isIntersecting) {
-            fetchItemsPage(pageRef.current + 1);
-            pageRef.current = pageRef.current + 1;
-        }
-    }, [isIntersecting, hasMore])
-    
-
-    /*Fetching more products using infinite scroll*/
 
     
-    // const fetchData = async () => {
-    //     setIsLoading(true);
-    //     setError(null);
-      
-    //     try {
-    //       //const response = await productListService.productList() 
-    //       //const response = await fetch(`${process.env.REACT_APP_API_URL}/produitsList`);
-    //      // const data = await response.json();
-    //      const response = await fetch(
-    //         `${process.env.REACT_APP_API_URL}/produitsList?page=${page}`
-    //       );
-    //       const data = await response.json();
-    //     //   setItems((prevProducts) => {
-    //     //     const newProducts = data.items.filter(
-    //     //       (newProduct) => !prevProducts.some((product) => product.id === newProduct.id)
-    //     //     );
-    //     //     return [...prevProducts, ...newProducts];
-    //     //   })
-    //     if (data.items.length == 0) {
-    //         setHasMore(false)
-    //     } else {
-    //         dispatch(getProducts(data.items))
-    //         //dispatch(addToCart(data.items))
-    //         //setItems(prevItems => [...prevItems, ...data.items])
-    //         setPage(prevPage => prevPage+1)
-    //     }
-          
-
-    //       //console.log("data scroll==>>> ",data)
-
-    //     // if (data.items.length === 0) {
-    //        // hasMore.current = false
-    //      //} else {
-    //         //setItems([...data.items]);
-    //         //setPage(pageNumber + 1); 
-    //     // }
-      
-    //      // setItems(prevItems => [...prevItems, ...data.items]);
-    //       //setItems(prevItems => [...prevItems, ...response.items]);
-    //       //setPage(prevPage => prevPage + 1);
-    //       //console.log("voir la response ===>> ", data)
-    //     } catch (error) {
-    //       setError(error);
-    //     } finally {
-    //       setIsLoading(false);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchData();
-    // }, [page]);
     
-    // const handleScroll = (entities) => {
-    //     const target = entities[0];
-    //     if (target.isIntersecting && hasMore) {
-    //         //setPage((prevPage) => prevPage + 1);
-    //         fetchData()
-    //     }
-    //     // if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
-    //     //   return;
-    //     // }
 
-    //     // if (hasMore.current) {
-    //     //     fetchData(page);
-    //     // }
-    // };
-      
-    // useEffect(() => {
-    //     // window.addEventListener('scroll', handleScroll);
-    //     // return () => window.removeEventListener('scroll', handleScroll);
-    //     const options = {
-    //         //root: null,
-    //         rootMargin: "20px",
-    //         threshold: 1.0
-    //     };
-    //       //const observer = new IntersectionObserver(handleScroll, options);
-    //       const observer = new IntersectionObserver(handleScroll, options);
-    //       if (observer && loader.current) {
-    //         //console.log('Mon bonjour ==> gra')
-    //         observer.observe(loader.current);
-    //       }
-
-    //     return () => {
-    //         if (observer) {
-    //             observer.disconnect()
-    //         }
-    //     }
-    // }, [items]);
-    
-      //console.log('Voir le product filter ==> ', productFilter)
-    //console.log('Voir le product items ==> ', items)
-
-    //console.log('Look price ==> ', price)
-    // const performFiltering = () => {
-    //     const pricesFiltered = products.filter(product =>
-    //         price.some(p => product.newPrice >= p.min && product.newPrice <= p.max));
-
-    //    const sizeFiltered = pricesFiltered.filter(product =>
-    //         size.some(item => product.sizes.includes(item)));
-
-    //     const searchFiltered = sizeFiltered.filter(({name, newPrice}) =>
-    //         name.toLowerCase().includes(searched.toLowerCase()) ||
-    //         `${newPrice}`.toLowerCase().includes(searched.toLowerCase())
-    //     );
-    //     return searchFiltered;
-    //     //return pricesFiltered;
-    // }
-
-    // const handlePageChange = (selectedPage) => {
-    //     setCurrentPage()
-    // }
-
-    //console.log('products Filter ===>> ',productFilter)
-
-    // const productShop = performFiltering()</BannerWithLinks>
+   
     return (
-        <SearchedByNameContext.Provider value={{searched, setSearched}}>
+        // <SearchedByNameContext.Provider value={{searched, setSearched}}>
             <div>
-                {/* {loading && (<Loading />)} */}
-                <FirstHeader />
+                {/* <FirstHeader /> */}
                 <HeaderWithContainSearch />
                 <BannerWithLinks />
                 {/* <Header/> */}
@@ -357,30 +223,30 @@ function Results() {
                     <div className="row px-xl-5">
                         <div className="col-lg-3 col-md-4">
                             <h5 className="section-title position-relative text-uppercase mb-3"><span
-                                className="bg-secondary pr-3">Filter by price</span></h5>
+                                className="bg-secondary pr-3">Filtrer par prix</span></h5>
                             <div className="bg-light p-4 mb-30">
                                 <form>
                                     <div className="custom-control custom-checkbox price-filter d-flex align-items-center justify-content-between mb-3">
-                                        {/* <label for="customRange1" class="form-label">Prix</label> */}
+                                        {/* <label for="customRange1" class="form-label">Prix</label>  */}
                                         <div className="mb-3">
                                             <label htmlFor="minPriceRange" className="form-label">
-                                                Prix minimum: {minPrice} {process.env.REACT_APP_API_UNITE}
+                                                Minimum: {Intl.NumberFormat('en-DE').format(minPrice)} {process.env.REACT_APP_API_UNITE}
                                             </label>
                                             <input
                                                 type="range"
-                                                //   id="minPriceRange"
-                                                //   name="minPriceRange"
+                                                id="minPriceRange"
+                                                name="minPriceRange"
                                                 min="0"
                                                 max="150000"
                                                 value={minPrice}
-                                                onChange={handleMinPriceChange}
+                                                onChange={onMinPriceChange}
                                                 className="form-range"
                                             />
                                         </div>
 
                                         <div className="mb-3">
                                             <label htmlFor="maxPriceRange" className="form-label">
-                                                Prix maximum: {maxPrice} {process.env.REACT_APP_API_UNITE}
+                                                Maximum: {Intl.NumberFormat('en-DE').format(maxPrice)} {process.env.REACT_APP_API_UNITE}
                                             </label>
                                             <input
                                                 type="range"
@@ -389,7 +255,7 @@ function Results() {
                                                 min="0"
                                                 max="150000"
                                                 value={maxPrice}
-                                                onChange={handleMaxPriceChange}
+                                                onChange={onMaxPriceChange}
                                                 className="form-range"
                                             />
                                         </div>
@@ -430,7 +296,7 @@ function Results() {
                                         className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                         <input
                                             type="checkbox"
-                                            checked={price.some(p => p.min === 200 && p.max === 300)}
+                                         setCurrentPage   checked={price.some(p => p.min === 200 && p.max === 300)}
                                             className="custom-control-input"
                                             id="price-3"
                                             onChange={e =>
@@ -475,47 +341,52 @@ function Results() {
                                 </form>
                             </div>
 
-                            {/*<h5 className="section-title position-relative text-uppercase mb-3"><span className="bg-secondary pr-3">Filter by color</span></h5>
+                            <h5 className="section-title position-relative text-uppercase mb-3"><span className="bg-secondary pr-3">Filtrer par categorie</span></h5>
                     <div className="bg-light p-4 mb-30">
                         <form>
-                            <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" className="custom-control-input" checked id="color-all"/>
-                                <label className="custom-control-label" htmlFor="price-all">All Color</label>
-                                <span className="badge border font-weight-normal">1000</span>
+                            <div className="mb-3">
+                                <input 
+                                    type="radio" 
+                                    //className="custom-control-input"
+                                    onChange={() => dispatch(updatedCategorySelected(null))} 
+                                    checked= {!categorySelected && true}
+                                    name="category"
+                                    id="color-all"
+                                />
+                                <label 
+                                    // className="custom-control-label" 
+                                    htmlFor="price-all"
+                                >
+                                    Toute catégorie
+                                </label>
+                                {/* <span className="badge border font-weight-normal">1000</span> */}
                             </div>
-                            <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" className="custom-control-input" id="color-1"/>
-                                <label className="custom-control-label" htmlFor="color-1">Black</label>
-                                <span className="badge border font-weight-normal">150</span>
-                            </div>
-                            <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" className="custom-control-input" id="color-2"/>
-                                <label className="custom-control-label" htmlFor="color-2">White</label>
-                                <span className="badge border font-weight-normal">295</span>
-                            </div>
-                            <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" className="custom-control-input" id="color-3"/>
-                                <label className="custom-control-label" htmlFor="color-3">Red</label>
-                                <span className="badge border font-weight-normal">246</span>
-                            </div>
-                            <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" className="custom-control-input" id="color-4"/>
-                                <label className="custom-control-label" htmlFor="color-4">Blue</label>
-                                <span className="badge border font-weight-normal">145</span>
-                            </div>
-                            <div className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                <input type="checkbox" className="custom-control-input" id="color-5"/>
-                                <label className="custom-control-label" htmlFor="color-5">Green</label>
-                                <span className="badge border font-weight-normal">168</span>
-                            </div>
+                            {categories.map(cat => (
+                                <div key={cat.id} className="mb-1">
+                                    <input 
+                                        type="radio" 
+                                        className="mr-2" 
+                                        id={`category-${cat.id}`}
+                                        value={categorySelected} 
+                                        onChange={() => dispatch(updatedCategorySelected(cat.nomCat))}
+                                        checked={categorySelected === cat.nomCat}
+                                        name="category"
+                                    />
+                                    <label
+                                        htmlFor={`category-${cat.id}`}
+                                        onClick={() => dispatch(updatedCategorySelected(cat.nomCat))}
+                                    >{cat.nomCat}</label>
+                                </div>
+                            ))}
+                            
                         </form>
-                    </div>*/}
-                            <h5 className="section-title position-relative text-uppercase mb-3">
+                    </div>
+                            {/* <h5 className="section-title position-relative text-uppercase mb-3">
                             <span
                                 className="bg-secondary pr-3">Les plus achetés</span></h5>
-                            <div className="bg-light p-4 mb-30">
-                                <form>
-                                    <div
+                            <div className="bg-light p-4 mb-30"> */}
+                                {/* <form> */}
+                                    {/* <div
                                         className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                         <input
                                             type="checkbox"
@@ -531,7 +402,7 @@ function Results() {
                                         
                                         <label className="custom-control-label" htmlFor="size-all">Les plus achetés</label>
                                         <span className="badge border font-weight-normal">1000</span>
-                                    </div>
+                                    </div> */}
                                     {/* <div
                                         className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                         <input
@@ -610,12 +481,20 @@ function Results() {
                                         <label className="custom-control-label" htmlFor="size-5">XL</label>
                                         <span className="badge border font-weight-normal">168</span>
                                     </div> */}
-                                </form>
-                            </div>
+                                {/* </form> */}
+                            {/* </div> */}
                         </div>
                         <div className="col-lg-9 col-md-8">
                             <div className="row pb-3">
-                                <div className="col-12 pb-1">
+                                {isLoading && (
+                                    <div className="d-flex justify-content-center align-items-center">
+                                        <div class="spinner-border" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                    </div>
+                                    
+                                )}
+                                {/* <div className="col-12 pb-1">
                                     <div className="d-flex align-items-center justify-content-between mb-4">
                                         <div>
                                             <button className="btn btn-sm btn-light"><i className="fa fa-th-large"/>
@@ -646,9 +525,9 @@ function Results() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                    {items?.map(p => (
-                                        <div key={p.codePro} className="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                </div> */}
+                                     {items?.map(p => (
+                                        <div key={p?.codePro} className="col-lg-4 col-md-6 col-sm-6 pb-1">
                                             <div className="product-item bg-light mb-30">
                                                 <div className="product-img position-relative overflow-hidden" style={{height: "183px"}} >
                                                     <img className="img-fluid w-100" src={`${process.env.REACT_APP_API_BACKEND}`+'/'+ (p?.photos[0]?.lienPhoto)} alt=""/>
@@ -671,7 +550,7 @@ function Results() {
                                                     <Link className="h6 text-decoration-none text-truncate"
                                                         to="">{p.nomPro}</Link>
                                                     <div className="d-flex align-items-center justify-content-center mt-2">
-                                                        <h5>{p.prix} {process.env.REACT_APP_API_UNITE}</h5>
+                                                        <h5>{Intl.NumberFormat('en-DE').format(p.prix)} {process.env.REACT_APP_API_UNITE}</h5>
                                                         
                                                     </div>
                                                     
@@ -679,15 +558,19 @@ function Results() {
                                             </div>
                                         </div>
                                     ))}
-                                    <div 
+                                    {/* <div 
                                         ref={(el) => {
                                             loader.current = el;
                                             setIsSpinnerRefVisible((prev) => !prev)
                                         }}>
                                         <p>Loading ...</p>
-                                    </div>
+                                    </div> */}
                                     {/* {isLoading && <loading />} */}
-                                    {hasMore && <p>Loading.....</p>}
+                                    
+                                    
+                                    {/* {hasMore && 
+                                        <div ref={elementRef} style={{ textAlign: 'center '}}>Loading.....</div>
+                                    } */}
                                     {/* <div ref={loader} style={{ height: "100px", margin: "10px" }}>
                                         Loading...
                                     </div> */}
@@ -709,12 +592,25 @@ function Results() {
                                     </nav>
                                 </div> */}
                             </div>
+                            {
+                                (currenPage !== lastPage && !isLoading) && (
+                                    <div className="d-flex justify-content-center">
+                                        <button 
+                                            className="btn btn-primary"
+                                            onClick={() => load(currenPage + 1)}    
+                                        >
+                                            Charger plus de produits
+                                        </button>
+                                    </div>
+                                    
+                                )
+                            }
                         </div>
                     </div>
                 </div>
                 <Footer/>
             </div>
-        </SearchedByNameContext.Provider>
+        // </SearchedByNameContext.Provider>
 
     )
 }

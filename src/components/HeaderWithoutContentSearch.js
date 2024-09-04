@@ -2,23 +2,18 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import WhatsAppButton from './WhatsAppButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductsBySearch, setCurrentPage, setSearch, handleMinPriceChange, handleMaxPriceChange } from '../features/products/productSlice';
-import { updatedCategorySelected } from '../features/category/categorySlice';
+import { getProductsBySearch, setCurrentPage, setSearch } from '../features/products/productSlice';
 
 
-const HeaderWithContainSearch = () => {
-    const dispatch = useDispatch();
-  const {searchValue, minPrice, maxPrice} = useSelector((state) => state.products);
-  const currentPage = useSelector(state => state.products.currentPage)
+const HeaderWithoutContainSearch = () => {
+//     const dispatch = useDispatch();
+//   const searchValue = useSelector((state) => state.products.search);
+//   const currentPage = useSelector(state => state.products.currentPage)
 
-
-  const handleSearchChange = (event) => {
-    dispatch(handleMinPriceChange(0));
-    dispatch(handleMaxPriceChange(150000));
-    dispatch(setSearch(event.target.value));
-    dispatch(setCurrentPage(1));
-    dispatch(updatedCategorySelected(""))
-  };
+//   const handleSearchChange = (event) => {
+//     dispatch(setSearch(event.target.value));
+//     dispatch(setCurrentPage(1));
+  
     // const [searched, setSearched]= useState("");
     // const dispatch = useDispatch()
     
@@ -37,21 +32,21 @@ const HeaderWithContainSearch = () => {
 
     return (
         <div className="container-fluid">
-            <div className="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+            <div className="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex justify-content-between">
                 <div className="col-lg-4">
-                    <a href="" className="text-decoration-none">
+                    <Link to="" className="text-decoration-none">
                     <img src='/images/bambino.jpeg' style={{maxWidth: "110px"}}/>
                         {/* <span className="h1 text-uppercase text-primary bg-dark px-2">BAMBI</span>
                         <span className="h1 text-uppercase text-dark bg-primary px-2 ml-n1">NO</span> */}
-                    </a>
+                    </Link>
                 </div>
-                <div className="col-lg-4 col-6 text-left">
+                {/* <div className="col-lg-4 col-6 text-left">
                     <form>
                         <div className="input-group">
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Entrer le mot clé ou le code du produit"
+                                placeholder="Search for products"
                                 value={searchValue}
                                 onChange={handleSearchChange}
                                 //value={searched}
@@ -67,10 +62,10 @@ const HeaderWithContainSearch = () => {
                             </div>
                         </div>
                     </form>
-                </div>
+                </div> */}
                 <div className="col-lg-4 col-6 text-right">
                     <p className="m-0">Customer Service</p>
-                    <WhatsAppButton phoneNumber="676892402" />
+                    <WhatsAppButton phoneNumber="676892402" message="Bienvenu sur notre page"/>
                     {/* <h5 className="m-0">+012 345 6789</h5> */}
                 </div>
             </div>
@@ -78,4 +73,4 @@ const HeaderWithContainSearch = () => {
     );
 };
 
-export default HeaderWithContainSearch;
+export default HeaderWithoutContainSearch;

@@ -204,3 +204,22 @@ li:hover > i {
 .list-admin li:hover i {
   border-color: red;
 }
+
+/* .nav-link.active {
+  font-weight: bold;
+  color: #007bff;
+  background-color: #e9ecef;
+} */
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .tshirtsizes {
+    display: none;
+  }
+}
+
+/* Styles pour les mobiles (largeur d'écran inférieure à 768px) */
+@media only screen and (max-width: 767px) {
+  .tshirtsizes {
+    display: none;
+  }
+}

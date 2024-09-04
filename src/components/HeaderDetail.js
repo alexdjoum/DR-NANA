@@ -160,23 +160,21 @@ export default function HeaderDetail() {
                   <div className="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
                       <div className="col-lg-4">
                           <Link to="" className="text-decoration-none">
-                              <span className="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                              <span className="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
+                          <img src='/images/bambino.jpeg' />
+                              {/* <span className="h1 text-uppercase text-primary bg-dark px-2">BAMBI</span>
+                              <span className="h1 text-uppercase text-dark bg-primary px-2 ml-n1">NO</span> */}
                           </Link>
                       </div>
-                      <div className="col-lg-4 col-6 text-left">
+                      {/* <div className="col-lg-4 col-6 text-left">
                           <form action="">
                               <div className="input-group">
                                   <input
                                       type="text"
 
                                       className="form-control"
-                                      placeholder="Search for products"
+                                      placeholder="Entrer le mot clé ou le code du produit"
                                       value={searched}
                                       onChange={handleInputChange}
-                                      //onChange={e => setSearched(e.target.value)}
-                                      //value={searchedByName}
-                                      //onChange={(e) => updatesearched(e.currentTarget.value)}
                                   />
                                   <div className="input-group-append">
                                 <span className="input-group-text bg-transparent text-primary">
@@ -185,14 +183,14 @@ export default function HeaderDetail() {
                                   </div>
                               </div>
                           </form>
-                      </div>
-                      <div className="col-lg-4 col-6 text-right">
+                      </div> */}
+                      {/* <div className="col-lg-4 col-6 text-right">
                           <p className="m-0">Customer Service</p>
                           <h5 className="m-0">+012 345 6789</h5>
-                      </div>
+                      </div> */}
                   </div>
               </div>
-              <div className="container-fluid bg-dark mb-30" style={{background: "rgb(67, 92, 112)"}}>
+              <div className="container-fluid bg-dark mb-30" >
                   <div className="row px-xl-5" style={{background: "rgb(67, 92, 112)"}}>
                       <div className="col-lg-3 d-none d-lg-block" style={{background: "rgb(67, 92, 112)"}}>
                           <a
@@ -242,8 +240,8 @@ export default function HeaderDetail() {
                       <div className="col-lg-9">
                           <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
                               <Link to="" className="text-decoration-none d-block d-lg-none">
-                                  <span className="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-                                  <span className="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
+                                  <span className="h1 text-uppercase text-dark bg-light px-2">BAMBI</span>
+                                  <span className="h1 text-uppercase text-light bg-primary px-2 ml-n1">NO</span>
                               </Link>
                               <button type="button" className="navbar-toggler" data-toggle="collapse"
                                       data-target="#navbarCollapse">

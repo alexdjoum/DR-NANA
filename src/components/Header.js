@@ -20,6 +20,7 @@ export default function Header() {
     const dispatch = useDispatch()
     //const productss = useSelector(state => state.products )
     const myTotal = useSelector(state => state.cart.cartTotalQuantity)
+    
     //console.log('look ===>> ', myTotal)
     const {searched, setSearched} = useContext(SearchedByNameContext)
     //const searchedByName = useProductStore((state) => state.searchedProductByName)
@@ -56,18 +57,18 @@ export default function Header() {
         }
     }
 
-    const onclickCategory = async(id) => {
+    const onclickCategory = async(nomCat) => {
 
-        console.log('id onClickCategory ====>>> ',id)
+        console.log('id onClickCategory ====>>> ',nomCat)
         //e.preventDefault()
-        try {
-            const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitByCategories/${id}`)
-            const data = await response.json();
-            console.log('data from header ===>>> ', data)
-            dispatch(getProducts(data))
-        } catch (error) {
-            console.log(error)
-        }
+        // try {
+        //     const response  = await fetch(`${process.env.REACT_APP_API_URL}/api/produitByCategories/${id}`)
+        //     const data = await response.json();
+        //     console.log('data from header ===>>> ', data)
+        //     dispatch(getProducts(data))
+        // } catch (error) {
+        //     console.log(error)
+        // }
         //console.log('prevent ==>> ',e.target.value)
     }
     //const [searched, setSearched] = useState('');
@@ -88,10 +89,11 @@ export default function Header() {
                 <div className="container-fluid">
                     <div className="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
                         <div className="col-lg-4">
-                            <Link to="" className="text-decoration-none">
-                                <span className="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                                <span className="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
-                            </Link>
+                            <a href="" className="text-decoration-none">
+                                <img src='/images/bambino.jpeg' />
+                                {/* <span className="h1 text-uppercase text-primary bg-dark px-2">BAMBI</span>
+                                <span className="h1 text-uppercase text-dark bg-primary px-2 ml-n1">NO</span> */}
+                            </a>
                         </div>
                         <div className="col-lg-4 col-6 text-left">
                             <form>
@@ -99,19 +101,19 @@ export default function Header() {
                                     <input
                                         type="text"
                                         className="form-control"
-                                        placeholder="Search for products"
+                                        placeholder="Entrer le mot clé ou le code du produit"
                                         value={searched}
                                         onChange={handleInputChange}
                                         //onChange={e => setSearched(e.target.value)}
                                         //value={searchedByName}
                                         //onChange={(e) => updatesearched(e.currentTarget.value)}
                                     />
-                                <div className="input-group-append">
-                                <span className="input-group-text bg-transparent text-primary">
-                                    <i className="fa fa-search"></i>
-                                </span>
-                                  </div>
-                              </div>
+                                    <div className="input-group-append">
+                                        <span className="input-group-text bg-transparent text-primary">
+                                            <i className="fa fa-search"></i>
+                                        </span>
+                                    </div>
+                                </div>
                           </form>
                       </div>
                       <div className="col-lg-4 col-6 text-right">
@@ -120,9 +122,25 @@ export default function Header() {
                           {/* <h5 className="m-0">+012 345 6789</h5> */}
                       </div>
                   </div>
+                  
+                                    <Link to="/cart" className="btn px-0 ml-3">
+                                        <i className="fas fa-shopping-cart text-primary"/>
+                                        <span 
+                                            className="badge text-secondary border border-secondary rounded-circle"
+                                            style={{paddingBottom: "2px"}}
+                                        >
+                                            {myTotal}
+                                        </span>
+                                    </Link>
+                                
               </div>
-              <div className="container-fluid  mb-30" style={{background: "rgb(67, 92, 112)"}}>
-                  <div className="row px-xl-5" style={{background: "rgb(67, 92, 112)"}}>
+              <div className="container-fluid  mb-30" 
+                //style={{background: "rgb(67, 92, 112)"}}
+            >
+                  <div 
+                    className="row px-xl-5" 
+                    //style={{background: "rgb(67, 92, 112)"}}
+                >
                       <div className="col-lg-3 d-none d-lg-block" style={{background: "rgb(67, 92, 112)"}}>
                           <a
                               className="btn d-flex align-items-center justify-content-between w-100 bg-primary"
@@ -151,28 +169,22 @@ export default function Header() {
                                         id={cat.id}
                                         to="/shop" 
                                         className="nav-item nav-link"
-                                        onClick={() => onclickCategory(cat.id)}
+                                        onClick={() => onclickCategory(cat.nomCat)}
+                                        
                                     >
                                             {cat.nomCat}
                                     </Link>
                                   ))}
                                   
-                                  {/* <Link to="" className="nav-item nav-link">Jeans</Link>
-                                  <Link to="" className="nav-item nav-link">Swimwear</Link>
-                                  <Link to="" className="nav-item nav-link">Sleepwear</Link>
-                                  <Link to="" className="nav-item nav-link">Sportswear</Link>
-                                  <Link to="" className="nav-item nav-link">Jumpsuits</Link>
-                                  <Link to="" className="nav-item nav-link">Blazers</Link>
-                                  <Link to="" className="nav-item nav-link">Jackets</Link>
-                                  <Link to="" className="nav-item nav-link">Shoes</Link> */}
                               </div>
                           </nav>
                       </div>
                       <div className="col-lg-9">
                           <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
                               <Link to="" className="text-decoration-none d-block d-lg-none">
-                                  <span className="h1 text-uppercase text-dark bg-light px-2">Multi</span>
-                                  <span className="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
+                                  <img src='image/bambino.jpeg' />
+                                  {/* <span className="h1 text-uppercase text-dark bg-light px-2">BAMBI</span>
+                                  <span className="h1 text-uppercase text-light bg-primary px-2 ml-n1">NO</span> */}
                               </Link>
                               <button type="button" className="navbar-toggler" data-toggle="collapse"
                                       data-target="#navbarCollapse">
@@ -270,6 +282,17 @@ export default function Header() {
                       </div>
                   </div>
               </div>
+              <div className="">
+                                    <Link to="/cart" className="btn px-0 ml-3">
+                                        <i className="fas fa-shopping-cart text-primary"/>
+                                        <span 
+                                            className="badge text-secondary border border-secondary rounded-circle"
+                                            style={{paddingBottom: "2px"}}
+                                        >
+                                            {myTotal}
+                                        </span>
+                                    </Link>
+                                </div>
           </div>
         {/*</SearchedByNameContext.Provider>*/}
       </>

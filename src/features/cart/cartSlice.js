@@ -139,7 +139,7 @@ export const cartSlice = createSlice({
                 state.cartTotalAmount = actualMount
 
                 const actualCartTotalQuantity = state.cartTotalQuantity -1
-                state.cartTotalQuantity = actualCartTotalQuantity
+                state.cartTotalQuantity = state.cartTotalQuantity
             
     
                 toast.error("Product removed from cart", {

@@ -123,15 +123,15 @@ export default function Header() {
                       </div>
                   </div>
                   
-                                    <Link to="/cart" className="btn px-0 ml-3">
-                                        <i className="fas fa-shopping-cart text-primary"/>
-                                        <span 
-                                            className="badge text-secondary border border-secondary rounded-circle"
-                                            style={{paddingBottom: "2px"}}
-                                        >
-                                            {myTotal}
-                                        </span>
-                                    </Link>
+                    <Link to="/cart" className="btn px-0 ml-3">
+                        <i className="fas fa-shopping-cart text-primary"/>
+                        <span 
+                            className="badge text-secondary border border-secondary rounded-circle"
+                            style={{paddingBottom: "2px"}}
+                        >
+                            {myTotal}
+                        </span>
+                    </Link>
                                 
               </div>
               <div className="container-fluid  mb-30" 
@@ -164,6 +164,15 @@ export default function Header() {
                                           <Link to="" className="dropdown-item">Baby's Dresses</Link>
                                       </div>
                                   </div> */}
+                                  <Link 
+                                        //id={cat.id}
+                                        to="/shop" 
+                                        className="nav-item nav-link"
+                                        onClick={() => onclickCategory("")}
+                                        
+                                    >
+                                        Toutes catégories
+                                    </Link>
                                   {categories.map(cat => (
                                     <Link 
                                         id={cat.id}

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { getProducts } from '../features/products/productSlice';
+import { getProducts, setCurrentPage, handleMaxPriceChange,handleMinPriceChange, setSearch } from '../features/products/productSlice';
 import categoryService from '../services/categoryService';
-import { getRedCategories, updatedCategorySelected } from '../features/category/categorySlice';
+import { getRedCategories, updatedCategorySelected,  } from '../features/category/categorySlice';
+//import { getProducts, getProductsByPrice, isLoading,  } from "../features/products/productSlice";
 import productListService from '../services/productListService';
 
 
@@ -12,6 +13,17 @@ function BannerWithLinks() {
     const dispatch = useDispatch()
     const myTotal = useSelector(state => state.cart.cartTotalQuantity);
     const categories = useSelector(state => state.category.categories);
+    const {searchValue} = useSelector((state) => state.products);
+    //const currentPage = useSelector(state => state.products.currentPage)
+
+
+  const handleSearchChange = (event) => {
+    dispatch(handleMinPriceChange(0));
+    dispatch(handleMaxPriceChange(150000));
+    dispatch(setSearch(event.target.value));
+    dispatch(setCurrentPage(1));
+    dispatch(updatedCategorySelected(""))
+  };
 
     const onclickCategory = async(name) => {
         console.log("Voir cat choisi ==> ", name)
@@ -60,6 +72,20 @@ function BannerWithLinks() {
                         style={{width: "calc(100% - 30px)", zIndex: "999"}}
                     >
                         <div className="navbar-nav w-100">
+                            <NavLink 
+                                className= {({ isActive }) => isActive ? "nav-link active" : "nav-link"} 
+                                //id={cat.id}
+                                to="/shop" 
+                                style={({ isActive }) => ({
+                                    fontWeight: isActive ? 'bold' : 'normal',
+                                    color: isActive ? "rgb(67, 92, 112)" : '#000', // Changez les couleurs pour indiquer l'activation
+                                    backgroundColor: isActive ? '#e9ecef' : 'transparent', // Fond différent pour le lien actif
+                                })}
+                                //</div>className="nav-item nav-link"
+                                onClick={() => dispatch(updatedCategorySelected(""))}
+                            >
+                                Toutes catégories
+                            </NavLink>
                             {categories?.map(cat => (
                                 <NavLink 
                                     className= {({ isActive }) => isActive ? "nav-link active" : "nav-link"} 
@@ -80,7 +106,7 @@ function BannerWithLinks() {
                     </nav>
                 </div>
                 <div className="col-lg-9">
-                    <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
+                    <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0 sticky-top">
                         <a href="/shop" className="text-decoration-none d-block d-lg-none">
                             <div style={{maxWidth: "40px"}}>
                                 <img 
@@ -130,6 +156,45 @@ function BannerWithLinks() {
                                 >
                                     Carte de fidelité
                                 </NavLink>
+                                <form>
+                                    <div className="input-group d-lg-none">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Entrer le mot clé ou le code du produit"
+                                            value={searchValue}
+                                            onChange={handleSearchChange}
+                                            //value={searched}
+                                            //onChange={handleInputChange}
+                                            //onChange={e => setSearched(e.target.value)}
+                                            //value={searchedByName}
+                                            //onChange={(e) => updatesearched(e.currentTarget.value)}
+                                        />
+                                        <div className="input-group-append">
+                                            <span className="input-group-text bg-transparent text-primary">
+                                                <i className="fa fa-search"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </form>
+                                {/* <Link to="" className="btn px-0">
+                                    <i className="fas fa-heart text-primary"/>
+                                    <span className="badge text-secondary border border-secondary rounded-circle"
+                                        style={{paddingBottom: "2px"}}>{myTotal}</span>
+                                </Link> */}
+                                <div className='d-lg-none'>
+                                    <NavLink to="/cart" className={({isActive}) =>
+                                        isActive ? "nav-item nav-link text-white activeNavLink mt-2" : "nav-item nav-link mt-2"
+                                    }>
+                                        <i className="fas fa-shopping-cart text-white"/>
+                                        <span 
+                                            className="badge text-secondary border border-secondary rounded-circle"
+                                            style={{paddingBottom: "2px"}}
+                                        >
+                                            {myTotal}
+                                        </span>
+                                    </NavLink>
+                                </div>
                             </div>
                             <div className="navbar-nav ml-auto py-0 d-none d-lg-block">
                                 {/* <Link to="" className="btn px-0">

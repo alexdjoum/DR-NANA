@@ -25,6 +25,8 @@ import HeaderWithContainSearch from "../components/HeaderWithContainSearch";
 import BannerWithLinks from "../components/BannerWithLinks";
 import categoryService from '../services/categoryService';
 import { getRedCategories, updatedCategorySelected } from '../features/category/categorySlice';
+import {BulletList} from 'react-content-loader'
+
 
 const formatNumber = (num) => {
     const str = num.toString();
@@ -125,7 +127,7 @@ function Results() {
     },[search, currenPage, minPrice, maxPrice, categorySelected])
     
     const load = (newPage) => {
-        dispatch(setCurrentPage(newPage))
+        dispatch(setCurrentPage(newPage + 1))
     }
     const onMinPriceChange = (event) => {
         dispatch(handleMinPriceChange(parseInt(event.target.value, 10)));
@@ -356,29 +358,31 @@ function Results() {
                                 <label 
                                     // className="custom-control-label" 
                                     htmlFor="price-all"
+                                    onClick={() => dispatch(updatedCategorySelected(null))}
                                 >
                                     Toute catégorie
                                 </label>
                                 {/* <span className="badge border font-weight-normal">1000</span> */}
                             </div>
-                            {categories.map(cat => (
-                                <div key={cat.id} className="mb-1">
-                                    <input 
-                                        type="radio" 
-                                        className="mr-2" 
-                                        id={`category-${cat.id}`}
-                                        value={categorySelected} 
-                                        onChange={() => dispatch(updatedCategorySelected(cat.nomCat))}
-                                        checked={categorySelected === cat.nomCat}
-                                        name="category"
-                                    />
-                                    <label
-                                        htmlFor={`category-${cat.id}`}
-                                        onClick={() => dispatch(updatedCategorySelected(cat.nomCat))}
-                                    >{cat.nomCat}</label>
-                                </div>
-                            ))}
-                            
+                            {isLoading ? <BulletList /> : 
+                                categories.map(cat => (
+                                    <div key={cat.id} className="mb-1">
+                                        <input 
+                                            type="radio" 
+                                            className="mr-2" 
+                                            id={`category-${cat.id}`}
+                                            value={categorySelected} 
+                                            onChange={() => dispatch(updatedCategorySelected(cat.nomCat))}
+                                            checked={categorySelected === cat.nomCat}
+                                            name="category"
+                                        />
+                                        <label
+                                            htmlFor={`category-${cat.id}`}
+                                            onClick={() => dispatch(updatedCategorySelected(cat.nomCat))}
+                                        >{cat.nomCat}</label>
+                                    </div>
+                                ))
+                            }
                         </form>
                     </div>
                             {/* <h5 className="section-title position-relative text-uppercase mb-3">
@@ -526,38 +530,48 @@ function Results() {
                                         </div>
                                     </div>
                                 </div> */}
-                                     {items?.map(p => (
-                                        <div key={p?.codePro} className="col-lg-4 col-md-6 col-sm-6 pb-1">
-                                            <div className="product-item bg-light mb-30">
-                                                <div className="product-img position-relative overflow-hidden" style={{height: "183px"}} >
-                                                    <img className="img-fluid w-100" src={`${process.env.REACT_APP_API_BACKEND}`+'/'+ (p?.photos[0]?.lienPhoto)} alt=""/>
-                                                    <div className="product-action" onClick={() => navigate(`/detail/${p.codePro}`)}>
-                                                        <Link
-                                                            className="btn btn-outline-dark btn-square"
-                                                            to=""
-                                                        >
-                                                            <i className="fa fa-shopping-cart" onClick={() => handleAddToCart(p)}/>
-                                                        </Link>
+
+                                    {/* <InfiniteScroll
+                                        dataLength={items.length}
+                                        next={load}
+                                        style={{display: "flex"}}
+                                        hasMore={true}
+                                        loader={<h4>Loading...</h4>}
+                                    > */}
+                                        {items?.map(p => (
+                                            <div key={p?.codePro} className="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                                <div className="product-item bg-light mb-30">
+                                                    <div className="product-img position-relative overflow-hidden" style={{height: "183px"}} >
+                                                        <img className="img-fluid w-100" src={`${process.env.REACT_APP_API_BACKEND}`+'/'+ (p?.photos[0]?.lienPhoto)} alt=""/>
+                                                        <div className="product-action" onClick={() => navigate(`/detail/${p.codePro}`)}>
+                                                            <Link
+                                                                className="btn btn-outline-dark btn-square"
+                                                                to=""
+                                                            >
+                                                                <i className="fa fa-shopping-cart" onClick={() => handleAddToCart(p)}/>
+                                                            </Link>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div className="text-center py-4">
+                                                        <div className="d-flex align-items-center justify-content-center mb-1">
+                                                            <p className="h5">Code: {formatNumber(p.codePro)}</p>
+                                                            
+                                                            
+                                                        </div>
+                                                        <Link className="h6 text-decoration-none text-truncate"
+                                                            to="">{p.nomPro}</Link>
+                                                        <div className="d-flex align-items-center justify-content-center mt-2">
+                                                            <h5>{Intl.NumberFormat('en-DE').format(p.prix)} {process.env.REACT_APP_API_UNITE}</h5>
+                                                            
+                                                        </div>
                                                         
                                                     </div>
-                                                </div>
-                                                <div className="text-center py-4">
-                                                    <div className="d-flex align-items-center justify-content-center mb-1">
-                                                        <p className="h5">Code: {formatNumber(p.codePro)}</p>
-                                                        
-                                                        
-                                                    </div>
-                                                    <Link className="h6 text-decoration-none text-truncate"
-                                                        to="">{p.nomPro}</Link>
-                                                    <div className="d-flex align-items-center justify-content-center mt-2">
-                                                        <h5>{Intl.NumberFormat('en-DE').format(p.prix)} {process.env.REACT_APP_API_UNITE}</h5>
-                                                        
-                                                    </div>
-                                                    
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    {/*</InfiniteScroll>*/}
+                                
                                     {/* <div 
                                         ref={(el) => {
                                             loader.current = el;

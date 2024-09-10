@@ -154,7 +154,7 @@ function BannerWithLinks() {
                                         isActive ? "nav-item nav-link text-white activeNavLink" : "nav-item nav-link"
                                     }
                                 >
-                                    Carte de fidelité
+                                    Carte Fidelité
                                 </NavLink>
                                 <form>
                                     <div className="input-group d-lg-none">

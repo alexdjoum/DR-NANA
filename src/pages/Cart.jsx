@@ -12,6 +12,7 @@ import BannerWithLinks from "../components/BannerWithLinks";
 import { products } from '../dynamic/products';
 import CommandService from '../services/commandService';
 import HeaderDetail from '../components/HeaderDetail';
+import BestNavBar from '../components/BestNavBar';
 
 function Cart() {
     const closeButtonRef = useRef(null);
@@ -125,13 +126,15 @@ function Cart() {
     return (
         <>
             {/* <FirstHeader />  */}
-            <HeaderWithoutContentSearch />
-            <BannerWithLinks />
+
+            {/* <HeaderWithoutContentSearch />
+            <BannerWithLinks /> */}
+            <BestNavBar />
             {pending && (<Loading />)}
             {messageValid  && (
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>{messageToCreateOrder}</strong> 
-                    <button type="button" class="close"  data-bs-dismiss="alert" aria-label="Close">
+                    <button type="button" class="close"  data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -399,7 +402,7 @@ function Cart() {
                                 </div>
                                 <button 
                                     className="btn btn-block btn-primary font-weight-bold my-3 py-3 "
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@mdo"
+                                    data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
                                     //onClick={redirectToCreateCommand}
                                 >
                                     Proceed To Create command
@@ -409,7 +412,7 @@ function Cart() {
                                         <div className="modal-content">
                                         <div className="modal-header">
                                             <h5 className="modal-title" id="exampleModalLabel">Create a Command</h5>
-                                            <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -520,7 +523,7 @@ function Cart() {
                                                     </textarea>
                                                 </div> */}
                                                 <div className="modal-footer">
-                                                    <button type="button" ref={closeButtonRef} className="btn btn-secondary" data-bs-dismiss="modal">
+                                                    <button type="button" ref={closeButtonRef} className="btn btn-secondary" data-dismiss="modal">
                                                         Close
                                                     </button>
                                                     <button 

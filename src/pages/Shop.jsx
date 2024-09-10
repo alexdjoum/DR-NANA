@@ -26,6 +26,7 @@ import BannerWithLinks from "../components/BannerWithLinks";
 import categoryService from '../services/categoryService';
 import { getRedCategories, updatedCategorySelected } from '../features/category/categorySlice';
 import {BulletList} from 'react-content-loader'
+import BestNavBar from "../components/BestNavBar";
 
 
 const formatNumber = (num) => {
@@ -37,31 +38,15 @@ const formatNumber = (num) => {
 };
 
 function Results() {
-    //const searched = useContext(SearchedByNameContext)
-    //const searched = useProductStore((state) => state.searchedProductByName)
-    //const [currentPage, setCurrentPage] = useState(0)
-    //loading = useSelector(state => state.products.loading)
-    //const itemsPerPage = 10;
-    //const currentPage = useSelector(state => state.products.products.current_page)
-    //console.log('page current ==> ', currentPage)
-    //const totalProducts = useSelector(state => state.products.products.total)
-    //const [page, setPage] = useState(1)
-    //const [pageCount, setPageCount] = useState(1)
-    // Calculate the total number of pages
-    //const pageCount = Math.ceil(productsData.find())
-    //const [page, setPage] = useState(1)
     const categories = useSelector(state => state.category.categories);
     const [lastPage, setLastPage] = useState(0)
     const search = useSelector(state => state.products.search)
     const currenPage = useSelector(state => state.products.currentPage)
     const items = useSelector(state => state.products.products)
     const s = useSelector(state => state.products)
-    //console.log('sss ==> ', s)
-    //const [price, setPrice] = useState(0)
-    //console.log('items à partir de shop ===>> ', items)
-    //const {loading} = useSelector(state => state.products)
-    // const [productsData, setProducData] = useState([])
-    // const [productss, setProductss] = useState({})
+    const [hasMore, setHasMore] = useState(true);
+    const observerRef = useRef();
+
     const navigate = useNavigate()
     // const [minPrice, setMinPrice] = useState(0);
     // const [maxPrice, setMaxPrice] = useState(150000);
@@ -71,7 +56,6 @@ function Results() {
     const [error, setError] = useState(null);
     //const [page, setPage] = useState(1);
 
-    const [hasMore, setHasMore] = useState(true)
     const elementRef = useRef(null);
 
     //const [category, setCategory] = useState(null)
@@ -82,11 +66,6 @@ function Results() {
     const dispatch = useDispatch()
 
     const handleAddToCart = (product) => {
-        // const updatedProduct = {
-        //     ...product,
-        //     color: "red"
-        // };
-        // console.log("updatedProduct ===>>>> ", updatedProduct)
         dispatch(addToCart(product))
     }
     
@@ -119,11 +98,13 @@ function Results() {
         //console.log('hum items ===>> ', response)
         dispatch(getProducts(response.items))
         setLastPage(response.last_page)
+        setHasMore(currenPage !== response.last_page)
         return response;
     }
 
     useEffect(() => {
-        fetchProducts(search, currenPage, minPrice, maxPrice, categorySelected)
+        console.log("Regarder la valeur has more ===> ", hasMore)
+            fetchProducts(search, currenPage, minPrice, maxPrice, categorySelected)
     },[search, currenPage, minPrice, maxPrice, categorySelected])
     
     const load = (newPage) => {
@@ -146,59 +127,22 @@ function Results() {
         fetchCategories()
     }, []);
 
-    // const handleMinPriceChange = (event) => {
-    //     const value = parseInt(event.target.value, 10);
-    //     if (value <= maxPrice) {
-    //         setMinPrice(value);
-    //     } else {
-    //         setMinPrice(maxPrice); // Adjusts minPrice if it goes beyond maxPrice
-    //     }
-    // };
-    
-    // const handleMaxPriceChange = (event) => {
-    //     const value = parseInt(event.target.value, 10);
-    //     if (value >= minPrice) {
-    //         setMaxPrice(value);
-    //     } else {
-    //         setMaxPrice(minPrice); // Adjusts maxPrice if it goes below minPrice
-    //     }
-    // };
+    const nextElements = (node) => {
 
-    // const navigatePrev = () => {
-        //     if (currentPage !== 1) {
-        //         dispatch(onNavigatePrev())
+        // console.log("Test du scroll infini ===>>>")
+        // if (isLoading) return;
+        // if (observerRef.current) observerRef.current.disconnect();
+        
+        // observerRef.current = new IntersectionObserver((entries) => {
+        //     if (entries[0].isIntersecting && hasMore) {
+        //         dispatch(setCurrentPage(currenPage +1))
         //     }
-        // }
-    
-         // const navigatePrev = () => {
-    //     if (currentPage !== 1) {
-    //         dispatch(onNavigatePrev())
-    //     }
-    // }
+        // })
+        // console.log("node", node)
+        // if (node) observerRef.current.observe(node); 
+    }
 
-    // const navigateNext = () => {
-    //     if (currentPage !== totalProducts) {
-    //         dispatch(onNavigateNext())
-    //     }
-    // }
-   // const navigateNext = () => {
-        //     if (currentPage !== totalProducts) {
-        //         dispatch(onNavigateNext())
-        //     }
-        // }
-    // const navigatePrev = () => {
-    //     if (currentPage !== 1) {
-    //         dispatch(onNavigatePrev())
-    //     }
-    // }
-
-    // const navigateNext = () => {
-    //     if (currentPage !== totalProducts) {
-    //         dispatch(onNavigateNext())
-    //     }
-    // }
-
-
+    console.log("observer  more ===>>>", hasMore)
     
     
 
@@ -207,8 +151,9 @@ function Results() {
         // <SearchedByNameContext.Provider value={{searched, setSearched}}>
             <div>
                 {/* <FirstHeader /> */}
-                <HeaderWithContainSearch />
-                <BannerWithLinks />
+                {/* <HeaderWithContainSearch /> */}
+                {/* <BannerWithLinks /> */}
+                <BestNavBar />
                 {/* <Header/> */}
                 <div className="container-fluid">
                     <div className="row px-xl-5">
@@ -372,13 +317,19 @@ function Results() {
                                             className="mr-2" 
                                             id={`category-${cat.id}`}
                                             value={categorySelected} 
-                                            onChange={() => dispatch(updatedCategorySelected(cat.nomCat))}
+                                            onChange={() => {
+                                                dispatch(updatedCategorySelected(cat.nomCat)); 
+                                                dispatch(setCurrentPage(1))}
+                                            }
                                             checked={categorySelected === cat.nomCat}
                                             name="category"
                                         />
                                         <label
                                             htmlFor={`category-${cat.id}`}
-                                            onClick={() => dispatch(updatedCategorySelected(cat.nomCat))}
+                                            onClick={() => {
+                                                dispatch(updatedCategorySelected(cat.nomCat));
+                                                dispatch(setCurrentPage(1))}
+                                            }
                                         >{cat.nomCat}</label>
                                     </div>
                                 ))
@@ -538,8 +489,8 @@ function Results() {
                                         hasMore={true}
                                         loader={<h4>Loading...</h4>}
                                     > */}
-                                        {items?.map(p => (
-                                            <div key={p?.codePro} className="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                        {items?.map((p, index) => (
+                                            <div ref={index === items.length -1 ? nextElements : null} className="col-lg-4 col-md-6 col-sm-6 pb-1">
                                                 <div className="product-item bg-light mb-30">
                                                     <div className="product-img position-relative overflow-hidden" style={{height: "183px"}} >
                                                         <img className="img-fluid w-100" src={`${process.env.REACT_APP_API_BACKEND}`+'/'+ (p?.photos[0]?.lienPhoto)} alt=""/>
@@ -570,6 +521,11 @@ function Results() {
                                                 </div>
                                             </div>
                                         ))}
+
+                                        {/* <div ref={observerRef} style={{ height: "50px", backgroundColor: "lightgray" }}>
+                                            {isLoading && <p>Loading more items...</p>}
+                                            {!hasMore && <p>No more items to load.</p>}
+                                        </div> */}
                                     {/*</InfiniteScroll>*/}
                                 
                                     {/* <div 
@@ -611,9 +567,9 @@ function Results() {
                                     <div className="d-flex justify-content-center">
                                         <button 
                                             className="btn btn-primary"
-                                            onClick={() => load(currenPage + 1)}    
+                                            onClick={() => load(currenPage)}    
                                         >
-                                            Charger plus de produits
+                                            Voir plus de produits
                                         </button>
                                     </div>
                                     

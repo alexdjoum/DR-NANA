@@ -13,11 +13,7 @@ const HeaderWithContainSearch = () => {
 
 
   const handleSearchChange = (event) => {
-    dispatch(handleMinPriceChange(0));
-    dispatch(handleMaxPriceChange(150000));
     dispatch(setSearch(event.target.value));
-    dispatch(setCurrentPage(1));
-    dispatch(updatedCategorySelected(""))
   };
     // const [searched, setSearched]= useState("");
     // const dispatch = useDispatch()
@@ -69,7 +65,7 @@ const HeaderWithContainSearch = () => {
                     </form>
                 </div>
                 <div className="col-lg-4 col-6 text-right">
-                    <p className="m-0">Customer Service</p>
+                    <p className="m-0">Service client</p>
                     <WhatsAppButton phoneNumber="676892402" />
                     {/* <h5 className="m-0">+012 345 6789</h5> */}
                 </div>

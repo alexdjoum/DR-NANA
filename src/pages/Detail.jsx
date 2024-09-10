@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {decreaseCart, addToCart, removeFromCart, getTotals, clearCart} from "../features/cart/cartSlice"
 import HeaderWithContainSearch from '../components/HeaderWithContainSearch';
 import BannerWithLinks from '../components/BannerWithLinks';
+import BestNavBar from '../components/BestNavBar';
 //import { products } from '../dynamic/products';
 
 function Detail() {
@@ -74,8 +75,9 @@ function Detail() {
     return (
         <>
             {/* <Header /> */}
-            <HeaderWithContainSearch />
-            <BannerWithLinks />
+            <BestNavBar />
+            {/* <HeaderWithContainSearch />
+            <BannerWithLinks /> */}
             {/*Navbar End*/}
             {/*Breadcrumb Start*/}
             <div className="container-fluid">

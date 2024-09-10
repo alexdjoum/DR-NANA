@@ -6,6 +6,7 @@ import FirstHeader from '../components/FirstHeader';
 import Footer from '../components/Footer';
 import BannerWithLinks from '../components/BannerWithLinks';
 import HeaderWithoutContainSearch from '../components/HeaderWithoutContentSearch';
+import BestNavBar from '../components/BestNavBar';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Validation schema avec Yup
@@ -29,8 +30,9 @@ function CreditCard() {
     return (
         <>
             {/* <FirstHeader /> */}
-            <HeaderWithoutContainSearch />
-            <BannerWithLinks />
+            {/* <HeaderWithoutContainSearch />
+            <BannerWithLinks /> */}
+            <BestNavBar />
             <div className='fidelity template d-flex justify-content-center align-items-center vh-90 mb-5 mt-5'>
                 <div className='form_container p-5 rounded bg-white border-dark'>
                     

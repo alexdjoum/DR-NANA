@@ -21,7 +21,7 @@ export const categorySlice = createSlice({
             state.loading = false;
         },
         getRedCategories: (state, action) => {
-            console.log('log redux categories ===>> ', action)
+            console.log('log redux categories ===>> ', action.payload)
             state.categories = [...action.payload]
             state.loading = false
         },

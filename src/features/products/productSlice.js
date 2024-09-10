@@ -19,10 +19,13 @@ export const productsSlice = createSlice({
 
         },
         setSearch: (state, action) => {
+            state.minPrice = 0;
+            state.maxPrice = 150000;
+            state.currentPage = 1;
             state.search = action.payload;
         },
         setCurrentPage: (state, action) => {
-            console.log('Voir la page redux ===>> ', action)
+            console.log('Voir la page en cours ===>> ', action.payload)
             state.currentPage = action.payload 
         },
         handleMinPriceChange: (state, action) => {
@@ -49,10 +52,16 @@ export const productsSlice = createSlice({
             
             if (Array.isArray(action.payload)) {
                 // Ajouter les nouveaux produits à la liste existante
+                //console.log("Actual page ", state.currentPage)
+                
                 if (state.currentPage === 1) {
+                    console.log("which executing ==> 1")
                     state.products = [...action.payload]
+                    console.log("which executing ==> 1", state.products)
                 } else {
                     state.products = [...state.products,...action.payload];
+                    console.log("which executing ==> 2")
+                    console.log("which executing ==> 2", state.products)
                 }
             } else {
                 console.error("Payload attendu comme tableau, mais reçu:", action.payload);

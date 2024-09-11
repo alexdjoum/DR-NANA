@@ -41,7 +41,7 @@ function Home() {
         
     }, []);
     return (
-      <div>
+      <div className="bg-white">
           {/* <Header /> */}
           {/* <FirstHeader /> */}
           <HeaderWithoutContainSearch />

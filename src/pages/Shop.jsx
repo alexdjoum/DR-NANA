@@ -149,7 +149,7 @@ function Results() {
    
     return (
         // <SearchedByNameContext.Provider value={{searched, setSearched}}>
-            <div>
+            <div className="bg-white">
                 {/* <FirstHeader /> */}
                 {/* <HeaderWithContainSearch /> */}
                 {/* <BannerWithLinks /> */}

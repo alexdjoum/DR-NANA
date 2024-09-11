@@ -3,15 +3,15 @@ import React from 'react'
 
 export default function Footer() {
   return (
-    <div style={{ top: "calc(100% - 74px)"}}>
-        <div className="container-fluid bg-dark text-secondary mt-5 pt-5">
+    <div style={{ top: "calc(100% - 74px)", background: "linear-gradient(to right, #1e3c72, #2a5298)"}}>
+        <div className="container-fluid text-secondary mt-5 pt-5">
             <div className="row px-xl-5 pt-5">
                 <div className="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
                     <h5 className="text-secondary text-uppercase mb-4">Get In Touch</h5>
                     <p className="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
                     <p className="mb-2"><i className="fa fa-map-marker-alt text-primary mr-3"/>123 Street, New York, USA</p>
                     <p className="mb-2"><i className="fa fa-envelope text-primary mr-3"/>info@example.com</p>
-                    <p className="mb-0"><i className="fa fa-phone-alt text-primary mr-3"/>+012 345 67890</p>
+                    <p className="mb-0"><i className="fa fa-phone-alt text-primary mr-3"/>+237 676 89 24 02</p>
                 </div>
                 <div className="col-lg-8 col-md-12">
                     <div className="row">
@@ -64,7 +64,7 @@ export default function Footer() {
                     <p className="mb-md-0 text-center text-md-left text-secondary">
                         &copy; <a className="text-primary" href="#">Domain</a>. All Rights Reserved. Designed
                         by
-                        <a className="text-primary" href="/shop">Bambino</a>
+                        <a className="text-primary" href="/shop"> OpenSolution</a>
                         {/* <br />Distributed By: <a href="https://themewagon.com" target="_blank">ThemeWagon</a> */}
                     </p>
                 </div>

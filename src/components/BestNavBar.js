@@ -130,7 +130,8 @@ function BestNavBar() {
                         </NavLink>
                         <Link
                             to={`https://web.whatsapp.com/send?phone=676892402&text=Bienvenu`}
-                            className='text-dark px-4'
+                            className='px-4'
+                            style={{color: "#25D366"}}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
@@ -219,6 +220,7 @@ function BestNavBar() {
                     {/* </div> */}
                     </nav>
                 </div>
+                <hr  className="mt-3"/>
             </div>
         </div>
     );

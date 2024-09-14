@@ -1,0 +1,4 @@
+scp -r ~/Desktop/react-app/build/* root@88.223.95.15:/var/www/react-app
+REACT_APP_API_URL=http://88.223.95.15:8000/api
+REACT_APP_API_BACKEND=https://cms.boutiquebambino.com
+

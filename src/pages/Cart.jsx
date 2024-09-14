@@ -13,6 +13,8 @@ import { products } from '../dynamic/products';
 import CommandService from '../services/commandService';
 import HeaderDetail from '../components/HeaderDetail';
 import BestNavBar from '../components/BestNavBar';
+import FirstNavBar from '../components/FirstNavBar';
+import Footer from '../components/Footer';
 
 function Cart() {
     const closeButtonRef = useRef(null);
@@ -129,6 +131,7 @@ function Cart() {
 
             {/* <HeaderWithoutContentSearch />
             <BannerWithLinks /> */}
+            <FirstNavBar />
             <BestNavBar />
             {pending && (<Loading />)}
             {messageValid  && (
@@ -302,14 +305,14 @@ function Cart() {
                         <table className="table table-light table-borderless table-hover text-center mb-0">
                             <thead className="thead-dark">
                             <tr>
-                                <th>Products</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Sizes</th>
-                                <th>Colors</th>
+                                <th>Produits</th>
+                                <th>Prix</th>
+                                <th>Quantité</th>
+                                <th>Tailles</th>
+                                <th>Couleurs</th>
                                 {/* <th>Size</th> */}
                                 <th>Total</th>
-                                <th>Remove</th>
+                                <th>Supprimer</th>
                             </tr>
                             </thead>
                             <tbody className="align-middle">
@@ -330,10 +333,11 @@ function Cart() {
                                         <div className="input-group quantity mx-auto" style={{width: "100px"}}>
                                             <div className="input-group-btn">
                                                 <button 
-                                                className="btn btn-sm btn-primary btn-minus"
+                                                className="btn btn-sm  btn-minus"
+                                                style={{background: "linear-gradient(to right, #FC0102, #2a5298)"}}
                                                 onClick={() => handleDecreaseCart(item)}
                                             >
-                                                    <i className="fa fa-minus"></i>
+                                                    <i className="fa fa-minus text-white"></i>
                                                 </button>
                                             </div>
                                             <input
@@ -342,11 +346,12 @@ function Cart() {
                                                 value={item.products.cartQuantity}/>
                                             <div className="input-group-btn">
                                                 <button 
-                                                    className="btn btn-sm btn-primary btn-plus"
+                                                    className="btn btn-sm btn-plus"
+                                                    style={{background: "linear-gradient(to right, #FC0102, #2a5298)"}}
                                                     onClick={() => handleAddToCart(item)}
                                                 
                                                 >
-                                                    <i className="fa fa-plus"/>
+                                                    <i className="fa fa-plus text-white"/>
                                                 </button>
                                             </div>
                                         </div>
@@ -383,7 +388,7 @@ function Cart() {
                             </div>
                         </form> */}
                         <h5 className="section-title position-relative text-uppercase mb-3"><span
-                            className="bg-secondary pr-3">Cart Summary</span></h5>
+                            className="bg-secondary pr-3">Résumé Panier</span></h5>
                         <div className="bg-light p-30 mb-5">
                             {/* <div className="border-bottom pb-2">
                                 <div className="d-flex justify-content-between mb-3">
@@ -398,14 +403,18 @@ function Cart() {
                             <div className="pt-2">
                                 <div className="d-flex justify-content-between mt-2">
                                     <h5>Total</h5>
-                                    <h5>{cart.cartTotalAmount}</h5>
+                                    <h5>{cart.cartTotalAmount} {process.env.REACT_APP_API_UNITE}</h5> 
                                 </div>
                                 <button 
-                                    className="btn btn-block btn-primary font-weight-bold my-3 py-3 "
-                                    data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"
+                                    style={{
+                                        background: "linear-gradient(to right, #1e3c72, #2725C9)"}}
+                                        className="btn btn-block text-white rounded-3"
+                                        data-toggle="modal" 
+                                        data-target="#exampleModal" 
+                                        data-whatever="@mdo"
                                     //onClick={redirectToCreateCommand}
                                 >
-                                    Proceed To Create command
+                                    Créer une commande
                                 </button>
                                 <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div className="modal-dialog" role="document">
@@ -548,125 +557,7 @@ function Cart() {
 
                 </div>
             </div>
-        
-            {/*Cart End*/}
-            {/*Footer Start*/}
-            <div className="container-fluid bg-dark text-secondary mt-5 pt-5">
-                <div className="row px-xl-5 pt-5">
-                    <div className="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                        <h5 className="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                        <p className="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
-                        <p className="mb-2"><i className="fa fa-map-marker-alt text-primary mr-3" />123 Street, New York, USA</p>
-                        <p className="mb-2"><i className="fa fa-envelope text-primary mr-3" />info@example.com</p>
-                        <p className="mb-0"><i className="fa fa-phone-alt text-primary mr-3" />+012 345 67890</p>
-                    </div>
-                    <div className="col-lg-8 col-md-12">
-                        <div className="row">
-                            <div className="col-md-4 mb-5">
-                                <h5 className="text-secondary text-uppercase mb-4">Quick Shop</h5>
-                                <div className="d-flex flex-column justify-content-start">
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Home
-                                    </Link>
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Our Shop
-                                    </Link>
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Shop Detail
-                                    </Link>
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Shopping Cart
-                                    </Link>
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Checkout
-                                    </Link>
-                                    <Link className="text-secondary" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Contact Us
-                                    </Link>
-                                </div>
-                            </div>
-                            <div className="col-md-4 mb-5">
-                                <h5 className="text-secondary text-uppercase mb-4">My Account</h5>
-                                <div className="d-flex flex-column justify-content-start">
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Home
-                                    </Link>
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Our Shop
-                                    </Link>
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Shop Detail
-                                    </Link>
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Shopping Cart
-                                    </Link>
-                                    <Link className="text-secondary mb-2" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Checkout
-                                    </Link>
-                                    <Link className="text-secondary" to="#">
-                                        <i className="fa fa-angle-right mr-2" />
-                                        Contact Us
-                                    </Link>
-                                </div>
-                            </div>
-                            <div className="col-md-4 mb-5">
-                                <h5 className="text-secondary text-uppercase mb-4">Newsletter</h5>
-                                <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-                                <form action="">
-                                    <div className="input-group">
-                                        <input type="text" className="form-control" placeholder="Your Email Address" />
-                                        <div className="input-group-append">
-                                            <button className="btn btn-primary">Sign Up</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <h6 className="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-                                <div className="d-flex">
-                                    <Link className="btn btn-primary btn-square mr-2" to="#">
-                                        <i className="fab fa-twitter" />
-                                    </Link>
-                                    <Link className="btn btn-primary btn-square mr-2" to="#">
-                                        <i className="fab fa-facebook-f" />
-                                    </Link>
-                                    <Link className="btn btn-primary btn-square mr-2" to="#">
-                                        <i className="fab fa-linkedin-in" />
-                                    </Link>
-                                    <Link className="btn btn-primary btn-square" to="#">
-                                        <i className="fab fa-instagram" />
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="row border-top mx-xl-5 py-4" style={{borderColor: "rgba(256, 256, 256, .1) !important"}}>
-                    <div className="col-md-6 px-xl-0">
-                        <p className="mb-md-0 text-center text-md-left text-secondary">
-                            &copy; <Link className="text-primary" to="#">Domain</Link>. All Rights Reserved. Designed
-                            by
-                            <Link className="text-primary" to="https://htmlcodex.com">HTML Codex</Link>
-                            <br />Distributed By: <Link to="https://themewagon.com" target="_blank">ThemeWagon</Link>
-                        </p>
-                    </div>
-                    <div className="col-md-6 px-xl-0 text-center text-md-right">
-                        <img className="img-fluid" src="/img/payments.png" alt="" />
-                    </div>
-                </div>
-            </div>
-            <Link to="#" className="btn btn-primary back-to-top">
-                <i className="fa fa-angle-double-up" />
-            </Link>
+            <Footer />
         </>
     );
 }

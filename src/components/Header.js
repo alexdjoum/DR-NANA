@@ -134,7 +134,7 @@ export default function Header() {
                     </Link>
                                 
               </div>
-              <div className="container-fluid  mb-30" 
+              <div className="container-fluid" 
                 //style={{background: "rgb(67, 92, 112)"}}
             >
                   <div 

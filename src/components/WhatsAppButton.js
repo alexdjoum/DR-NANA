@@ -19,7 +19,7 @@ const WhatsAppButton = ({ phoneNumber, message }) => {
       rel="noopener noreferrer"
       style={{backgroundColor: "#25D366", borderRadius: "9px", color: "white"}}
     >
-      <FontAwesomeIcon icon={faWhatsapp} /> whatsapp
+      <FontAwesomeIcon icon={faWhatsapp} /> 
     </a>
   );
 };

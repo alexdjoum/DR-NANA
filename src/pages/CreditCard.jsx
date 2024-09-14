@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import BannerWithLinks from '../components/BannerWithLinks';
 import HeaderWithoutContainSearch from '../components/HeaderWithoutContentSearch';
 import BestNavBar from '../components/BestNavBar';
+import FirstNavBar from '../components/FirstNavBar';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Validation schema avec Yup
@@ -27,14 +28,28 @@ function CreditCard() {
         //alert(`Matricule soumis: ${values.matricule}`, null, 4);
         //setSubmitting(false);
     };
+
+    function removeDecimalPart(number) {
+        // Convertit le nombre en chaîne
+        let numberStr = number.toString();
+        // Trouve l'index du point décimal
+        let decimalIndex = numberStr.indexOf('.');
+        // Si le point est trouvé, retourne la partie avant le point
+        if (decimalIndex !== -1) {
+            return numberStr.substring(0, decimalIndex);
+        }
+        // Si aucun point n'est trouvé, retourne le nombre tel quel
+        return numberStr;
+    } 
     return (
         <>
             {/* <FirstHeader /> */}
             {/* <HeaderWithoutContainSearch />
             <BannerWithLinks /> */}
+            <FirstNavBar />
             <BestNavBar />
             <div className='fidelity template d-flex justify-content-center align-items-center vh-90 mb-5 mt-5'>
-                <div className='form_container p-5 rounded bg-white border-dark'>
+                <div className='p-5 rounded bg-white border-dark'>
                     
                     <Formik
                         initialValues={{
@@ -46,7 +61,7 @@ function CreditCard() {
                     >
                         {({ errors, touched }) => (
                             <Form>
-                                <h1 className='text-center mb-5'>Carte de Fidelité</h1>
+                                <h1 className='text-center mb-5'>Carte Fidelité</h1>
                                 <div className="form-group">
                                     <div className='mb-4'>
                                         <label htmlFor="matricule">Matricule</label>
@@ -76,7 +91,7 @@ function CreditCard() {
                                             type="submit" 
                                             className="btn btn-info"
                                         >
-                                            Visualiser sa carte de fidelité
+                                            Valider
                                         </button>
                                     </div>  
                                 </div>  
@@ -100,7 +115,7 @@ function CreditCard() {
                         
                     )} */}
                     {fidelity && (
-                        <div className='container'>
+                        <div className=''>
                             <div className='row d-flex justify-content-center'>
                             {/* pt-5 */}
                                 <div className='col-md-10 mt-5'>
@@ -132,7 +147,7 @@ function CreditCard() {
                                                     <h6 className='text-muted'>{fidelity.nom}</h6>
                                                 </div>
                                                 <div className='col-sm-6'>
-                                                    <p className='font-weight-bold'>Date de naissance:</p>
+                                                    <p className='font-weight-bold'>Date Nais:</p>
                                                     <h6 className='text-muted'>{fidelity.dateNaiss}</h6>
                                                 </div>
                                             </div>
@@ -142,21 +157,21 @@ function CreditCard() {
                                                     <h6 className='text-muted'>{fidelity.point}</h6>
                                                 </div>
                                                 <div className='col-sm-6'>
-                                                    <p className='font-weight-bold'>Montant tontine:</p>
-                                                    <h6 className='text-muted'>{fidelity.montantTontine}</h6>
+                                                    <p className='font-weight-bold'>Tontine:</p>
+                                                    <h6 className='text-muted'>{removeDecimalPart(fidelity.montantTontine)}</h6>
                                                 </div>
                                             </div>
                                             <div className='row mt-3 mb-3'>
                                                 <div className='col-6'>
-                                                    <button className="btn btn-outline-info">Bon d'achat:</button>
+                                                    <button className="btn btn-outline-info">Bon d'Achat:</button>
                                                     {/* <h6 className='text-muted'>{fidelity.nom}</h6> */}
                                                 </div>
                                                 <div className='col-6'>
                                                     <button 
                                                         className='btn btn-outline-warning'
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#exampleModal" 
-                                                        data-bs-whatever="@mdo"
+                                                        data-toggle="modal" 
+                                                        data-target="#exampleModal" 
+                                                        data-whatever="@mdo"
                                                     >
                                                         Tontines:
                                                     </button>
@@ -197,7 +212,7 @@ function CreditCard() {
                     <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Tableau des tontines de ...</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <table class="table">
@@ -220,7 +235,7 @@ function CreditCard() {
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         {/* <button type="button" class="btn btn-primary">Action</button> */}
                     </div>
                     </div>

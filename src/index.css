@@ -83,3 +83,7 @@ input[type="range"].slider-track {
 .activeNavLink {
   background: lightblue;
 }
+
+.contact-info {
+  font-size: 18px;
+}

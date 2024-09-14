@@ -27,6 +27,7 @@ import categoryService from '../services/categoryService';
 import { getRedCategories, updatedCategorySelected } from '../features/category/categorySlice';
 import {BulletList} from 'react-content-loader'
 import BestNavBar from "../components/BestNavBar";
+import FirstNavBar from "../components/FirstNavBar";
 
 
 const formatNumber = (num) => {
@@ -149,7 +150,9 @@ function Results() {
    
     return (
         // <SearchedByNameContext.Provider value={{searched, setSearched}}>
-            <div className="bg-white">
+
+            <div style={{background: "aliceblue"}}>
+                <FirstNavBar />
                 {/* <FirstHeader /> */}
                 {/* <HeaderWithContainSearch /> */}
                 {/* <BannerWithLinks /> */}
@@ -169,12 +172,11 @@ function Results() {
                 <div className="container-fluid">
                     <div className="row px-xl-5">
                         <div className="col-lg-3 col-md-4">
-                            <h5 className="section-title position-relative text-uppercase mb-3"><span
+                            {/* <h5 className="section-title position-relative text-uppercase mb-3"><span
                                 className="bg-secondary pr-3">Filtrer par prix</span></h5>
                             <div className="bg-light p-4 mb-30">
                                 <form>
                                     <div className="custom-control custom-checkbox price-filter d-flex align-items-center justify-content-between mb-3">
-                                        {/* <label for="customRange1" class="form-label">Prix</label>  */}
                                         <div className="mb-3">
                                             <label htmlFor="minPriceRange" className="form-label">
                                                 Minimum: {Intl.NumberFormat('en-DE').format(minPrice)} {process.env.REACT_APP_API_UNITE}
@@ -207,135 +209,121 @@ function Results() {
                                             />
                                         </div>
                                     </div>
-                                    {/* <div
-                                        className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                        <input
-                                            type="checkbox"
-                                            checked={price.some(p => p.min === 0 && p.max === 100)}
-                                            className="custom-control-input"
-                                            id="price-1"
-                                            onChange={e => e.target.checked
-                                                ? setPrice([...price, {min: 0, max: 100}])
-                                                : setPrice(price.filter(p => !(p.min === 0 && p.max === 100)))
-                                            }
-                                        />
-                                        <label className="custom-control-label" htmlFor="price-1">$0 - $100</label>
-                                        <span className="badge border font-weight-normal">150</span>
-                                    </div> */}
-                                    {/* <div
-                                        className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                        <input
-                                            type="checkbox"
-                                            checked={price.some(p => p.min === 100 && p.max === 200)}
-                                            className="custom-control-input"
-                                            id="price-2"
-                                            onChange={e =>
-                                                e.target.checked
-                                                    ? setPrice([...price, {min: 100, max: 200}])
-                                                    : setPrice(price.filter(p => !(p.min === 100 && p.max === 200))
-                                                    )
-                                            }
-                                        />
-                                        <label className="custom-control-label" htmlFor="price-2">$100 - $200</label>
-                                        <span className="badge border font-weight-normal">295</span>
-                                    </div> */}
-                                    {/* <div
-                                        className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                        <input
-                                            type="checkbox"
-                                         setCurrentPage   checked={price.some(p => p.min === 200 && p.max === 300)}
-                                            className="custom-control-input"
-                                            id="price-3"
-                                            onChange={e =>
-                                                e.target.checked
-                                                    ? setPrice([...price, {min: 200, max: 300}])
-                                                    : setPrice(price.filter(p => !(p.min === 200 && p.max === 300)))
-                                            }
-                                        />
-                                        <label
-                                            className="custom-control-label" htmlFor="price-3">$200 - $300</label>
-                                        <span className="badge border font-weight-normal">246</span>
-                                    </div> */}
-                                    {/* <div
-                                        className="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                        <input
-                                            type="checkbox"
-                                            checked={price.some(({min, max}) => min === 300 && max === 400)}
-                                            className="custom-control-input"
-                                            onChange={e => e.target.checked
-                                                ? setPrice([...price, {min: 300, max: 400}])
-                                                : setPrice(price.filter(p => !(p.min === 300 && p.max === 400)))
-                                            }
-                                            id="price-4"/>
-                                        <label className="custom-control-label" htmlFor="price-4">$300 - $400</label>
-                                        <span className="badge border font-weight-normal">145</span>
-                                    </div>
-                                    <div
-                                        className="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                        <input
-                                            type="checkbox"
-                                            className="custom-control-input"
-                                            id="price-5"
-                                            checked={price.some(p => p.min === 400 && p.max === 500)}
-                                            onChange={e => e.target.checked
-                                                ? setPrice([...price, {min: 400, max: 500}])
-                                                : setPrice(price.filter(p => !(p.min === 400 && p.max === 500)))
-                                            }
-                                        />
-                                        <label className="custom-control-label" htmlFor="price-5">$400 - $500</label>
-                                        <span className="badge border font-weight-normal">168</span>
-                                    </div> */}
                                 </form>
-                            </div>
+                            </div> */}
 
-                            <h5 className="section-title position-relative text-uppercase mb-3"><span className="bg-secondary pr-3">Filtrer par categorie</span></h5>
-                    <div className="bg-light p-4 mb-30">
-                        <form>
-                            <div className="mb-3">
-                                <input 
-                                    type="radio" 
-                                    //className="custom-control-input"
-                                    onChange={() => dispatch(updatedCategorySelected(null))} 
-                                    checked= {!categorySelected && true}
-                                    name="category"
-                                    id="color-all"
-                                />
-                                <label 
-                                    // className="custom-control-label" 
-                                    htmlFor="price-all"
-                                    onClick={() => dispatch(updatedCategorySelected(null))}
-                                >
-                                    Toute catégorie
-                                </label>
-                                {/* <span className="badge border font-weight-normal">1000</span> */}
-                            </div>
-                            {isLoading ? <BulletList /> : 
-                                categories.map(cat => (
-                                    <div key={cat.id} className="mb-1">
+                            <h5 className="section-title position-relative text-uppercase mb-3 d-none d-md-block"><span className="bg-secondary pr-3">Filtrer par categorie</span></h5>
+                            <div className="bg-light p-4 mb-30 d-none d-md-block">
+                                <form>
+                                    <div className="mb-3">
                                         <input 
                                             type="radio" 
-                                            className="mr-2" 
-                                            id={`category-${cat.id}`}
-                                            value={categorySelected} 
-                                            onChange={() => {
-                                                dispatch(updatedCategorySelected(cat.nomCat)); 
-                                                dispatch(setCurrentPage(1))}
-                                            }
-                                            checked={categorySelected === cat.nomCat}
+                                            //className="custom-control-input"
+                                            onChange={() => dispatch(updatedCategorySelected(null))} 
+                                            checked= {!categorySelected && true}
                                             name="category"
+                                            id="color-all"
                                         />
-                                        <label
-                                            htmlFor={`category-${cat.id}`}
-                                            onClick={() => {
-                                                dispatch(updatedCategorySelected(cat.nomCat));
-                                                dispatch(setCurrentPage(1))}
-                                            }
-                                        >{cat.nomCat}</label>
+                                        <label 
+                                            // className="custom-control-label" 
+                                            htmlFor="price-all"
+                                            onClick={() => dispatch(updatedCategorySelected(null))}
+                                        >
+                                            Toute catégorie
+                                        </label>
+                                        {/* <span className="badge border font-weight-normal">1000</span> */}
                                     </div>
-                                ))
-                            }
-                        </form>
-                    </div>
+                                    {isLoading ? <BulletList /> : 
+                                        categories.map(cat => (
+                                            <div key={cat.id} className="mb-1">
+                                                <input 
+                                                    type="radio" 
+                                                    className="mr-2" 
+                                                    id={`category-${cat.id}`}
+                                                    value={categorySelected} 
+                                                    onChange={() => {
+                                                        dispatch(updatedCategorySelected(cat.nomCat)); 
+                                                        dispatch(setCurrentPage(1))}
+                                                    }
+                                                    checked={categorySelected === cat.nomCat}
+                                                    name="category"
+                                                />
+                                                <label
+                                                    htmlFor={`category-${cat.id}`}
+                                                    onClick={() => {
+                                                        dispatch(updatedCategorySelected(cat.nomCat));
+                                                        dispatch(setCurrentPage(1))}
+                                                    }
+                                                >{cat.nomCat}</label>
+                                            </div>
+                                        ))
+                                    }
+                                </form>
+                            </div>
+                            <p class="d-inline-flex gap-1">
+                                <button 
+                                    className="btn text-white d-md-none rounded-3" 
+                                    type="button" 
+                                    data-toggle="collapse" 
+                                    data-target="#collapseExample" 
+                                    style={{background: "linear-gradient(to right, #FB0202, #2725C9)"}}
+                                    aria-expanded="false" 
+                                    aria-controls="collapseExample"
+                                >
+                                    FILTRER PAR CATEGORIE
+                                </button>
+                            </p>
+                            <div class="collapse mb-2" id="collapseExample">
+                                <div class="card card-body">
+                                <div className="bg-light p-4 mb-30">
+                                <form>
+                                    <div className="mb-3">
+                                        <input 
+                                            type="radio" 
+                                            //className="custom-control-input"
+                                            onChange={() => dispatch(updatedCategorySelected(null))} 
+                                            checked= {!categorySelected && true}
+                                            name="category"
+                                            id="color-all"
+                                        />
+                                        <label 
+                                            // className="custom-control-label" 
+                                            htmlFor="price-all"
+                                            onClick={() => dispatch(updatedCategorySelected(null))}
+                                        >
+                                            Toute catégorie
+                                        </label>
+                                        {/* <span className="badge border font-weight-normal">1000</span> */}
+                                    </div>
+                                    {isLoading ? <BulletList /> : 
+                                        categories.map(cat => (
+                                            <div key={cat.id} className="mb-1">
+                                                <input 
+                                                    type="radio" 
+                                                    className="mr-2" 
+                                                    id={`category-${cat.id}`}
+                                                    value={categorySelected} 
+                                                    onChange={() => {
+                                                        dispatch(updatedCategorySelected(cat.nomCat)); 
+                                                        dispatch(setCurrentPage(1))}
+                                                    }
+                                                    checked={categorySelected === cat.nomCat}
+                                                    name="category"
+                                                />
+                                                <label
+                                                    htmlFor={`category-${cat.id}`}
+                                                    onClick={() => {
+                                                        dispatch(updatedCategorySelected(cat.nomCat));
+                                                        dispatch(setCurrentPage(1))}
+                                                    }
+                                                >{cat.nomCat}</label>
+                                            </div>
+                                        ))
+                                    }
+                                </form>
+                            </div>
+                                </div>
+                            </div>
                             {/* <h5 className="section-title position-relative text-uppercase mb-3">
                             <span
                                 className="bg-secondary pr-3">Les plus achetés</span></h5>
@@ -439,7 +427,7 @@ function Results() {
                                 {/* </form> */}
                             {/* </div> */}
                         </div>
-                        <div className="col-lg-9 col-md-8">
+                        <div className="col-lg-9 col-md-8 col-12">
                             <div className="row pb-3">
                                 {isLoading && (
                                     <div className="d-flex justify-content-center align-items-center">
@@ -490,9 +478,13 @@ function Results() {
                                         loader={<h4>Loading...</h4>}
                                     > */}
                                         {items?.map((p, index) => (
-                                            <div ref={index === items.length -1 ? nextElements : null} className="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                            <div 
+                                                ref={index === items.length -1 ? nextElements : null} 
+                                                className="col-lg-4 col-md-6 col-sm-6 col-12"
+                                                style={{width: "485px"}}
+                                            >
                                                 <div className="product-item bg-light mb-30">
-                                                    <div className="product-img position-relative overflow-hidden" style={{height: "183px"}} >
+                                                    <div className="product-img position-relative overflow-hidden">
                                                         <img className="img-fluid w-100" src={`${process.env.REACT_APP_API_BACKEND}`+'/'+ (p?.photos[0]?.lienPhoto)} alt=""/>
                                                         <div className="product-action" onClick={() => navigate(`/detail/${p.codePro}`)}>
                                                             <Link
@@ -506,12 +498,14 @@ function Results() {
                                                     </div>
                                                     <div className="text-center py-4">
                                                         <div className="d-flex align-items-center justify-content-center mb-1">
-                                                            <p className="h5">Code: {formatNumber(p.codePro)}</p>
-                                                            
-                                                            
                                                         </div>
-                                                        <Link className="h6 text-decoration-none text-truncate"
-                                                            to="">{p.nomPro}</Link>
+                                                        <Link 
+                                                            className="h6 text-decoration-none text-truncate"
+                                                            to=""
+                                                        >
+                                                            {/* {p.nomPro} */}
+                                                            {formatNumber(p.codePro)}
+                                                        </Link>
                                                         <div className="d-flex align-items-center justify-content-center mt-2">
                                                             <h5>{Intl.NumberFormat('en-DE').format(p.prix)} {process.env.REACT_APP_API_UNITE}</h5>
                                                             
@@ -521,52 +515,13 @@ function Results() {
                                                 </div>
                                             </div>
                                         ))}
-
-                                        {/* <div ref={observerRef} style={{ height: "50px", backgroundColor: "lightgray" }}>
-                                            {isLoading && <p>Loading more items...</p>}
-                                            {!hasMore && <p>No more items to load.</p>}
-                                        </div> */}
-                                    {/*</InfiniteScroll>*/}
-                                
-                                    {/* <div 
-                                        ref={(el) => {
-                                            loader.current = el;
-                                            setIsSpinnerRefVisible((prev) => !prev)
-                                        }}>
-                                        <p>Loading ...</p>
-                                    </div> */}
-                                    {/* {isLoading && <loading />} */}
-                                    
-                                    
-                                    {/* {hasMore && 
-                                        <div ref={elementRef} style={{ textAlign: 'center '}}>Loading.....</div>
-                                    } */}
-                                    {/* <div ref={loader} style={{ height: "100px", margin: "10px" }}>
-                                        Loading...
-                                    </div> */}
-                                {/* <div className="col-12">
-                                    <nav>
-                                        <ul className="pagination justify-content-center">
-                                    
-                                            <Stack spacing={2}>
-                                                <Pagination 
-                                                    count={productFilter?.last_page} 
-                                                    page={productFilter?.current_page} 
-                                                    onChange={(e, page) => handlePageChange(e.target.value, page)} 
-                                                />
-                                                <Typography>Page: {productFilter?.current_page}</Typography>
-                                            </Stack>
-                                            
-                                            
-                                        </ul>
-                                    </nav>
-                                </div> */}
                             </div>
                             {
                                 (currenPage !== lastPage && !isLoading) && (
                                     <div className="d-flex justify-content-center">
                                         <button 
-                                            className="btn btn-primary"
+                                            style={{background: "linear-gradient(to right, #1e3c72, #2725C9)"}}
+                                            className="btn text-white rounded-3"
                                             onClick={() => load(currenPage)}    
                                         >
                                             Voir plus de produits

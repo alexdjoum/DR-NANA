@@ -11,7 +11,10 @@ export default function Footer() {
                     <p className="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
                     <p className="mb-2"><i className="fa fa-map-marker-alt text-primary mr-3"/>123 Street, New York, USA</p>
                     <p className="mb-2"><i className="fa fa-envelope text-primary mr-3"/>info@example.com</p>
-                    <p className="mb-0"><i className="fa fa-phone-alt text-primary mr-3"/>+237 676 89 24 02</p>
+                    <p className="mb-0">
+                        <i className="fa fa-phone-alt text-primary mr-3"/>
+                        {process.env.REACT_APP_API_PHONE}
+                    </p>
                 </div>
                 <div className="col-lg-8 col-md-12">
                     <div className="row">

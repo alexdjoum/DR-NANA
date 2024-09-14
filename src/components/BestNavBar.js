@@ -5,9 +5,9 @@ import { Link, NavLink } from 'react-router-dom';
 import { getProducts, setCurrentPage, handleMaxPriceChange,handleMinPriceChange, setSearch } from '../features/products/productSlice';
 import categoryService from '../services/categoryService';
 import { getRedCategories, updatedCategorySelected,  } from '../features/category/categorySlice';
-//import { getProducts, getProductsByPrice, isLoading,  } from "../features/products/productSlice";
-import productListService from '../services/productListService';
-import { WhatsApp } from '@mui/icons-material';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 
 function BestNavBar() {
@@ -32,22 +32,22 @@ function BestNavBar() {
                     <nav className="navbar navbar-light bg-light navbar-expand-lg py-3 py-lg-0 px-0">
                     {/* <div className="d-flex justify-content-between align-items-center w-100"> */}
                         {/* Logo à gauche */}
-                        <a href="/shop" className="text-decoration-none">
-                        <div style={{width: "85px"}}>
-                            <img 
-                            src='/images/bambino.jpeg' 
-                            style={{width: "100%", height: "auto"}}
-                            alt="Logo"
-                            />
-                        </div>
+                        <a href="/shop" className="text-decoration-none py-md-2">
+                            <div style={{width: "85px"}}>
+                                <img 
+                                src='/images/bambino.jpeg' 
+                                style={{width: "100%", height: "auto"}}
+                                alt="Logo"
+                                />
+                            </div>
                         </a>
         
                         {/* Bouton toggle pour mobile */}
                         <button 
-                        type="button" 
-                        className="navbar-toggler" 
-                        data-toggle="collapse"
-                        data-target="#navbarCollapse"
+                            type="button" 
+                            className="navbar-toggler" 
+                            data-toggle="collapse"
+                            data-target="#navbarCollapse"
                         >
                         <span className="navbar-toggler-icon"></span>
                         </button>
@@ -75,9 +75,12 @@ function BestNavBar() {
                         </form>
 
                         <div className="navbar-nav ml-auto d-flex justify-content-around flex-row">
-                            <NavLink to="/creditCard" className={({isActive}) =>
-                            isActive ? "nav-item nav-link text-dark activeNavLink align-self-start px-4" : "nav-item nav-link align-self-start px-4"
-                            }>
+                            <NavLink 
+                                to="/creditCard" 
+                                className={({isActive}) =>
+                                    isActive ? "nav-item nav-link text-dark activeNavLink align-self-start px-4" : "nav-item nav-link align-self-start px-4"
+                                }
+                            >
                             <div className="d-flex flex-column align-items-center">
                                 <i className="fas fa-user text-dark"/>
                                 <span 
@@ -91,16 +94,21 @@ function BestNavBar() {
                             <NavLink to="/cart" className={({isActive}) =>
                                 isActive ? "nav-item nav-link text-dark activeNavLink align-self-start px-4" : "nav-item nav-link align-self-start px-4"
                                 }>
-                                    <div className="d-flex flex-column align-items-center">
-                                        <i className="fas fa-shopping-cart text-dark"/>
-                                        <span 
-                                            className="badge text-dark"
-                                            style={{paddingBottom: "2px"}}
-                                        >
-                                            Panier
-                                            {/* {myTotal} */}
-                                        </span>
-                                    </div> 
+                                    <div className='position-relative'>
+                                        <div className="d-flex flex-column align-items-center">
+                                            <i className="fas fa-shopping-cart text-dark"/>
+                                            <span 
+                                                className="badge text-dark"
+                                                style={{paddingBottom: "2px"}}
+                                            >
+                                                Panier
+                                                <div className='position-absolute badge badge-danger' style={{right: "0px", top:"-3px"}}>
+                                                    {myTotal}
+                                                </div>
+                                            </span>
+                                        </div> 
+                                    </div>
+                                    
                             </NavLink>
                         {/* <NavLink
                             to="/"
@@ -129,14 +137,35 @@ function BestNavBar() {
                             
                         </NavLink>
                         <Link
+                            to={`https://web.whatsapp.com/send?phone=${process.env.REACT_APP_API_PHONE_WITHOUT_SPACE}&text=Bienvenu`}
+                            className="nav-item nav-link text-white align-self-start px-4" 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <img 
+                                src='/images/whatsapp-contact-3.jpeg' 
+                                style={{marginTop: "-5px"}}
+                                width="37px"
+                            />
+                        </Link>
+                            
+                        {/* <Link
                             to={`https://web.whatsapp.com/send?phone=676892402&text=Bienvenu`}
-                            className='px-4'
+                            className='px-4 nav-item nav-link'
                             style={{color: "#25D366"}}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                                <WhatsApp phoneNumber="676892402" />
-                            </Link>
+                            <div className="d-flex flex-column align-items-center">
+                                <div 
+                                    className="badge text-dark align-self-start"
+                                    style={{paddingBottom: "2px"}}
+                                >
+                                    <WhatsApp phoneNumber="676892402" /> 
+                                    <FontAwesomeIcon icon={faWhatsapp} />
+                                </div>
+                            </div>
+                        </Link> */}
                             
                         {/* <NavLink
                             to="/creditCard"
@@ -148,7 +177,7 @@ function BestNavBar() {
                         </NavLink> */}
                         
                         </div>
-                        <form className="d-lg-none mx-auto col-lg-5">
+                        <form className="d-lg-none mx-auto col-lg-5 mt-1">
                             <div className="input-group">
                                 <input
                                 type="text"
@@ -220,7 +249,7 @@ function BestNavBar() {
                     {/* </div> */}
                     </nav>
                 </div>
-                <hr  className="mt-3"/>
+                {/* <hr  className="mt-3"/> */}
             </div>
         </div>
     );

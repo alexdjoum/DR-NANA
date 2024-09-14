@@ -73,7 +73,7 @@ function Detail() {
         setSelectedImage(src?.lienPhoto)
     };
     return (
-        <>
+        <div style={{background: "aliceblue"}}>
             {/* <Header /> */}
             <BestNavBar />
             {/* <HeaderWithContainSearch />
@@ -94,48 +94,17 @@ function Detail() {
             {/*Breadcrumb End*/}
             {/*Shop Detail Start*/}
             <div className="container-fluid pb-5">
-                <div className="row">
-                    <div className="col-lg-5 mb-30 text-center">
-                        {/* <div 
-                            id="product-carousel" 
-                            className="carousel slide" 
-                            data-bs-ride="carousel" 
-                            style={{height: "225px", width: "225px"}}
-                        > */}
-                            {/* <div 
-                                style={{width: '700px'}}
-                                className="carousel-inner bg-light"
-                            > */}
-                                {/* <div 
-                                    style={{width: '700px'}}
-                                    className="carousel-item active"
-                                > */}
-                                    <img 
+                <div className="row px-xl-5">
+                    <div className="col-md-6 mb-30 text-center">
+                        <img 
+                        
+                            //src={`${process.env.REACT_APP_API_BACKEND}/${thisProduct?.photos[0]?.lienPhoto}`} 
+                            src={`${process.env.REACT_APP_API_BACKEND}/${mainImage}`} 
+                            alt="Image"
+                            style={{width: "100%"}}
+                            // className='w-100' 
+                        />
                                 
-                                        //src={`${process.env.REACT_APP_API_BACKEND}/${thisProduct?.photos[0]?.lienPhoto}`} 
-                                        src={`${process.env.REACT_APP_API_BACKEND}/${mainImage}`} 
-                                        alt="Image"
-                                        style={{height: "500px", width: "300px"}}
-                                        // className='w-100' 
-                                    />
-                                {/* </div> */}
-                                {/* {filteredPhotos?.map((src, index) => (
-                                    <div className={`carousel-item`} key={index} onClick={() => handleImageClick(src)}>
-                                        <img 
-                                            className="img-thumbnail" 
-                                            src={`${process.env.REACT_APP_API_BACKEND}/${src?.lienPhoto}`} 
-                                            alt="Image" 
-                                        />
-                                    </div>
-                                ))} */}
-                            {/* </div> */}
-                            {/* <a className="carousel-control-prev" href="#product-carousel" data-bs-slide="prev">
-                                <i className="fa fa-2x fa-angle-left text-dark" />
-                            </a>
-                            <a className="carousel-control-next" href="#product-carousel" data-bs-slide="next">
-                                <i className="fa fa-2x fa-angle-right text-dark" />
-                            </a> */}
-                        {/* </div> */}
                     </div>
                     {/* <div className="row">
                         <div class="col-md-8">
@@ -160,9 +129,9 @@ function Detail() {
                         ))}
                     </div> */}
                     
-                    <div className="col-lg-7 h-auto mb-30">
+                    <div className="col-md-6 h-auto mb-30">
                         <div className="h-100 bg-light p-30">
-                            <h3>{thisProduct?.nomPro}</h3>
+                            <h4>{thisProduct?.nomPro}</h4>
                             {/* overflow-scroll */}
                             <div 
                                 className="d-flex h-25" 
@@ -183,14 +152,15 @@ function Detail() {
                                     </div>
                                 ))} 
                             </div>
-                            <h3 className="font-weight-semi-bold mb-4">{Intl.NumberFormat('en-DE').format(thisProduct?.prix)} {process.env.REACT_APP_API_UNITE}</h3>
+                            <h4 className="font-weight-semi-bold mb-4">{Intl.NumberFormat('en-DE').format(thisProduct?.prix)} {process.env.REACT_APP_API_UNITE}</h4>
                             {/* <p className="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit
                                 clita ea. Sanc ipsum et, labore clita lorem magna duo dolor no sea
                                 Nonumy</p> */}
                             
                             
-                            <div className="d-flex tshirtsizes mb-3">
-                                <strong className="text-dark mr-3">Sizes:</strong>
+                            <div className="d-flex mb-4">
+                                <strong className="text-dark mr-3">Tailles:</strong>
+                                <div>
                                 {thisProduct?.sizes?.map((s, index) => (
                                     <div className="custom-control custom-radio custom-control-inline" key={index}>
                                         <input 
@@ -207,26 +177,30 @@ function Detail() {
                                         </label> 
                                     </div>
                                 ))}
+                                </div>
                             </div>
                             
                             <div className="d-flex mb-4">
-                                <strong className="text-dark mr-3">Colors:</strong>
-                                {thisProduct?.colors?.map((color, index) => (
-                                    <div className="custom-control custom-radio custom-control-inline">
-                                        <input 
-                                            onChange={() => setSelectedColor(color.colorName)}
-                                            value={color.colorName}
-                                            type="radio" 
-                                            className="custom-control-input" 
-                                            id={`color-${index}`}
-                                            name="color" 
-                                            checked={selectedColor === color.colorName}
-                                        />
-                                        <label className="custom-control-label" htmlFor={`color-${index}`}>
-                                            {color.colorName}
-                                        </label>
-                                    </div>
-                                ))}
+                                <strong className="text-dark mr-3">Couleurs:</strong>
+                                <div>
+                                    {thisProduct?.colors?.map((color, index) => (
+                                        <div className="custom-control custom-radio custom-control-inline">
+                                            <input 
+                                                onChange={() => setSelectedColor(color.colorName)}
+                                                value={color.colorName}
+                                                type="radio" 
+                                                className="custom-control-input" 
+                                                id={`color-${index}`}
+                                                name="color" 
+                                                checked={selectedColor === color.colorName}
+                                            />
+                                            <label className="custom-control-label" htmlFor={`color-${index}`}>
+                                                {color.colorName}
+                                            </label>
+                                        </div>
+                                    ))}
+                                </div>
+                                
                             </div>
                             
                             <div className="d-flex mb-4 pt-2">
@@ -627,7 +601,7 @@ function Detail() {
                             {/* <Link className="text-primary" to="#">Domain</Link> */}
                             All Rights Reserved. Designed
                             by
-                            <Link className="text-primary" to="/shop">Bambino</Link>
+                            <Link className="text-primary" to="/shop"> Bambino</Link>
                             {/* <br />Distributed By: <Link to="https://themewagon.com" target="_blank">ThemeWagon</Link> */}
                         </p>
                     </div>
@@ -642,7 +616,7 @@ function Detail() {
             <Link to="#" className="btn btn-primary back-to-top">
                 <i className="fa fa-angle-double-up" />
             </Link>
-        </>
+        </div>
     );
 }
 export default Detail;

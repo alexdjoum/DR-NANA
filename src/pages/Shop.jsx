@@ -47,6 +47,7 @@ function Results() {
     const s = useSelector(state => state.products)
     const [hasMore, setHasMore] = useState(true);
     const observerRef = useRef();
+    
 
     const navigate = useNavigate()
     // const [minPrice, setMinPrice] = useState(0);
@@ -484,8 +485,18 @@ function Results() {
                                                 style={{width: "485px"}}
                                             >
                                                 <div className="product-item bg-light mb-30">
-                                                    <div className="product-img position-relative overflow-hidden">
-                                                        <img className="img-fluid w-100" src={`${process.env.REACT_APP_API_BACKEND}`+'/'+ (p?.photos[0]?.lienPhoto)} alt=""/>
+                                                    <div 
+                                                        className="product-img position-relative overflow-hidden" 
+                                                        style={{maxHeight: "303px"}}
+                                                    >
+                                                        <img 
+                                                            className="img-fluid w-100 h-auto" 
+                                                            src={p?.photos && p.photos.length > 0
+                                                                ? `${process.env.REACT_APP_API_BACKEND}/${p.photos[0].lienPhoto}`
+                                                                : '/images/no-image.png'
+                                                              }
+                                                            alt=""
+                                                        />
                                                         <div className="product-action" onClick={() => navigate(`/detail/${p.codePro}`)}>
                                                             <Link
                                                                 className="btn btn-outline-dark btn-square"

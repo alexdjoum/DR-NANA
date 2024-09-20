@@ -48,8 +48,19 @@ function CreditCard() {
             <BannerWithLinks /> */}
             <FirstNavBar />
             <BestNavBar />
-            <div className='fidelity template d-flex justify-content-center align-items-center vh-90 mb-5 mt-5'>
-                <div className='p-5 rounded bg-white border-dark'>
+            <div>
+            <div className='container d-flex justify-content-center'>
+                <div style={{width: "500px"}}>
+                    <img className='w-100 img-fluid' src="/images/friendship-pana.png" />
+                </div>
+            </div>
+            <div>
+                <p className='h3 text-center'>Saisi les informations de ta carte Fidelité</p>
+            </div>
+            </div>
+            
+            <div className='fidelity template d-flex justify-content-center align-items-center vh-90 mb-5'>
+                <div className='rounded border-dark' style={{width: "420px"}}>
                     
                     <Formik
                         initialValues={{
@@ -61,7 +72,7 @@ function CreditCard() {
                     >
                         {({ errors, touched }) => (
                             <Form>
-                                <h1 className='text-center mb-5'>Carte Fidelité</h1>
+                                {/* <h1 className='text-center mb-5'>Carte Fidelité</h1> */}
                                 <div className="form-group">
                                     <div className='mb-4'>
                                         <label htmlFor="matricule">Matricule</label>

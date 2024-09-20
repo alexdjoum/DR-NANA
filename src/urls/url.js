@@ -9,6 +9,7 @@ const backendUrls = {
     }, 
     getFidelityCard: authenticationBaseUrl + "/client/",
     categoriesList: authenticationBaseUrl +'/listCategories',
-    productsByCategory: authenticationBaseUrl +'/produitByCategories/'
+    productsByCategory: authenticationBaseUrl +'/produitByCategories/',
+    productDetails: authenticationBaseUrl + '/details/'
 }
 export default backendUrls;

@@ -8,6 +8,8 @@ import {decreaseCart, addToCart, removeFromCart, getTotals, clearCart} from "../
 import HeaderWithContainSearch from '../components/HeaderWithContainSearch';
 import BannerWithLinks from '../components/BannerWithLinks';
 import BestNavBar from '../components/BestNavBar';
+import FirstNavBar from '../components/FirstNavBar';
+import Footer from '../components/Footer';
 //import { products } from '../dynamic/products';
 
 function Detail() {
@@ -75,6 +77,7 @@ function Detail() {
     return (
         <div style={{background: "aliceblue"}}>
             {/* <Header /> */}
+            <FirstNavBar />
             <BestNavBar />
             {/* <HeaderWithContainSearch />
             <BannerWithLinks /> */}
@@ -207,8 +210,9 @@ function Detail() {
                                 <div className="d-flex quantity mr-3">
                                     {/* <div className="input-group-btn">
                                         <button 
-                                            className="btn btn-primary btn-minus" 
+                                            className="btn btn-minus text-white" 
                                             onClick={() => handleDecreaseCart(thisProduct)}>
+                                            style={{background: "linear-gradient(to right, #FC0102, #2a5298)"}}
                                             <i className="fa fa-minus" />
                                         </button>
                                     </div> */}
@@ -223,18 +227,22 @@ function Detail() {
                                     />
                                     <div className="input-group-btn">
                                         <button 
-                                            className="btn btn-primary btn-plus"
+                                            className="btn btn-plus text-white"
+                                            style={{background: "linear-gradient(to right, #FC0102, #2a5298)"}}
                                             onClick={() => handleAddToCart(thisProduct)}>
                                             <i className="fa fa-plus" />
                                         </button>
                                     </div>
                                 </div>
                                 <button 
-                                    className="btn btn-primary px-3" 
+                                    className="btn px-3 text-white" 
+                                    style={{background: "linear-gradient(to right, #1e3c72, #2725C9)"}}
                                     onClick={()=> handleAddToCart(thisProduct)}
                                 >
-                                    <i className="fa fa-shopping-cart mr-1" /> 
-                                        Add ToCart
+                                    <i 
+                                        className="fa fa-shopping-cart mr-1"
+                                    /> 
+                                        Ajouter au panier
                                 </button>
                             </div>
                             <div className="d-flex pt-2">
@@ -280,7 +288,7 @@ function Detail() {
                         </div>
                         <div className="tab-content">
                             <div className="tab-pane fade show active" id="tab-pane-1">
-                                <h4 className="mb-3">Product Description</h4>
+                                <h4 className="mb-3">Description</h4>
                                 <p>{thisProduct?.description}</p>
                                 <p></p>
                             </div>
@@ -540,76 +548,7 @@ function Detail() {
             </div> */}
             {/*Products End*/}
             {/*Footer Start*/}
-            <div className="container-fluid bg-dark text-secondary mt-5 pt-5">
-                <div className="row px-xl-5 position-fixed pt-5">
-                    <div className="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                        <h5 className="text-secondary text-uppercase mb-4">Get In Touch</h5>
-                        <p className="mb-4">No dolore ipsum accusam no lorem. Invidunt sed clita kasd clita et et dolor sed dolor. Rebum tempor no vero est magna amet no</p>
-                        <p className="mb-2"><i className="fa fa-map-marker-alt text-primary mr-3" />123 Street, New York, USA</p>
-                        <p className="mb-2"><i className="fa fa-envelope text-primary mr-3" />info@example.com</p>
-                        <p className="mb-0"><i className="fa fa-phone-alt text-primary mr-3" />+012 345 67890</p>
-                    </div>
-                    <div className="col-lg-8 col-md-12">
-                        <div className="row">
-                            <div className="col-md-4 mb-5">
-                                <h5 className="text-secondary text-uppercase mb-4">Quick Shop</h5>
-                                <div className="d-flex flex-column justify-content-start">
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Home</Link>
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Our Shop</Link>
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Shop Detail</Link>
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Shopping Cart</Link>
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Checkout</Link>
-                                    <Link className="text-secondary" to="#"><i className="fa fa-angle-right mr-2" />Contact Us</Link>
-                                </div>
-                            </div>
-                            <div className="col-md-4 mb-5">
-                                <h5 className="text-secondary text-uppercase mb-4">My Account</h5>
-                                <div className="d-flex flex-column justify-content-start">
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Home</Link>
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Our Shop</Link>
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Shop Detail</Link>
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Shopping Cart</Link>
-                                    <Link className="text-secondary mb-2" to="#"><i className="fa fa-angle-right mr-2" />Checkout</Link>
-                                    <Link className="text-secondary" to="#"><i className="fa fa-angle-right mr-2" />Contact Us</Link>
-                                </div>
-                            </div>
-                            <div className="col-md-4 mb-5">
-                                <h5 className="text-secondary text-uppercase mb-4">Newsletter</h5>
-                                <p>Duo stet tempor ipsum sit amet magna ipsum tempor est</p>
-                                <form action="">
-                                    <div className="input-group">
-                                        <input type="text" className="form-control" placeholder="Your Email Address" />
-                                        <div className="input-group-append">
-                                            <button className="btn btn-primary">Sign Up</button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <h6 className="text-secondary text-uppercase mt-4 mb-3">Follow Us</h6>
-                                <div className="d-flex">
-                                    <Link className="btn btn-primary btn-square mr-2" to="#"><i className="fab fa-twitter" /></Link>
-                                    <Link className="btn btn-primary btn-square mr-2" to="#"><i className="fab fa-facebook-f" /></Link>
-                                    <Link className="btn btn-primary btn-square mr-2" to="#"><i className="fab fa-linkedin-in" /></Link>
-                                    <Link className="btn btn-primary btn-square" to="#"><i className="fab fa-instagram" /></Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="row border-top mx-xl-5 py-4" style={{borderColor: "rgba(256, 256, 256, 0.1) !important"}}>
-                    <div className="col-md-6 px-xl-0">
-                        <p className="mb-md-0 text-center text-md-left text-secondary">
-                            {/* <Link className="text-primary" to="#">Domain</Link> */}
-                            All Rights Reserved. Designed
-                            by
-                            <Link className="text-primary" to="/shop"> Bambino</Link>
-                            {/* <br />Distributed By: <Link to="https://themewagon.com" target="_blank">ThemeWagon</Link> */}
-                        </p>
-                    </div>
-                    {/* <div className="col-md-6 px-xl-0 text-center text-md-right">
-                        <img className="img-fluid" src="/img/payments.png" alt="" />
-                    </div> */}
-                </div>
-            </div>
+            <Footer />
             </div>
             {/*Footer End */}
             {/*Back to Top*/}

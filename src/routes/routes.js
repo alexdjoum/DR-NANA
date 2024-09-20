@@ -13,6 +13,7 @@ import ShopPerPage from "../pages/ShopPerPage";
 import CollapsibleTable from "../pages/ProductCreated";
 import ProductCreated2 from "../pages/ProductCreated2";
 import CreditCard from "../pages/CreditCard";
+import Detail2 from "../pages/Detail2";
 
 export const routes = [
     {
@@ -38,7 +39,7 @@ export const clientRoutes = [
     },
     {
         path: '/detail/:num',
-        component: Detail,
+        component: Detail2,
         exact: false,
         protected: false
     },

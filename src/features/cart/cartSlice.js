@@ -31,7 +31,7 @@ export const cartSlice = createSlice({
                     state.cartItems[existingIndex].products.cartQuantity += 1;
                 } 
                 
-                toast.info("Increased product quantity", {
+                toast.info("La quantité de ce produit a été augmenté", {
                     position: "bottom-left",
                 });
             }else {
@@ -87,7 +87,7 @@ export const cartSlice = createSlice({
                     // state.cartItems.colorToSend = [""]
 
                 }
-                toast.success("Product added to cart", {
+                toast.success("Produit ajouté au panier", {
                     position: "bottom-left",
                 });
                 //Creation du format de l'objet qui sera dans le cartItem
@@ -142,7 +142,7 @@ export const cartSlice = createSlice({
                 state.cartTotalQuantity = actualCartTotalQuantity
             
     
-                toast.error("Product removed from cart", {
+                toast.error("Produit réduit du panier", {
                     position: "bottom-left",
                 });
             }
@@ -168,7 +168,7 @@ export const cartSlice = createSlice({
             state.cartTotalAmount = state.cartTotalAmount - action.payload.products.cartQuantity*action.payload.products.prix   
             state.cartTotalQuantity = newCartQuantity             
             state.cartItems = currentCartItems
-            toast.error("Product removed from cart", {
+            toast.error("Produit enlevé du panier", {
                 position: "bottom-left",
            });
             // state.cartItems.map((cartItem) => {
@@ -222,7 +222,7 @@ export const cartSlice = createSlice({
             state.cartTotalQuantity = 0
 
         //localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-        toast.error("Cart cleared", { position: "bottom-left" });
+        toast.error("Panier vidé", { position: "bottom-left" });
         },
     }
 })

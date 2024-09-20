@@ -294,7 +294,7 @@ function Cart() {
                         <nav className="breadcrumb bg-light mb-30">
                             <Link className="breadcrumb-item text-dark" to="#">Home</Link>
                             <Link className="breadcrumb-item text-dark" to="#">Shop</Link>
-                            <span className="breadcrumb-item active">Shopping Cart</span>
+                            <span className="breadcrumb-item active">Panier</span>
                         </nav>
                     </div>
                 </div>
@@ -320,9 +320,9 @@ function Cart() {
                                 <tr>
                                     <td className="align-middle">
                                         <img
-                                            src={`${process.env.REACT_APP_API_URL}`+'/'+item?.products?.photos?.[0]?.lienPhoto} 
+                                            src={`${process.env.REACT_APP_API_BACKEND}`+'/'+item?.products?.photos?.[0]?.lienPhoto} 
                                             alt=""
-                                            style={{width: "50px"}}
+                                            style={{width: "50px", maxHeight: "38px"}}
                                         />
                                         {item?.products?.nomPro}
                                     </td>
@@ -413,6 +413,7 @@ function Cart() {
                                         data-target="#exampleModal" 
                                         data-whatever="@mdo"
                                     //onClick={redirectToCreateCommand}
+                                    disabled={!(montant > 0)}
                                 >
                                     Créer une commande
                                 </button>

@@ -177,22 +177,7 @@ function BestNavBar() {
                         </NavLink> */}
                         
                         </div>
-                        <form className="d-lg-none mx-auto col-lg-5 mt-1">
-                            <div className="input-group">
-                                <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Entrer le mot clé ou le code du produit"
-                                value={searchValue}
-                                onChange={handleSearchChange}
-                                />
-                                <div className="input-group-append">
-                                <span className="input-group-text bg-transparent text-primary">
-                                    <i className="fa fa-search"></i>
-                                </span>
-                                </div>
-                            </div>
-                        </form>
+                        
                         {/* <div className="navbar-nav ml-auto">
                         <Link to="/cart" className="btn px-0 ml-3">
                             <i className="fas fa-shopping-cart text-white"/>
@@ -246,6 +231,22 @@ function BestNavBar() {
                         </div> */}
 
                     </div>
+                    <form className="d-lg-none mx-auto col-lg-5 mt-1">
+                            <div className="input-group">
+                                <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Entrer le mot clé ou le code du produit"
+                                value={searchValue}
+                                onChange={handleSearchChange}
+                                />
+                                <div className="input-group-append">
+                                <span className="input-group-text bg-transparent text-primary">
+                                    <i className="fa fa-search"></i>
+                                </span>
+                                </div>
+                            </div>
+                        </form>
                     {/* </div> */}
                     </nav>
                 </div>

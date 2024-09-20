@@ -29,6 +29,12 @@ const productListService = {
         const result = await GET(url)
         .then((r) => r.json())
         return result;
+    },
+    getProductDetail: async function (codePro) {
+        const url = backendUrls.productDetails+codePro;
+        const result = await GET(url)
+        .then((r) => r.json())
+        return result
     }
 
 }

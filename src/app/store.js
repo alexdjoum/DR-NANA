@@ -1,32 +1,38 @@
-import { configureStore } from '@reduxjs/toolkit'
-import cardReducer from '../features/cart/cartSlice'
-//import storage from 'redux-persist/lib/storage'
-//import {persistReducer} from "redux-persist";
-import { combineReducers } from "redux";
+import { configureStore } from '@reduxjs/toolkit';
+import cardReducer from '../features/cart/cartSlice';
+import storage from 'redux-persist/lib/storage';
+import { persistReducer, persistStore } from 'redux-persist';
+import { combineReducers } from 'redux';
 import productReducer from '../features/products/productSlice';
-import categoryReducer from '../features/category/categorySlice'
+import categoryReducer from '../features/category/categorySlice';
 
-
-// const persistConfig = {
-//     key: 'root',
-//     storage,
-// }
+// Configuration de persist
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['cart'], // On ne persiste que le panier
+};
 
 const rootReducer = combineReducers({
     cart: cardReducer,
-    products: productReducer, 
-    category: categoryReducer
-})
+    products: productReducer,
+    category: categoryReducer,
+});
 
-//const persistedReducer = persistReducer(persistConfig, rootReducer)
+// Création du reducer persistant
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export default configureStore({
-    //reducer: persistedReducer,
-    reducer: rootReducer,
-    // middleware: (getDefaultMiddleware) =>
-    //     getDefaultMiddleware({
-    //         serializableCheck: {
-    //             // ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    //         },
-    //     }),
-})
+const store = configureStore({
+    reducer: persistedReducer,
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: {
+                ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+            },
+        }),
+});
+
+// Création de l'instance de persistance
+export const persistor = persistStore(store);
+
+export default store;
